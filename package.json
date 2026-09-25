@@ -1,0 +1,27 @@
+{
+  "name": "campusconnect-academic-erp",
+  "version": "2.4.0",
+  "description": "CampusConnect - Comprehensive College Academic ERP featuring College Gmail SSO, Multi-Role Dashboards (Student, Teacher, HOD, Admin), Attendance Registers, Continuous Assessment Gradebook, and FERPA-Compliant Data Privacy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node scripts/build.js",
+    "db:seed": "node scripts/seed.js",
+    "test": "node scripts/test_hod_teacher_feature.js && node scripts/test_geofence_attendance.js && node scripts/test_student_management.js",
+    "test:geofence": "node scripts/test_geofence_attendance.js",
+    "test:students": "node scripts/test_student_management.js"
+  },
+  "keywords": [
+    "campusconnect",
+    "react",
+    "college-erp",
+    "academic-portal",
+    "student-privacy",
+    "attendance-tracking",
+    "gradebook",
+    "ferpa"
+  ],
+  "author": "CampusConnect Systems",
+  "license": "MIT"
+}

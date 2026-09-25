@@ -1,0 +1,18 @@
+{
+  "institutionName": "CampusConnect Institute of Technology",
+  "campusName": "Thandavapura Main Campus",
+  "address": "Mysore–Ooty Road, just off NH 766, Nanjangud Taluk, Thandavapura, Karnataka 571302, India",
+  "latitude": 12.183700,
+  "longitude": 76.694200,
+  "geofenceRadiusMeters": 300,
+  "accuracyThresholdMeters": 80,
+  "maxAllowedSpeedMps": 15,
+  "antiSpoofingEnabled": true,
+  "attendanceWindow": {
+    "enabled": true,
+    "startTime": "08:00",
+    "endTime": "18:00"
+  },
+  "updatedAt": "2026-09-25T10:00:00.000Z",
+  "updatedBy": "admin@campus.edu"
+}

@@ -1,0 +1,538 @@
+[
+  {
+    "_id": "aud-1790343112411-888",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_STUDENT",
+    "targetUser": "e2366f799288aeb2ed5ae2a5",
+    "details": "Changed status to ACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_2235)",
+    "timestamp": "2026-09-25T13:31:52.411Z"
+  },
+  {
+    "_id": "aud-1790343112404-817",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_STUDENT",
+    "targetUser": "e2366f799288aeb2ed5ae2a5",
+    "details": "Changed status to INACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_2235)",
+    "timestamp": "2026-09-25T13:31:52.404Z"
+  },
+  {
+    "_id": "aud-1790343112390-128",
+    "performedBy": "usr-hod-01",
+    "action": "PROMOTE_STUDENT",
+    "targetUser": "e2366f799288aeb2ed5ae2a5",
+    "details": "Promoted student RAKESH KUMAR SHETTY (4MN24CS999_2235) from Semester 1 to Semester 2",
+    "timestamp": "2026-09-25T13:31:52.390Z"
+  },
+  {
+    "_id": "aud-1790343112376-674",
+    "performedBy": "usr-hod-01",
+    "action": "CHANGE_SECTION",
+    "targetUser": "e2366f799288aeb2ed5ae2a5",
+    "details": "Changed section for RAKESH KUMAR SHETTY from A to B",
+    "timestamp": "2026-09-25T13:31:52.376Z"
+  },
+  {
+    "_id": "aud-1790343112374-394",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_STUDENT",
+    "targetUser": "e2366f799288aeb2ed5ae2a5",
+    "details": "HOD updated student: RAKESH KUMAR SHETTY (4MN24CS999_2235)",
+    "timestamp": "2026-09-25T13:31:52.374Z"
+  },
+  {
+    "_id": "aud-1790343112363-271",
+    "performedBy": "usr-hod-01",
+    "action": "CREATE_STUDENT",
+    "targetUser": "e2366f799288aeb2ed5ae2a5",
+    "details": "HOD registered new student: RAKESH K SHETTY (4MN24CS999_2235, Sem 1-A)",
+    "timestamp": "2026-09-25T13:31:52.363Z"
+  },
+  {
+    "_id": "aud-1790343111794-775",
+    "performedBy": "std-api-test-1790343111730",
+    "action": "GEOFENCE_ATTENDANCE_MARKED",
+    "targetUser": "geo-att-1790343111791-1730",
+    "details": "Verified GPS Geofence Attendance for API Geofence Test Student (1NT21CS888): 15.55m from campus (accuracy: ±20m)",
+    "timestamp": "2026-09-25T13:31:51.794Z"
+  },
+  {
+    "_id": "aud-1790343111198-288",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "181d98d322d078259ce41adf",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC616)",
+    "timestamp": "2026-09-25T13:31:51.198Z"
+  },
+  {
+    "_id": "aud-1790343111191-541",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "181d98d322d078259ce41adf",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC616)",
+    "timestamp": "2026-09-25T13:31:51.191Z"
+  },
+  {
+    "_id": "aud-1790343111183-194",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "181d98d322d078259ce41adf",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC616)",
+    "timestamp": "2026-09-25T13:31:51.183Z"
+  },
+  {
+    "_id": "aud-1790343111170-704",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "181d98d322d078259ce41adf",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC616)",
+    "timestamp": "2026-09-25T13:31:51.170Z"
+  },
+  {
+    "_id": "aud-1790343063384-785",
+    "performedBy": "std-api-test-1790343063259",
+    "action": "GEOFENCE_ATTENDANCE_MARKED",
+    "targetUser": "geo-att-1790343063363-3259",
+    "details": "Verified GPS Geofence Attendance for API Geofence Test Student (1NT21CS888): 15.55m from campus (accuracy: ±20m)",
+    "timestamp": "2026-09-25T13:31:03.384Z"
+  },
+  {
+    "_id": "aud-1790343062768-385",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "dee2a2d18241c3dde404d6cd",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC135)",
+    "timestamp": "2026-09-25T13:31:02.768Z"
+  },
+  {
+    "_id": "aud-1790343062761-803",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "dee2a2d18241c3dde404d6cd",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC135)",
+    "timestamp": "2026-09-25T13:31:02.761Z"
+  },
+  {
+    "_id": "aud-1790343062753-826",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "dee2a2d18241c3dde404d6cd",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC135)",
+    "timestamp": "2026-09-25T13:31:02.753Z"
+  },
+  {
+    "_id": "aud-1790343062739-446",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "dee2a2d18241c3dde404d6cd",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC135)",
+    "timestamp": "2026-09-25T13:31:02.739Z"
+  },
+  {
+    "_id": "aud-1790342993696-201",
+    "performedBy": "std-api-test-1790342993634",
+    "action": "GEOFENCE_ATTENDANCE_MARKED",
+    "targetUser": "geo-att-1790342993692-3634",
+    "details": "Verified GPS Geofence Attendance for API Geofence Test Student (1NT21CS888): 15.55m from campus (accuracy: ±20m)",
+    "timestamp": "2026-09-25T13:29:53.696Z"
+  },
+  {
+    "_id": "aud-1790342962074-646",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_STUDENT",
+    "targetUser": "cbc2eb7da1285164802df784",
+    "details": "Changed status to ACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_1825)",
+    "timestamp": "2026-09-25T13:29:22.074Z"
+  },
+  {
+    "_id": "aud-1790342962064-236",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_STUDENT",
+    "targetUser": "cbc2eb7da1285164802df784",
+    "details": "Changed status to INACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_1825)",
+    "timestamp": "2026-09-25T13:29:22.064Z"
+  },
+  {
+    "_id": "aud-1790342962044-934",
+    "performedBy": "usr-hod-01",
+    "action": "PROMOTE_STUDENT",
+    "targetUser": "cbc2eb7da1285164802df784",
+    "details": "Promoted student RAKESH KUMAR SHETTY (4MN24CS999_1825) from Semester 1 to Semester 2",
+    "timestamp": "2026-09-25T13:29:22.044Z"
+  },
+  {
+    "_id": "aud-1790342962018-590",
+    "performedBy": "usr-hod-01",
+    "action": "CHANGE_SECTION",
+    "targetUser": "cbc2eb7da1285164802df784",
+    "details": "Changed section for RAKESH KUMAR SHETTY from A to B",
+    "timestamp": "2026-09-25T13:29:22.018Z"
+  },
+  {
+    "_id": "aud-1790342962015-413",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_STUDENT",
+    "targetUser": "cbc2eb7da1285164802df784",
+    "details": "HOD updated student: RAKESH KUMAR SHETTY (4MN24CS999_1825)",
+    "timestamp": "2026-09-25T13:29:22.015Z"
+  },
+  {
+    "_id": "aud-1790342962002-743",
+    "performedBy": "usr-hod-01",
+    "action": "CREATE_STUDENT",
+    "targetUser": "cbc2eb7da1285164802df784",
+    "details": "HOD registered new student: RAKESH K SHETTY (4MN24CS999_1825, Sem 1-A)",
+    "timestamp": "2026-09-25T13:29:22.002Z"
+  },
+  {
+    "_id": "aud-1790342923549-627",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "341a8cf463921d5c4bf7c767",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC531)",
+    "timestamp": "2026-09-25T13:28:43.549Z"
+  },
+  {
+    "_id": "aud-1790342923540-115",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "341a8cf463921d5c4bf7c767",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC531)",
+    "timestamp": "2026-09-25T13:28:43.540Z"
+  },
+  {
+    "_id": "aud-1790342923530-966",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "341a8cf463921d5c4bf7c767",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC531)",
+    "timestamp": "2026-09-25T13:28:43.530Z"
+  },
+  {
+    "_id": "aud-1790342923509-734",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "341a8cf463921d5c4bf7c767",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC531)",
+    "timestamp": "2026-09-25T13:28:43.509Z"
+  },
+  {
+    "_id": "aud-1790313878472-875",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "6de5790d786ec2aa6b54bd1f",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC103)",
+    "timestamp": "2026-09-25T05:24:38.472Z"
+  },
+  {
+    "_id": "aud-1790313878465-491",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "6de5790d786ec2aa6b54bd1f",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC103)",
+    "timestamp": "2026-09-25T05:24:38.465Z"
+  },
+  {
+    "_id": "aud-1790313878458-104",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "6de5790d786ec2aa6b54bd1f",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC103)",
+    "timestamp": "2026-09-25T05:24:38.458Z"
+  },
+  {
+    "_id": "aud-1790313878446-593",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "6de5790d786ec2aa6b54bd1f",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC103)",
+    "timestamp": "2026-09-25T05:24:38.446Z"
+  },
+  {
+    "_id": "aud-1790313374358-817",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "1d7c6c350023bcd155377973",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC182)",
+    "timestamp": "2026-09-25T05:16:14.358Z"
+  },
+  {
+    "_id": "aud-1790313374350-519",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "1d7c6c350023bcd155377973",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC182)",
+    "timestamp": "2026-09-25T05:16:14.350Z"
+  },
+  {
+    "_id": "aud-1790313374343-192",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "1d7c6c350023bcd155377973",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC182)",
+    "timestamp": "2026-09-25T05:16:14.343Z"
+  },
+  {
+    "_id": "aud-1790313374314-174",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "1d7c6c350023bcd155377973",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC182)",
+    "timestamp": "2026-09-25T05:16:14.315Z"
+  },
+  {
+    "_id": "aud-1790272074766-789",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_STUDENT",
+    "targetUser": "e67a61ef1840e202c17e1288",
+    "details": "Changed status to ACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_4637)",
+    "timestamp": "2026-09-24T17:47:54.766Z"
+  },
+  {
+    "_id": "aud-1790272074758-103",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_STUDENT",
+    "targetUser": "e67a61ef1840e202c17e1288",
+    "details": "Changed status to INACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_4637)",
+    "timestamp": "2026-09-24T17:47:54.758Z"
+  },
+  {
+    "_id": "aud-1790272074744-604",
+    "performedBy": "usr-hod-01",
+    "action": "PROMOTE_STUDENT",
+    "targetUser": "e67a61ef1840e202c17e1288",
+    "details": "Promoted student RAKESH KUMAR SHETTY (4MN24CS999_4637) from Semester 1 to Semester 2",
+    "timestamp": "2026-09-24T17:47:54.744Z"
+  },
+  {
+    "_id": "aud-1790272074730-610",
+    "performedBy": "usr-hod-01",
+    "action": "CHANGE_SECTION",
+    "targetUser": "e67a61ef1840e202c17e1288",
+    "details": "Changed section for RAKESH KUMAR SHETTY from A to B",
+    "timestamp": "2026-09-24T17:47:54.730Z"
+  },
+  {
+    "_id": "aud-1790272074726-390",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_STUDENT",
+    "targetUser": "e67a61ef1840e202c17e1288",
+    "details": "HOD updated student: RAKESH KUMAR SHETTY (4MN24CS999_4637)",
+    "timestamp": "2026-09-24T17:47:54.726Z"
+  },
+  {
+    "_id": "aud-1790272074716-575",
+    "performedBy": "usr-hod-01",
+    "action": "CREATE_STUDENT",
+    "targetUser": "e67a61ef1840e202c17e1288",
+    "details": "HOD registered new student: RAKESH K SHETTY (4MN24CS999_4637, Sem 1-A)",
+    "timestamp": "2026-09-24T17:47:54.716Z"
+  },
+  {
+    "_id": "aud-1790272052572-847",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_STUDENT",
+    "targetUser": "bf28239ed1ddf5fd1816d5f4",
+    "details": "Changed status to ACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_2375)",
+    "timestamp": "2026-09-24T17:47:32.572Z"
+  },
+  {
+    "_id": "aud-1790272052563-212",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_STUDENT",
+    "targetUser": "bf28239ed1ddf5fd1816d5f4",
+    "details": "Changed status to INACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_2375)",
+    "timestamp": "2026-09-24T17:47:32.563Z"
+  },
+  {
+    "_id": "aud-1790272052547-428",
+    "performedBy": "usr-hod-01",
+    "action": "PROMOTE_STUDENT",
+    "targetUser": "bf28239ed1ddf5fd1816d5f4",
+    "details": "Promoted student RAKESH KUMAR SHETTY (4MN24CS999_2375) from Semester 1 to Semester 2",
+    "timestamp": "2026-09-24T17:47:32.547Z"
+  },
+  {
+    "_id": "aud-1790272052531-750",
+    "performedBy": "usr-hod-01",
+    "action": "CHANGE_SECTION",
+    "targetUser": "bf28239ed1ddf5fd1816d5f4",
+    "details": "Changed section for RAKESH KUMAR SHETTY from A to B",
+    "timestamp": "2026-09-24T17:47:32.531Z"
+  },
+  {
+    "_id": "aud-1790272052529-137",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_STUDENT",
+    "targetUser": "bf28239ed1ddf5fd1816d5f4",
+    "details": "HOD updated student: RAKESH KUMAR SHETTY (4MN24CS999_2375)",
+    "timestamp": "2026-09-24T17:47:32.529Z"
+  },
+  {
+    "_id": "aud-1790272052519-913",
+    "performedBy": "usr-hod-01",
+    "action": "CREATE_STUDENT",
+    "targetUser": "bf28239ed1ddf5fd1816d5f4",
+    "details": "HOD registered new student: RAKESH K SHETTY (4MN24CS999_2375, Sem 1-A)",
+    "timestamp": "2026-09-24T17:47:32.519Z"
+  },
+  {
+    "_id": "aud-1790271976757-963",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_STUDENT",
+    "targetUser": "0afb28af441540513b62eb03",
+    "details": "Changed status to ACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_6502)",
+    "timestamp": "2026-09-24T17:46:16.757Z"
+  },
+  {
+    "_id": "aud-1790271976749-883",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_STUDENT",
+    "targetUser": "0afb28af441540513b62eb03",
+    "details": "Changed status to INACTIVE for student: RAKESH KUMAR SHETTY (4MN24CS999_6502)",
+    "timestamp": "2026-09-24T17:46:16.749Z"
+  },
+  {
+    "_id": "aud-1790271976732-577",
+    "performedBy": "usr-hod-01",
+    "action": "PROMOTE_STUDENT",
+    "targetUser": "0afb28af441540513b62eb03",
+    "details": "Promoted student RAKESH KUMAR SHETTY (4MN24CS999_6502) from Semester 1 to Semester 2",
+    "timestamp": "2026-09-24T17:46:16.732Z"
+  },
+  {
+    "_id": "aud-1790271976719-623",
+    "performedBy": "usr-hod-01",
+    "action": "CHANGE_SECTION",
+    "targetUser": "0afb28af441540513b62eb03",
+    "details": "Changed section for RAKESH KUMAR SHETTY from A to B",
+    "timestamp": "2026-09-24T17:46:16.719Z"
+  },
+  {
+    "_id": "aud-1790271976717-538",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_STUDENT",
+    "targetUser": "0afb28af441540513b62eb03",
+    "details": "HOD updated student: RAKESH KUMAR SHETTY (4MN24CS999_6502)",
+    "timestamp": "2026-09-24T17:46:16.717Z"
+  },
+  {
+    "_id": "aud-1790271976706-691",
+    "performedBy": "usr-hod-01",
+    "action": "CREATE_STUDENT",
+    "targetUser": "0afb28af441540513b62eb03",
+    "details": "HOD registered new student: RAKESH K SHETTY (4MN24CS999_6502, Sem 1-A)",
+    "timestamp": "2026-09-24T17:46:16.706Z"
+  },
+  {
+    "_id": "aud-1790270688764-812",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "8e9db2da7a85640ad392943c",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC787)",
+    "timestamp": "2026-09-24T17:24:48.764Z"
+  },
+  {
+    "_id": "aud-1790270688756-114",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "8e9db2da7a85640ad392943c",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC787)",
+    "timestamp": "2026-09-24T17:24:48.756Z"
+  },
+  {
+    "_id": "aud-1790270688748-365",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "8e9db2da7a85640ad392943c",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC787)",
+    "timestamp": "2026-09-24T17:24:48.748Z"
+  },
+  {
+    "_id": "aud-1790270688734-800",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "8e9db2da7a85640ad392943c",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC787)",
+    "timestamp": "2026-09-24T17:24:48.734Z"
+  },
+  {
+    "_id": "aud-1790270460023-976",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "8030a8cb3ff8cc04d2263822",
+    "details": "HOD changed account status to ACTIVE for teacher: Prof. Ramesh Kulkarni (FAC660)",
+    "timestamp": "2026-09-24T17:21:00.023Z"
+  },
+  {
+    "_id": "aud-1790270460014-436",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "8030a8cb3ff8cc04d2263822",
+    "details": "HOD changed account status to INACTIVE for teacher: Prof. Ramesh Kulkarni (FAC660)",
+    "timestamp": "2026-09-24T17:21:00.014Z"
+  },
+  {
+    "_id": "aud-1790270460001-180",
+    "performedBy": "usr-hod-01",
+    "action": "EDIT_TEACHER",
+    "targetUser": "8030a8cb3ff8cc04d2263822",
+    "details": "HOD edited details for teacher: Prof. Ramesh Kulkarni (FAC660)",
+    "timestamp": "2026-09-24T17:21:00.001Z"
+  },
+  {
+    "_id": "aud-1790270459984-666",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "8030a8cb3ff8cc04d2263822",
+    "details": "HOD registered new teacher: Prof. Ramesh Kulkarni (FAC660)",
+    "timestamp": "2026-09-24T17:20:59.984Z"
+  },
+  {
+    "_id": "aud-1790269919911-154",
+    "performedBy": "usr-hod-01",
+    "action": "ACTIVATE_TEACHER",
+    "targetUser": "eb5683b2c64bfbdd432a2e99",
+    "details": "HOD changed account status to ACTIVE for teacher: Dr. Priya Raghavan (FAC004)",
+    "timestamp": "2026-09-24T17:11:59.911Z"
+  },
+  {
+    "_id": "aud-1790269909848-698",
+    "performedBy": "usr-hod-01",
+    "action": "DEACTIVATE_TEACHER",
+    "targetUser": "eb5683b2c64bfbdd432a2e99",
+    "details": "HOD changed account status to INACTIVE for teacher: Dr. Priya Raghavan (FAC004)",
+    "timestamp": "2026-09-24T17:11:49.848Z"
+  },
+  {
+    "_id": "aud-1790269890708-902",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "eb5683b2c64bfbdd432a2e99",
+    "details": "HOD registered new teacher: Dr. Priya Raghavan (FAC004)",
+    "timestamp": "2026-09-24T17:11:30.710Z"
+  },
+  {
+    "_id": "aud-init-001",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "66f2b1a8e4b0a1d2e3f40001",
+    "timestamp": "2024-01-10T09:30:00.000Z",
+    "details": "HOD Dr. Vikramaditya Sen onboarded Prof. Ananya Iyer (FAC001)"
+  },
+  {
+    "_id": "aud-init-002",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "66f2b1a8e4b0a1d2e3f40002",
+    "timestamp": "2024-01-10T10:00:00.000Z",
+    "details": "HOD Dr. Vikramaditya Sen onboarded Dr. Rajesh Kumar (FAC002)"
+  },
+  {
+    "_id": "aud-init-003",
+    "performedBy": "usr-hod-01",
+    "action": "ADD_TEACHER",
+    "targetUser": "66f2b1a8e4b0a1d2e3f40003",
+    "timestamp": "2024-01-11T11:15:00.000Z",
+    "details": "HOD Dr. Vikramaditya Sen onboarded Prof. Divya Menon (FAC003)"
+  }
+]

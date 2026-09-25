@@ -1,0 +1,80 @@
+from fastapi import Depends, HTTPException, status, Request
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.orm import Session
+from typing import Optional, List, Union
+
+from app.database import get_db
+from app.models.user import User
+from app.utils.security import decode_token
+
+security = HTTPBearer(auto_error=False)
+
+
+def get_current_user(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    db: Session = Depends(get_db)
+) -> User:
+    """Validate Bearer JWT access token and return current active user."""
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials or token expired",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    if not credentials:
+        raise credentials_exception
+
+    token = credentials.credentials
+    payload = decode_token(token)
+    if not payload:
+        raise credentials_exception
+
+    if payload.get("type") != "access":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token type: access token required",
+        )
+
+    email: str = payload.get("sub")
+    if not email:
+        raise credentials_exception
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise credentials_exception
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User account is inactive"
+        )
+    return user
+
+
+def require_role(required_role: str):
+    """Enforce a single specific role (e.g. admin, hod, faculty, student)."""
+    def role_checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role.lower() != required_role.lower():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied: requires {required_role.upper()} role privileges"
+            )
+        return current_user
+    return role_checker
+
+
+def require_any_role(*allowed_roles):
+    """Enforce membership in any of the specified roles (accepts list or varargs)."""
+    flattened = []
+    for item in allowed_roles:
+        if isinstance(item, (list, tuple, set)):
+            flattened.extend([str(x).lower() for x in item])
+        else:
+            flattened.append(str(item).lower())
+
+    def role_checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role.lower() not in flattened:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied: requires one of the following roles: {', '.join(flattened)}"
+            )
+        return current_user
+    return role_checker

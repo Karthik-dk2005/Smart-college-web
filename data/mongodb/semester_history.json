@@ -1,0 +1,5434 @@
+[
+  {
+    "_id": "1cc910efc1b552205affc686",
+    "studentId": "e2366f799288aeb2ed5ae2a5",
+    "usn": "4MN24CS999_2235",
+    "studentName": "RAKESH KUMAR SHETTY",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 0,
+      "ia2": 0,
+      "assignment": 0,
+      "total": 0
+    },
+    "examinationRecords": {
+      "grade": "Pending",
+      "sgpa": "Pending",
+      "resultStatus": "IN_PROGRESS"
+    },
+    "createdAt": "2026-09-25T13:31:52.383Z"
+  },
+  {
+    "_id": "ab807bbdc0f9c0662a8fbbac",
+    "studentId": "e2366f799288aeb2ed5ae2a5",
+    "usn": "4MN24CS999_2235",
+    "studentName": "RAKESH K SHETTY",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 54
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "createdAt": "2026-09-25T13:31:52.352Z"
+  },
+  {
+    "_id": "063017c399f5765964cf44a5",
+    "studentId": "cbc2eb7da1285164802df784",
+    "usn": "4MN24CS999_1825",
+    "studentName": "RAKESH KUMAR SHETTY",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 0,
+      "ia2": 0,
+      "assignment": 0,
+      "total": 0
+    },
+    "examinationRecords": {
+      "grade": "Pending",
+      "sgpa": "Pending",
+      "resultStatus": "IN_PROGRESS"
+    },
+    "createdAt": "2026-09-25T13:29:22.034Z"
+  },
+  {
+    "_id": "c5e77948d7e87d40c747934a",
+    "studentId": "cbc2eb7da1285164802df784",
+    "usn": "4MN24CS999_1825",
+    "studentName": "RAKESH K SHETTY",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 54
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "createdAt": "2026-09-25T13:29:21.990Z"
+  },
+  {
+    "_id": "78e0278102986c6eb66345be",
+    "studentId": "e67a61ef1840e202c17e1288",
+    "usn": "4MN24CS999_4637",
+    "studentName": "RAKESH KUMAR SHETTY",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 0,
+      "ia2": 0,
+      "assignment": 0,
+      "total": 0
+    },
+    "examinationRecords": {
+      "grade": "Pending",
+      "sgpa": "Pending",
+      "resultStatus": "IN_PROGRESS"
+    },
+    "createdAt": "2026-09-24T17:47:54.736Z"
+  },
+  {
+    "_id": "68c6c6f453ca940e2fb796ec",
+    "studentId": "e67a61ef1840e202c17e1288",
+    "usn": "4MN24CS999_4637",
+    "studentName": "RAKESH K SHETTY",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 54
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "createdAt": "2026-09-24T17:47:54.710Z"
+  },
+  {
+    "_id": "ad4174c189f5ba847b2ff963",
+    "studentId": "bf28239ed1ddf5fd1816d5f4",
+    "usn": "4MN24CS999_2375",
+    "studentName": "RAKESH KUMAR SHETTY",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 0,
+      "ia2": 0,
+      "assignment": 0,
+      "total": 0
+    },
+    "examinationRecords": {
+      "grade": "Pending",
+      "sgpa": "Pending",
+      "resultStatus": "IN_PROGRESS"
+    },
+    "createdAt": "2026-09-24T17:47:32.538Z"
+  },
+  {
+    "_id": "3357a1cfa4eb330ebdabf459",
+    "studentId": "bf28239ed1ddf5fd1816d5f4",
+    "usn": "4MN24CS999_2375",
+    "studentName": "RAKESH K SHETTY",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 54
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "createdAt": "2026-09-24T17:47:32.508Z"
+  },
+  {
+    "_id": "3f331d03da92037469ee291c",
+    "studentId": "0afb28af441540513b62eb03",
+    "usn": "4MN24CS999_6502",
+    "studentName": "RAKESH KUMAR SHETTY",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 0,
+      "ia2": 0,
+      "assignment": 0,
+      "total": 0
+    },
+    "examinationRecords": {
+      "grade": "Pending",
+      "sgpa": "Pending",
+      "resultStatus": "IN_PROGRESS"
+    },
+    "createdAt": "2026-09-24T17:46:16.724Z"
+  },
+  {
+    "_id": "a7be3bdd107d722f552546a3",
+    "studentId": "0afb28af441540513b62eb03",
+    "usn": "4MN24CS999_6502",
+    "studentName": "RAKESH K SHETTY",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 54
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "createdAt": "2026-09-24T17:46:16.687Z"
+  },
+  {
+    "_id": "e3cec292f54fc4b51d5772c0",
+    "studentId": "a37607c6e7c2284d9b604ded",
+    "usn": "4MN27CS001",
+    "studentName": "Aditya Kashyap",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "614c4b0a82883ce38e81ca28",
+    "studentId": "16e2e5901086d7296140d666",
+    "usn": "4MN27CS002",
+    "studentName": "Bhavana Gowda",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 24,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "cca2e3951db3c7e783698ff9",
+    "studentId": "daec7caced16f70ab3ab6594",
+    "usn": "4MN27CS003",
+    "studentName": "Chetan M",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 25,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a7be8505052e006853f6c7ee",
+    "studentId": "8d7e3f0018838ad431e08dfc",
+    "usn": "4MN27CS004",
+    "studentName": "Divya Shree R",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6dd576fc65f892776d7b3fb7",
+    "studentId": "4b1e36b48060ca2020b33798",
+    "usn": "4MN27CS005",
+    "studentName": "Eshwar Prasad",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "C",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 19,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "bb5691d94de18445b07fd72e",
+    "studentId": "fa8619f559e7c3d01654ae76",
+    "usn": "4MN27CS006",
+    "studentName": "Fathima Zohra",
+    "semester": 1,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "D",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "0fe428a80c680ddcf1885c53",
+    "studentId": "0ccec4901535b75daa0b785e",
+    "usn": "4MN26CS007",
+    "studentName": "Gagan Deep S",
+    "semester": 1,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 80,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 25,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "99accc0c744101af74916ebd",
+    "studentId": "0ccec4901535b75daa0b785e",
+    "usn": "4MN26CS007",
+    "studentName": "Gagan Deep S",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 91,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a56f2b504a0887ba5563516c",
+    "studentId": "49e993c47377ce17b71b1e48",
+    "usn": "4MN26CS008",
+    "studentName": "Harshitha K",
+    "semester": 1,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 20,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b01407961e400316767dd3db",
+    "studentId": "49e993c47377ce17b71b1e48",
+    "usn": "4MN26CS008",
+    "studentName": "Harshitha K",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "ddf0085d16ccf5911036b363",
+    "studentId": "682496d52d4ec299453c5f77",
+    "usn": "4MN26CS009",
+    "studentName": "Ishan Sharma",
+    "semester": 1,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 80,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "dc1a65d51ba5d018ee1170da",
+    "studentId": "682496d52d4ec299453c5f77",
+    "usn": "4MN26CS009",
+    "studentName": "Ishan Sharma",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6f996726c3e5937f421000dc",
+    "studentId": "1acd63f90a9be8cf68488b8c",
+    "usn": "4MN26CS010",
+    "studentName": "Jyothi N",
+    "semester": 1,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "679696fce310a4860a5736fc",
+    "studentId": "1acd63f90a9be8cf68488b8c",
+    "usn": "4MN26CS010",
+    "studentName": "Jyothi N",
+    "semester": 2,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "97dd79fd2c654172210d039d",
+    "studentId": "6e7b5cc08ef2789c0b0ccb32",
+    "usn": "4MN25CS011",
+    "studentName": "Karthik Raja",
+    "semester": 1,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6a9fd95bf598346351f280f4",
+    "studentId": "6e7b5cc08ef2789c0b0ccb32",
+    "usn": "4MN25CS011",
+    "studentName": "Karthik Raja",
+    "semester": 2,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "2e16334f702b2181b8b72d64",
+    "studentId": "6e7b5cc08ef2789c0b0ccb32",
+    "usn": "4MN25CS011",
+    "studentName": "Karthik Raja",
+    "semester": 3,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 80,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "cdb588b346de0ca422fdb091",
+    "studentId": "ae748dc88814b54bb5556b4c",
+    "usn": "4MN25CS012",
+    "studentName": "Lavanya M",
+    "semester": 1,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 21,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "c2550a05b9ff142023d73b08",
+    "studentId": "ae748dc88814b54bb5556b4c",
+    "usn": "4MN25CS012",
+    "studentName": "Lavanya M",
+    "semester": 2,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "cf90db18e59cf4cec470af51",
+    "studentId": "ae748dc88814b54bb5556b4c",
+    "usn": "4MN25CS012",
+    "studentName": "Lavanya M",
+    "semester": 3,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1fa7f0711b48bdb4390193b4",
+    "studentId": "c479fe814e1015892b5f2ffd",
+    "usn": "4MN25CS013",
+    "studentName": "Manoj Kumar V",
+    "semester": 1,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 19,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "39b62d557e6d85814324159b",
+    "studentId": "c479fe814e1015892b5f2ffd",
+    "usn": "4MN25CS013",
+    "studentName": "Manoj Kumar V",
+    "semester": 2,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "0f236cf5420354112ab8f314",
+    "studentId": "c479fe814e1015892b5f2ffd",
+    "usn": "4MN25CS013",
+    "studentName": "Manoj Kumar V",
+    "semester": 3,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 25,
+      "assignment": 8,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "950098723558c662112209f7",
+    "studentId": "c5e9065d3714dc0a7587b5f9",
+    "usn": "4MN25CS014",
+    "studentName": "Nandini Rao",
+    "semester": 1,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 21,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "91be0431b6532a267e8d289b",
+    "studentId": "c5e9065d3714dc0a7587b5f9",
+    "usn": "4MN25CS014",
+    "studentName": "Nandini Rao",
+    "semester": 2,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "691d33b713dcf096e8598247",
+    "studentId": "c5e9065d3714dc0a7587b5f9",
+    "usn": "4MN25CS014",
+    "studentName": "Nandini Rao",
+    "semester": 3,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 79,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 22,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8d40b2c3a3610128fc51f205",
+    "studentId": "ee5a039f1059e98cc7516498",
+    "usn": "4MN24CS015",
+    "studentName": "Omkar Naik",
+    "semester": 1,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 22,
+      "assignment": 8,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "01dafd7295f4d8a7e5645c8e",
+    "studentId": "ee5a039f1059e98cc7516498",
+    "usn": "4MN24CS015",
+    "studentName": "Omkar Naik",
+    "semester": 2,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 91,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "e56bfadef1d4f2177e710c47",
+    "studentId": "ee5a039f1059e98cc7516498",
+    "usn": "4MN24CS015",
+    "studentName": "Omkar Naik",
+    "semester": 3,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7f1e6b2040fe6b7fc5806969",
+    "studentId": "ee5a039f1059e98cc7516498",
+    "usn": "4MN24CS015",
+    "studentName": "Omkar Naik",
+    "semester": 4,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 95,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "39dbe5c05137897976a93f50",
+    "studentId": "b67896ed6308a97789c8dfd8",
+    "usn": "4MN24CS016",
+    "studentName": "Pallavi Deshmukh",
+    "semester": 1,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f5d98c7791b87d77b1bd4a8c",
+    "studentId": "b67896ed6308a97789c8dfd8",
+    "usn": "4MN24CS016",
+    "studentName": "Pallavi Deshmukh",
+    "semester": 2,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "e42ebdeb6c79de1cba9d8392",
+    "studentId": "b67896ed6308a97789c8dfd8",
+    "usn": "4MN24CS016",
+    "studentName": "Pallavi Deshmukh",
+    "semester": 3,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8d74e9de7698260ddac29a6d",
+    "studentId": "b67896ed6308a97789c8dfd8",
+    "usn": "4MN24CS016",
+    "studentName": "Pallavi Deshmukh",
+    "semester": 4,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 22,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "5e3d6fdf30d921c401d926a7",
+    "studentId": "c77a77dabcd8e80add980bf2",
+    "usn": "4MN24CS017",
+    "studentName": "Rahul Verma",
+    "semester": 1,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "9fbbc4a2077e067c89ad85b4",
+    "studentId": "c77a77dabcd8e80add980bf2",
+    "usn": "4MN24CS017",
+    "studentName": "Rahul Verma",
+    "semester": 2,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "3acc79d888f1952b7c5000be",
+    "studentId": "c77a77dabcd8e80add980bf2",
+    "usn": "4MN24CS017",
+    "studentName": "Rahul Verma",
+    "semester": 3,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8d40c3aa1382ed3c7647f9d4",
+    "studentId": "c77a77dabcd8e80add980bf2",
+    "usn": "4MN24CS017",
+    "studentName": "Rahul Verma",
+    "semester": 4,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 82,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 21,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f32077c9cce1a83170bbc16d",
+    "studentId": "98304469cd479f3b79b13829",
+    "usn": "4MN24CS018",
+    "studentName": "Sneha Kulkarni",
+    "semester": 1,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "bea1af600acdb04b36579d8f",
+    "studentId": "98304469cd479f3b79b13829",
+    "usn": "4MN24CS018",
+    "studentName": "Sneha Kulkarni",
+    "semester": 2,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "27a0332a26e5ec52c5ba6130",
+    "studentId": "98304469cd479f3b79b13829",
+    "usn": "4MN24CS018",
+    "studentName": "Sneha Kulkarni",
+    "semester": 3,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 82,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 21,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b5f663ad3249e2e9b37e81cf",
+    "studentId": "98304469cd479f3b79b13829",
+    "usn": "4MN24CS018",
+    "studentName": "Sneha Kulkarni",
+    "semester": 4,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "fda29d5bf747f4170d9e9cfb",
+    "studentId": "83af196d6b0fa10d5db377cf",
+    "usn": "4MN24CS007",
+    "studentName": "AMULYA H S",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 19,
+      "assignment": 8,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "9d7fb2890f2b31426a6a08b5",
+    "studentId": "83af196d6b0fa10d5db377cf",
+    "usn": "4MN24CS007",
+    "studentName": "AMULYA H S",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "62efebbe1334900ec8ec86a0",
+    "studentId": "83af196d6b0fa10d5db377cf",
+    "usn": "4MN24CS007",
+    "studentName": "AMULYA H S",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7fd6db7459e408a7a5c63c75",
+    "studentId": "83af196d6b0fa10d5db377cf",
+    "usn": "4MN24CS007",
+    "studentName": "AMULYA H S",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 25,
+      "assignment": 8,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "11f4df603d89ef6938c03622",
+    "studentId": "83af196d6b0fa10d5db377cf",
+    "usn": "4MN24CS007",
+    "studentName": "AMULYA H S",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "0b24bb9319ccf312411ca64d",
+    "studentId": "9ce32b36cf4e3c3ff14e999e",
+    "usn": "4MN24CS008",
+    "studentName": "ANJALI G SHANKAR",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 82,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "86e5f148d5d1590fd4d80434",
+    "studentId": "9ce32b36cf4e3c3ff14e999e",
+    "usn": "4MN24CS008",
+    "studentName": "ANJALI G SHANKAR",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a184202c67621d9c2eafa665",
+    "studentId": "9ce32b36cf4e3c3ff14e999e",
+    "usn": "4MN24CS008",
+    "studentName": "ANJALI G SHANKAR",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "cf42818e654f7e9098e126e4",
+    "studentId": "9ce32b36cf4e3c3ff14e999e",
+    "usn": "4MN24CS008",
+    "studentName": "ANJALI G SHANKAR",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "c2cfce91c04c79edd4126348",
+    "studentId": "9ce32b36cf4e3c3ff14e999e",
+    "usn": "4MN24CS008",
+    "studentName": "ANJALI G SHANKAR",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "4146122933d03e20064ec4f5",
+    "studentId": "e96c43b30ee774a7758f88b5",
+    "usn": "4MN24CS009",
+    "studentName": "ANUSHA G S",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 75,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "9fe7161035ccf116f8bb5806",
+    "studentId": "e96c43b30ee774a7758f88b5",
+    "usn": "4MN24CS009",
+    "studentName": "ANUSHA G S",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "254f6ae6759b59d07c7d4088",
+    "studentId": "e96c43b30ee774a7758f88b5",
+    "usn": "4MN24CS009",
+    "studentName": "ANUSHA G S",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "40826cef6159e6877103edaa",
+    "studentId": "e96c43b30ee774a7758f88b5",
+    "usn": "4MN24CS009",
+    "studentName": "ANUSHA G S",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "ef0430a54902eac7d1dc15d5",
+    "studentId": "e96c43b30ee774a7758f88b5",
+    "usn": "4MN24CS009",
+    "studentName": "ANUSHA G S",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "92fd53d5fbb3a0a53e0e1da1",
+    "studentId": "c891438fb3d147c039fe9a25",
+    "usn": "4MN24CS002",
+    "studentName": "ABHILASH KUMAR K",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "52082ab7d5c4a87985b59c63",
+    "studentId": "c891438fb3d147c039fe9a25",
+    "usn": "4MN24CS002",
+    "studentName": "ABHILASH KUMAR K",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b5ea87f03f3dd3cd4b6c47b5",
+    "studentId": "c891438fb3d147c039fe9a25",
+    "usn": "4MN24CS002",
+    "studentName": "ABHILASH KUMAR K",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f1766d3611ce846bc4cf8baa",
+    "studentId": "c891438fb3d147c039fe9a25",
+    "usn": "4MN24CS002",
+    "studentName": "ABHILASH KUMAR K",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "c33eff7dfb0072553750162b",
+    "studentId": "c891438fb3d147c039fe9a25",
+    "usn": "4MN24CS002",
+    "studentName": "ABHILASH KUMAR K",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "215b629ae5401e738e7118c4",
+    "studentId": "22f5004550aa3486bbfa34de",
+    "usn": "4MN24CS017",
+    "studentName": "BIBI HAJIRA",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 19,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "3a0d6131457105fc857150e7",
+    "studentId": "22f5004550aa3486bbfa34de",
+    "usn": "4MN24CS017",
+    "studentName": "BIBI HAJIRA",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 21,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "49989f3658e417f1d07e9726",
+    "studentId": "22f5004550aa3486bbfa34de",
+    "usn": "4MN24CS017",
+    "studentName": "BIBI HAJIRA",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 20,
+      "assignment": 8,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7fa9ba9ecff5b47fb0bef57e",
+    "studentId": "22f5004550aa3486bbfa34de",
+    "usn": "4MN24CS017",
+    "studentName": "BIBI HAJIRA",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "10dccfee6d1c1551311c1b8b",
+    "studentId": "22f5004550aa3486bbfa34de",
+    "usn": "4MN24CS017",
+    "studentName": "BIBI HAJIRA",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "adb9c175f3b5a2791d587f60",
+    "studentId": "ade611d4972e8914f0e55b9e",
+    "usn": "4MN24CS019",
+    "studentName": "CHAYA GIRISH",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 91,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "12158c118fa894581031cc45",
+    "studentId": "ade611d4972e8914f0e55b9e",
+    "usn": "4MN24CS019",
+    "studentName": "CHAYA GIRISH",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1b1e776b2fd9338b5294abb8",
+    "studentId": "ade611d4972e8914f0e55b9e",
+    "usn": "4MN24CS019",
+    "studentName": "CHAYA GIRISH",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "cac044c0bb8de793abf567d4",
+    "studentId": "ade611d4972e8914f0e55b9e",
+    "usn": "4MN24CS019",
+    "studentName": "CHAYA GIRISH",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "3eada4454639f18333b0ae76",
+    "studentId": "ade611d4972e8914f0e55b9e",
+    "usn": "4MN24CS019",
+    "studentName": "CHAYA GIRISH",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 19,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "4086ea06d1b211af02009271",
+    "studentId": "c166275a51f15710a315d45f",
+    "usn": "4MN25CS419",
+    "studentName": "DHANUSHREE D",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 22,
+      "assignment": 8,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "570afe82d6657ee40eb4e62d",
+    "studentId": "c166275a51f15710a315d45f",
+    "usn": "4MN25CS419",
+    "studentName": "DHANUSHREE D",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a83d768876d11f4de4aec319",
+    "studentId": "c166275a51f15710a315d45f",
+    "usn": "4MN25CS419",
+    "studentName": "DHANUSHREE D",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 95,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8c1386e79c721f9e40bad205",
+    "studentId": "c166275a51f15710a315d45f",
+    "usn": "4MN25CS419",
+    "studentName": "DHANUSHREE D",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b971a098989d5191a3889ba2",
+    "studentId": "c166275a51f15710a315d45f",
+    "usn": "4MN25CS419",
+    "studentName": "DHANUSHREE D",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6743af5c7ce7cb96aea22357",
+    "studentId": "458754894624894192a0c3ac",
+    "usn": "4MN24CS027",
+    "studentName": "GUDI NAVEEN",
+    "semester": 1,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "dbf2b2fa145da7fc81fdcdee",
+    "studentId": "458754894624894192a0c3ac",
+    "usn": "4MN24CS027",
+    "studentName": "GUDI NAVEEN",
+    "semester": 2,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "caaa87f3ea77a6905c8a47f5",
+    "studentId": "458754894624894192a0c3ac",
+    "usn": "4MN24CS027",
+    "studentName": "GUDI NAVEEN",
+    "semester": 3,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a6580670fbb22e65fd85320a",
+    "studentId": "458754894624894192a0c3ac",
+    "usn": "4MN24CS027",
+    "studentName": "GUDI NAVEEN",
+    "semester": 4,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 91,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a09a0a4f5d7e9c2f4888efe5",
+    "studentId": "458754894624894192a0c3ac",
+    "usn": "4MN24CS027",
+    "studentName": "GUDI NAVEEN",
+    "semester": 5,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 19,
+      "assignment": 10,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "d2617f7749c9598d7e58228e",
+    "studentId": "fd68bca955051a1ca5061ce6",
+    "usn": "1NT21CS042",
+    "studentName": "Aarav Sharma",
+    "semester": 1,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f29d6826258ab09679dfb344",
+    "studentId": "fd68bca955051a1ca5061ce6",
+    "usn": "1NT21CS042",
+    "studentName": "Aarav Sharma",
+    "semester": 2,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "99e7c7c41ab2863e9979c182",
+    "studentId": "fd68bca955051a1ca5061ce6",
+    "usn": "1NT21CS042",
+    "studentName": "Aarav Sharma",
+    "semester": 3,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "deb51d5bd2d9fef058152a10",
+    "studentId": "fd68bca955051a1ca5061ce6",
+    "usn": "1NT21CS042",
+    "studentName": "Aarav Sharma",
+    "semester": 4,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 79,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f7357ddf43009ea31fe3ad5e",
+    "studentId": "fd68bca955051a1ca5061ce6",
+    "usn": "1NT21CS042",
+    "studentName": "Aarav Sharma",
+    "semester": 5,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "3bfe22ccaf01fc79edf8fe97",
+    "studentId": "fd68bca955051a1ca5061ce6",
+    "usn": "1NT21CS042",
+    "studentName": "Aarav Sharma",
+    "semester": 6,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7cc433d4231eb55630c93d10",
+    "studentId": "5619f3f8eff99d882ed3d1e9",
+    "usn": "1NT21CS089",
+    "studentName": "Priya Patel",
+    "semester": 1,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a204a23818e4006061d50931",
+    "studentId": "5619f3f8eff99d882ed3d1e9",
+    "usn": "1NT21CS089",
+    "studentName": "Priya Patel",
+    "semester": 2,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "47f3e8c717b726c3198f625c",
+    "studentId": "5619f3f8eff99d882ed3d1e9",
+    "usn": "1NT21CS089",
+    "studentName": "Priya Patel",
+    "semester": 3,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "95b964bbc7a893c46071c209",
+    "studentId": "5619f3f8eff99d882ed3d1e9",
+    "usn": "1NT21CS089",
+    "studentName": "Priya Patel",
+    "semester": 4,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8c751e510532e431e0ca98a0",
+    "studentId": "5619f3f8eff99d882ed3d1e9",
+    "usn": "1NT21CS089",
+    "studentName": "Priya Patel",
+    "semester": 5,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f434c0698b2c928642ffa4c2",
+    "studentId": "5619f3f8eff99d882ed3d1e9",
+    "usn": "1NT21CS089",
+    "studentName": "Priya Patel",
+    "semester": 6,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "821a53e0ec5fe296224794bd",
+    "studentId": "b18217c8f70a7b02a0e1b052",
+    "usn": "1NT21CS019",
+    "studentName": "Kunal Das",
+    "semester": 1,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "4efcc4928a977daa7ba89c94",
+    "studentId": "b18217c8f70a7b02a0e1b052",
+    "usn": "1NT21CS019",
+    "studentName": "Kunal Das",
+    "semester": 2,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "84c5181504ac079c85bcf013",
+    "studentId": "b18217c8f70a7b02a0e1b052",
+    "usn": "1NT21CS019",
+    "studentName": "Kunal Das",
+    "semester": 3,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b4e7df5e40fa026e36a844b6",
+    "studentId": "b18217c8f70a7b02a0e1b052",
+    "usn": "1NT21CS019",
+    "studentName": "Kunal Das",
+    "semester": 4,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "e399aec161236141d1815a19",
+    "studentId": "b18217c8f70a7b02a0e1b052",
+    "usn": "1NT21CS019",
+    "studentName": "Kunal Das",
+    "semester": 5,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 80,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b3bb91b65a4368251b0379d4",
+    "studentId": "b18217c8f70a7b02a0e1b052",
+    "usn": "1NT21CS019",
+    "studentName": "Kunal Das",
+    "semester": 6,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "12198fc66b34f4634f6da931",
+    "studentId": "9df8e9ebbdcc60b9952da4ba",
+    "usn": "1NT21CS005",
+    "studentName": "Aditya Nair",
+    "semester": 1,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 79,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 19,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "94d79af5c9228b61439d337e",
+    "studentId": "9df8e9ebbdcc60b9952da4ba",
+    "usn": "1NT21CS005",
+    "studentName": "Aditya Nair",
+    "semester": 2,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1f5a593160171df8afe7a0ed",
+    "studentId": "9df8e9ebbdcc60b9952da4ba",
+    "usn": "1NT21CS005",
+    "studentName": "Aditya Nair",
+    "semester": 3,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "e4db17919012518eb717ccb1",
+    "studentId": "9df8e9ebbdcc60b9952da4ba",
+    "usn": "1NT21CS005",
+    "studentName": "Aditya Nair",
+    "semester": 4,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "65dd584778642057be465bd9",
+    "studentId": "9df8e9ebbdcc60b9952da4ba",
+    "usn": "1NT21CS005",
+    "studentName": "Aditya Nair",
+    "semester": 5,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "9be1ace49c20072062a8a76d",
+    "studentId": "9df8e9ebbdcc60b9952da4ba",
+    "usn": "1NT21CS005",
+    "studentName": "Aditya Nair",
+    "semester": 6,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "08b11d15c592efac9c7320f8",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 1,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 75,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 21,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "408bfa5fa4ca900177681102",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 2,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7c2ca039a88d63654a824b3d",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 3,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "73eb260e564fe1b1d66aa7f2",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 4,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "27674654369e68af2363294b",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 5,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1c7b75b38e4d847479e459f6",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 6,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 91,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b7cbfa38638480c70e8a2e99",
+    "studentId": "9214199301b22d2e7de20923",
+    "usn": "4MN21CS031",
+    "studentName": "Pranav Kulkarni",
+    "semester": 7,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 19,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "e837266d4acbc400deb1fd4c",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 1,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 19,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1bfb14c205d591ca2e3c5d69",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 2,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "ba8b3cc76593ff51c823b1b3",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 3,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "387092efd1559d9d14d0dc78",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 4,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "81b97487cef25e135e1d2a26",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 5,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 83,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6d284b68c90a61390cd25d53",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 6,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "74d96319179a0c85591b4cae",
+    "studentId": "635da757f729469d458f696c",
+    "usn": "4MN21CS032",
+    "studentName": "Ritu Sen",
+    "semester": 7,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 24,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7e9881ad9ea74148405e63e7",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 1,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "df3c081489ab1bb26d790fa7",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 2,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 75,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "176b42139d48458a1ad2e239",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 3,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 79,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6b329849407d9e9b47e1fe80",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 4,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 20,
+      "assignment": 8,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "c68718a1ef03dafef28859b0",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 5,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "5707f1f642424a23c18d95a7",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 6,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "176428828ea9aa75cef5d4cf",
+    "studentId": "ac80c831d11f5d054b53bd03",
+    "usn": "4MN21CS033",
+    "studentName": "Siddharth Rao",
+    "semester": 7,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "de91ca4450b8361957eade4d",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 1,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 25,
+      "assignment": 10,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "7750b12c2045f66644c187c6",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 2,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "3065b9babccc80ab58f1d537",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 3,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 86,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "2c44e602e72526276068de77",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 4,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 78,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "dd34a2296ec0a43e9dd54f83",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 5,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 82,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "2a5638b72dc339069e56f825",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 6,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 20,
+      "assignment": 8,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "5d0241832a62a7c07db6d450",
+    "studentId": "81d3e15850ead10ea127d45d",
+    "usn": "4MN21CS034",
+    "studentName": "Tanvi Joshi",
+    "semester": 7,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 79,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 25,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "ea5414a8ad12fe4d28edb172",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 1,
+    "academicYear": "2017-2018",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 19,
+      "assignment": 8,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2017-08-01",
+    "endDate": "2018-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "a24adb66921bcb0c07c8440b",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 2,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 77,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 22,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "633f642592725eb5754f517a",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 3,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "47a7ad6d6d320dd5b4acc6eb",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 4,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 80,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "3b767702873d46aca3aec156",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 5,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 90,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "62f1dc27dbf19545c77f25d2",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 6,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 84,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 8,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "ed8002561b5a6e67ed6ad129",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 7,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 95,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 25,
+      "assignment": 9,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "329cfffe99d7e93f572ce438",
+    "studentId": "0bded2f36c935cd70def8583",
+    "usn": "4MN20CS035",
+    "studentName": "Umesh Hegde",
+    "semester": 8,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS801 (Major Capstone Project)",
+      "CS802 (Industrial Internship)",
+      "CS803 (Cloud & DevOps Practicum)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 21,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "9.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "d36716da18230ebbc9571a8d",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 1,
+    "academicYear": "2017-2018",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 25,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2017-08-01",
+    "endDate": "2018-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "28e8b3b5c7439c0dad0a1034",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 2,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 82,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 24,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f401978048ceed8192614a41",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 3,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 22,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "514e0a2b803b20bc601af97c",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 4,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 81,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "6f80dc33266c14214704a92c",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 5,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "221463114513175a1752e206",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 6,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 21,
+      "assignment": 8,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f9aa4f03dc3b421bdddbd007",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 7,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "877ca18c21bc912a0a056fc0",
+    "studentId": "7c98c921e91e92aab3cf66c2",
+    "usn": "4MN20CS036",
+    "studentName": "Varsha Murthy",
+    "semester": 8,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "A",
+    "subjects": [
+      "CS801 (Major Capstone Project)",
+      "CS802 (Industrial Internship)",
+      "CS803 (Cloud & DevOps Practicum)"
+    ],
+    "attendance": 93,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "9.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "dd3ef19a3bc379392d9af215",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 1,
+    "academicYear": "2017-2018",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 95,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2017-08-01",
+    "endDate": "2018-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "b69cdb94189b305553872bf8",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 2,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 21,
+      "ia2": 19,
+      "assignment": 10,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "0344df1f82fd33c31d748d7f",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 3,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 20,
+      "assignment": 8,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "5846e5f60beeafbc35823825",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 4,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 50
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "f0988bdd24f9cf13e82b1c6f",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 5,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "87a9e18aaaf31baa42dfcd01",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 6,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 91,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 20,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "c47fbf6a0b213eb6eaf7b4e7",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 7,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 89,
+    "internalMarks": {
+      "ia1": 22,
+      "ia2": 20,
+      "assignment": 10,
+      "total": 46
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "5c466853c110d5d444763037",
+    "studentId": "77ab0347e150f2dad454f8af",
+    "usn": "4MN20CS037",
+    "studentName": "Yashaswini B",
+    "semester": 8,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS801 (Major Capstone Project)",
+      "CS802 (Industrial Internship)",
+      "CS803 (Cloud & DevOps Practicum)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "9.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "09de5a3d37a4a14c3c7f0ad6",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 1,
+    "academicYear": "2017-2018",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS101 (Programming in C)",
+      "MA101 (Calculus)",
+      "PH101 (Physics)",
+      "EE101 (Basic Electrical)"
+    ],
+    "attendance": 85,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 19,
+      "assignment": 10,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "7.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2017-08-01",
+    "endDate": "2018-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "d013f9cb8a1a3c3544d6c3a6",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 2,
+    "academicYear": "2018-2019",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS201 (Data Structures)",
+      "MA201 (Linear Algebra)",
+      "CH201 (Chemistry)",
+      "EC201 (Electronics)"
+    ],
+    "attendance": 80,
+    "internalMarks": {
+      "ia1": 18,
+      "ia2": 25,
+      "assignment": 8,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "7.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2018-08-01",
+    "endDate": "2019-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "896dc06d6dfe8325aa787ccd",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 3,
+    "academicYear": "2019-2020",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS301 (Object-Oriented Java)",
+      "CS302 (Digital Logic)",
+      "MA301 (Discrete Math)",
+      "CS303 (Data Structures Lab)"
+    ],
+    "attendance": 87,
+    "internalMarks": {
+      "ia1": 25,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 45
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2019-08-01",
+    "endDate": "2020-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1b6f32201e7ff05b9eb0e9a9",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 4,
+    "academicYear": "2020-2021",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS401 (Algorithms Design)",
+      "CS402 (Microprocessors)",
+      "CS403 (OS Fundamentals)",
+      "CS404 (Algorithm Lab)"
+    ],
+    "attendance": 76,
+    "internalMarks": {
+      "ia1": 24,
+      "ia2": 21,
+      "assignment": 9,
+      "total": 49
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "8.30",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2020-08-01",
+    "endDate": "2021-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "1ee8c5e0647466c45f0c33cd",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 5,
+    "academicYear": "2021-2022",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS501 (Software Engineering)",
+      "CS502 (Computer Networks)",
+      "CS503 (Theory of Computation)",
+      "CS504 (DBMS)"
+    ],
+    "attendance": 88,
+    "internalMarks": {
+      "ia1": 19,
+      "ia2": 23,
+      "assignment": 9,
+      "total": 44
+    },
+    "examinationRecords": {
+      "grade": "A",
+      "sgpa": "8.50",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2021-08-01",
+    "endDate": "2022-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8fce9f4377a77d899b5a3a1c",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 6,
+    "academicYear": "2022-2023",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS601 (Distributed Systems)",
+      "CS602 (Machine Learning)",
+      "CS603 (Cloud Architecture)",
+      "CS604 (Compiler Design)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 19,
+      "assignment": 8,
+      "total": 47
+    },
+    "examinationRecords": {
+      "grade": "B+",
+      "sgpa": "8.70",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2022-08-01",
+    "endDate": "2023-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "8b1f6aacdd8f710f497904f2",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 7,
+    "academicYear": "2023-2024",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS701 (AI & Deep Learning)",
+      "CS702 (Cyber Security)",
+      "CS703 (Big Data Analytics)",
+      "CS704 (Elective III)"
+    ],
+    "attendance": 94,
+    "internalMarks": {
+      "ia1": 23,
+      "ia2": 24,
+      "assignment": 10,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "O",
+      "sgpa": "8.90",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  },
+  {
+    "_id": "fa83b3464c652d6acb37e03f",
+    "studentId": "0ebf767f1b3e47a599a07324",
+    "usn": "4MN20CS038",
+    "studentName": "Zeeshan Khan",
+    "semester": 8,
+    "academicYear": "2024-2025",
+    "department": "Computer Science and Engineering",
+    "section": "B",
+    "subjects": [
+      "CS801 (Major Capstone Project)",
+      "CS802 (Industrial Internship)",
+      "CS803 (Cloud & DevOps Practicum)"
+    ],
+    "attendance": 92,
+    "internalMarks": {
+      "ia1": 20,
+      "ia2": 24,
+      "assignment": 9,
+      "total": 48
+    },
+    "examinationRecords": {
+      "grade": "A+",
+      "sgpa": "9.10",
+      "resultStatus": "PASS"
+    },
+    "startDate": "2024-08-01",
+    "endDate": "2025-01-15",
+    "createdAt": "2026-09-24T17:32:50.105Z"
+  }
+]

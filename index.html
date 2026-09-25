@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CampusConnect - Smart Department Academic Management System with Dynamic Timetable, Session-Based Attendance, Examination, Internal Marks, Communication and College Bus Information.">
+  <meta name="keywords" content="CampusConnect, College ERP, Dynamic Timetable, Session Engine, Attendance, Exams, Internal Marks, Study Materials, Bus Routes, AI Assistant, FERPA">
+  <meta name="author" content="CampusConnect Engineering">
+  <title>CampusConnect // Smart Department & College Management System</title>
+  
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="lib/leaflet.css">
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+
+  <!-- Local React 18 & Babel with CDN Fallbacks for 100% Offline & Online Reliability -->
+  <script src="lib/react.production.min.js"></script>
+  <script>
+    if (!window.React) {
+      document.write('<script src="https://unpkg.com/react@18/umd/react.production.min.js"><\/script>');
+    }
+  </script>
+
+  <script src="lib/react-dom.production.min.js"></script>
+  <script>
+    if (!window.ReactDOM) {
+      document.write('<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"><\/script>');
+    }
+  </script>
+
+  <script src="lib/babel.min.js"></script>
+  <script>
+    if (!window.Babel) {
+      document.write('<script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>');
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Root React App Mount Point -->
+  <div id="root">
+    <div style="display: flex; height: 100vh; align-items: center; justify-content: center; background: #0b1120; color: #94a3b8; font-family: sans-serif;">
+      <div style="text-align: center;">
+        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🎓</div>
+        <div style="font-size: 1.2rem; color: #fff; font-weight: 700;">CampusConnect ERP Initializing...</div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">Mounting Session Engine, Dynamic Timetable & Department AI Sandbox</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CampusConnect Enterprise Modular Component Hierarchy -->
+  <script src="src/data/studentDataset.js"></script>
+  <script type="text/babel" src="src/data/mockDatabase.js"></script>
+  <script type="text/babel" src="src/services/campusServices.js"></script>
+  <script type="text/babel" src="src/services/auditService.js"></script>
+  <script type="text/babel" src="src/services/sessionService.js"></script>
+  <script type="text/babel" src="src/services/biometricService.js"></script>
+  <script type="text/babel" src="src/services/attendanceService.js"></script>
+  <script src="src/services/teacherService.js"></script>
+  <script src="src/services/studentService.js"></script>
+  <script type="text/babel" src="src/mockData.js"></script>
+  <script type="text/babel" src="src/AuthContext.js"></script>
+  <script type="text/babel" src="src/components/Icons.js"></script>
+  <script type="text/babel" src="src/components/SharedUI.js"></script>
+  <script type="text/babel" src="src/components/common/FileUpload.js"></script>
+  <script type="text/babel" src="src/components/common/GlobalSearch.js"></script>
+  <script type="text/babel" src="src/components/Navbar.js"></script>
+  <script type="text/babel" src="src/components/Sidebar.js"></script>
+  <script type="text/babel" src="src/components/LoginModal.js"></script>
+  <script type="text/babel" src="src/pages/student/StudentSmartViews.js"></script>
+  <script type="text/babel" src="src/components/StudentAttendanceVerification.js"></script>
+  <script type="text/babel" src="src/components/StudentDashboard.js"></script>
+  <script type="text/babel" src="src/components/TeacherDashboard.js"></script>
+  <script type="text/babel" src="src/components/hod/AddTeacherForm.js"></script>
+  <script type="text/babel" src="src/components/hod/StudentManagement.js"></script>
+  <script type="text/babel" src="src/components/HodDashboard.js"></script>
+  <script type="text/babel" src="src/components/AdminDashboard.js"></script>
+  
+  <!-- GPS Geofence & Real-Time Location Attendance System -->
+  <script src="lib/leaflet.js"></script>
+  <script src="src/services/geolocationService.js"></script>
+  <script src="src/services/geofenceService.js"></script>
+  <script src="src/services/attendanceValidationService.js"></script>
+  <script type="text/babel" src="src/components/attendance/GeoAttendanceView.js"></script>
+  <script type="text/babel" src="src/components/attendance/GeofenceAdminConfig.js"></script>
+
+  <script type="text/babel" src="src/App.js"></script>
+
+</body>
+</html>
