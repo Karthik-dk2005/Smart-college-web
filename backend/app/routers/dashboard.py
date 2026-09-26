@@ -47,7 +47,7 @@ def get_dashboard_statistics(
     # 2. Today's Classes
     tt_query = db.query(Timetable).options(
         joinedload(Timetable.subject),
-        joinedload(Timetable.faculty)
+        joinedload(Timetable.teacher)
     ).filter(Timetable.day == today_weekday)
 
     if current_user.role == "student" and current_user.student_profile:
@@ -55,8 +55,10 @@ def get_dashboard_statistics(
             Timetable.semester == current_user.student_profile.semester,
             Timetable.section == current_user.student_profile.section
         )
-    elif current_user.role == "faculty" and current_user.faculty_profile:
-        tt_query = tt_query.filter(Timetable.faculty_id == current_user.faculty_profile.id)
+    elif current_user.role in ("teacher", "faculty"):
+        t_id = current_user.teacher_id or (current_user.faculty_profile.id if hasattr(current_user, "faculty_profile") and current_user.faculty_profile else None)
+        if t_id:
+            tt_query = tt_query.filter(Timetable.teacher_id == t_id)
 
     today_classes = tt_query.order_by(Timetable.start_time).all()
     today_classes_count = len(today_classes)
@@ -66,8 +68,8 @@ def get_dashboard_statistics(
             "id": c.id,
             "subject_name": c.subject.subject_name if c.subject else "N/A",
             "subject_code": c.subject.subject_code if c.subject else "N/A",
-            "faculty_name": c.faculty.name if c.faculty else "Faculty",
-            "room_number": c.room_number,
+            "faculty_name": c.teacher.name if c.teacher else "Faculty",
+            "room_number": c.room.room_name if c.room else (c.room_number or "Classroom"),
             "start_time": c.start_time,
             "end_time": c.end_time,
             "section": c.section,

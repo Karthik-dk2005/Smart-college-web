@@ -7,6 +7,8 @@ from app.database import get_db
 from app.models import Timetable, Teacher, Subject, Room, Department, User, Attendance
 from app.schemas import TimetableCreate, TimetableUpdate, TimetableResponse
 from app.dependencies import get_current_user, require_role, require_any_role
+from app.utils.response import success_response
+
 
 router = APIRouter(prefix="/api/timetable", tags=["Timetable"])
 
@@ -136,6 +138,8 @@ def format_slot(slot: Timetable, db: Optional[Session] = None, check_date: Optio
         "teacher_name": slot.teacher.name if slot.teacher else "Unknown Teacher",
         "room_id": slot.room_id,
         "room_name": slot.room.room_name if slot.room else None,
+        "room_number": slot.room.room_name if slot.room else None,
+
         "department_id": slot.department_id,
         "department_name": slot.department.name if slot.department else None,
         "semester": slot.semester,
@@ -150,7 +154,7 @@ def format_slot(slot: Timetable, db: Optional[Session] = None, check_date: Optio
 # ==========================================================
 # 1. LIST TIMETABLES (GET /api/timetable)
 # ==========================================================
-@router.get("", response_model=List[TimetableResponse])
+@router.get("")
 def get_timetables(
     department_id: Optional[int] = None,
     semester: Optional[int] = None,
@@ -213,7 +217,9 @@ def get_timetables(
         )
 
     slots = query.order_by(Timetable.day, Timetable.start_time).all()
-    return [format_slot(s) for s in slots]
+    data = [format_slot(s) for s in slots]
+    return success_response(data=data, message=f"Retrieved {len(data)} timetable slots")
+
 
 
 # ==========================================================
@@ -379,7 +385,7 @@ def get_department_timetable(
 # ==========================================================
 # 3. GET SINGLE TIMETABLE (GET /api/timetable/{id})
 # ==========================================================
-@router.get("/{slot_id}", response_model=TimetableResponse)
+@router.get("/{slot_id}")
 def get_timetable_by_id(
     slot_id: int,
     db: Session = Depends(get_db),
@@ -398,13 +404,13 @@ def get_timetable_by_id(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Timetable slot with ID {slot_id} not found."
         )
-    return format_slot(slot)
+    return success_response(data=format_slot(slot))
 
 
 # ==========================================================
 # 4. CREATE TIMETABLE (POST /api/timetable)
 # ==========================================================
-@router.post("", response_model=TimetableResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 def create_timetable(
     payload: TimetableCreate,
     db: Session = Depends(get_db),
@@ -418,14 +424,24 @@ def create_timetable(
             detail=f"Invalid day: '{payload.day}'. Must be one of: {', '.join(VALID_DAYS)}"
         )
 
+    teacher_id_val = payload.teacher_id or payload.faculty_id
+    if not teacher_id_val:
+        raise HTTPException(status_code=400, detail="teacher_id or faculty_id is required.")
+
+    room_id_val = payload.room_id
+    if not room_id_val and payload.room_number:
+        rm = db.query(Room).filter(Room.room_name == payload.room_number).first()
+        if rm:
+            room_id_val = rm.id
+
     # Conflict check
     check_timetable_conflicts(
         db=db,
         day=day_normalized,
         start_time=payload.start_time,
         end_time=payload.end_time,
-        teacher_id=payload.teacher_id,
-        room_id=payload.room_id,
+        teacher_id=teacher_id_val,
+        room_id=room_id_val,
         department_id=payload.department_id,
         semester=payload.semester,
         section=payload.section,
@@ -442,11 +458,12 @@ def create_timetable(
         start_time=payload.start_time,
         end_time=payload.end_time,
         subject_id=payload.subject_id,
-        teacher_id=payload.teacher_id,
-        room_id=payload.room_id,
+        teacher_id=teacher_id_val,
+        room_id=room_id_val,
         timetable_type=payload.timetable_type or "regular",
         status=payload.status or "active"
     )
+
     db.add(new_slot)
     db.commit()
     db.refresh(new_slot)
@@ -459,13 +476,14 @@ def create_timetable(
         joinedload(Timetable.department),
     ).filter(Timetable.id == new_slot.id).first()
 
-    return format_slot(slot)
+    return success_response(data=format_slot(slot), message="Timetable slot created successfully", status_code=201)
+
 
 
 # ==========================================================
 # 5. UPDATE TIMETABLE (PUT /api/timetable/{id})
 # ==========================================================
-@router.put("/{slot_id}", response_model=TimetableResponse)
+@router.put("/{slot_id}")
 def update_timetable(
     slot_id: int,
     payload: TimetableUpdate,
@@ -531,8 +549,19 @@ def update_timetable(
         slot.subject_id = payload.subject_id
     if payload.teacher_id is not None:
         slot.teacher_id = payload.teacher_id
+    elif payload.faculty_id is not None:
+        slot.teacher_id = payload.faculty_id
     if payload.room_id is not None:
         slot.room_id = payload.room_id
+    elif payload.room_number is not None:
+        rm = db.query(Room).filter(Room.room_name == payload.room_number).first()
+        if not rm:
+            rm = Room(room_name=payload.room_number, room_type="Classroom", capacity=60, status="active")
+            db.add(rm)
+            db.commit()
+            db.refresh(rm)
+        slot.room_id = rm.id
+
     if payload.timetable_type is not None:
         slot.timetable_type = payload.timetable_type
     if payload.status is not None:
@@ -547,7 +576,7 @@ def update_timetable(
         joinedload(Timetable.department),
     ).filter(Timetable.id == slot_id).first()
 
-    return format_slot(slot)
+    return success_response(data=format_slot(slot), message="Timetable slot updated successfully")
 
 
 # ==========================================================

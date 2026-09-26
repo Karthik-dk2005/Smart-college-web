@@ -11,4 +11,7 @@ export { default as noticesApi } from "./notices";
 export { default as dashboardApi } from "./dashboard";
 export { default as usersApi } from "./users";
 export { default as teachersApi } from "./teachers";
+export { default as roomsApi } from "./rooms";
+export { default as faceApi } from "./face";
+export { default as biometricApi } from "./biometric";
 

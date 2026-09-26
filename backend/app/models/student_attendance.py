@@ -12,6 +12,7 @@ class StudentAttendance(Base):
     attendance_interval_id = Column(Integer, ForeignKey("attendance_intervals.id"), nullable=False, index=True)
     student_id = Column(Integer, ForeignKey("students.id"), nullable=False, index=True)
     status = Column(String(50), nullable=False, default="Present")  # 'Present' or 'Absent'
+    attendance_method = Column(String(50), nullable=False, default="MANUAL")  # 'FACE', 'BIOMETRIC', 'MANUAL'
     marked_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (

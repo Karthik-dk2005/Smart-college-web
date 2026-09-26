@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
 import { attendanceApi, timetableApi, subjectsApi, departmentsApi, teachersApi } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
 import TableSkeleton from "../components/TableSkeleton";
 import Modal from "../components/Modal";
+import AttendanceMethodSelector from "../components/AttendanceMethodSelector";
+import FaceScanner from "../components/FaceScanner";
+import BiometricScanner from "../components/BiometricScanner";
 import {
   CalendarCheck,
   CheckCircle2,
@@ -23,10 +26,49 @@ import {
   CheckSquare,
   AlertCircle,
   GraduationCap,
+  ScanFace,
+  Fingerprint,
+  Edit3,
 } from "lucide-react";
+
+// Helper to determine the current 30-minute interval duration string
+export function getCurrentDuration(startTime, endTime) {
+  if (!startTime) return "09:00–09:30";
+  // If time string passed is "09:00 - 10:00" or "09:00-10:00"
+  if (startTime.includes("-") || startTime.includes("–")) {
+    const parts = startTime.split(/[-–]/);
+    startTime = parts[0].trim();
+    endTime = parts[1]?.trim();
+  }
+
+  const parseMins = (tStr) => {
+    if (!tStr) return 0;
+    const parts = tStr.split(":");
+    return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+  };
+
+  const sMins = parseMins(startTime);
+  const eMins = endTime ? parseMins(endTime) : sMins + 60;
+  const midMins = sMins + 30;
+
+  const fmt = (m) => {
+    const hh = String(Math.floor(m / 60) % 24).padStart(2, "0");
+    const mm = String(m % 60).padStart(2, "0");
+    return `${hh}:${mm}`;
+  };
+
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  if (currentMinutes >= midMins && currentMinutes < eMins) {
+    return `${fmt(midMins)}–${fmt(eMins)}`;
+  }
+  return `${fmt(sMins)}–${fmt(midMins)}`;
+}
 
 export default function Attendance() {
   const { timetableId } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user, role } = useAuth();
   const { success, error, warning } = useToast();
@@ -36,6 +78,11 @@ export default function Attendance() {
   const isStudent = currentRole === "student";
   const isHod = currentRole === "hod";
   const isAdmin = currentRole === "admin";
+
+  const initialMethod = searchParams.get("method")?.toUpperCase();
+  const [selectedMethod, setSelectedMethod] = useState(
+    ["FACE", "BIOMETRIC", "MANUAL"].includes(initialMethod) ? initialMethod : "MANUAL"
+  );
 
   // Session Taking State (when timetableId is present)
   const [sessionData, setSessionData] = useState(null);
@@ -58,8 +105,6 @@ export default function Attendance() {
   const [filterDepartment, setFilterDepartment] = useState("");
   const [subjectsList, setSubjectsList] = useState([]);
   const [departmentsList, setDepartmentsList] = useState([]);
-
-  // -------------------------------------------------------------
   // 1. LOAD SESSION DETAILS (WHEN timetableId IS IN ROUTE)
   // -------------------------------------------------------------
   const fetchSessionDetails = async (id) => {
@@ -69,8 +114,13 @@ export default function Attendance() {
       const sData = res.data?.data || res.data || res;
       setSessionData(sData);
 
-      // Initialize students roster
-      const studentsList = sData.students || [];
+      // Initialize students roster with method and time fields
+      const studentsList = (sData.students || []).map((s) => ({
+        ...s,
+        status: s.status || "Present",
+        attendance_method: s.attendance_method || "MANUAL",
+        time: s.time || (s.status === "Present" ? (sData.time?.split("-")[0]?.trim() || "09:00") : "-"),
+      }));
       setStudentsRoster(studentsList);
     } catch (err) {
       error(err.response?.data?.detail || err.message || "Failed to load timetable session");
@@ -161,11 +211,44 @@ export default function Attendance() {
       prev.map((s) => {
         if (s.id === studentId || s.student_id === studentId) {
           const nextStatus = s.status === "Present" ? "Absent" : "Present";
-          return { ...s, status: nextStatus };
+          return {
+            ...s,
+            status: nextStatus,
+            attendance_method: nextStatus === "Present" ? (s.attendance_method || "MANUAL") : "-",
+            time: nextStatus === "Present" ? new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "-",
+          };
         }
         return s;
       })
     );
+  };
+
+  const handleLiveVerified = (verifiedStudent) => {
+    // verifiedStudent: { student_id, student_name, usn, method, time, status }
+    const nowStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const methodUsed = verifiedStudent.method || selectedMethod || "FACE";
+    const markedTime = verifiedStudent.time || nowStr;
+
+    setStudentsRoster((prev) =>
+      prev.map((s) => {
+        const isMatch =
+          s.id === verifiedStudent.student_id ||
+          s.student_id === verifiedStudent.student_id ||
+          (s.usn && verifiedStudent.usn && s.usn.toLowerCase() === verifiedStudent.usn.toLowerCase()) ||
+          (s.roll_no && verifiedStudent.roll_no && s.roll_no.toLowerCase() === verifiedStudent.roll_no.toLowerCase());
+
+        if (isMatch) {
+          return {
+            ...s,
+            status: "Present",
+            attendance_method: methodUsed,
+            time: markedTime,
+          };
+        }
+        return s;
+      })
+    );
+    success(`✓ ${verifiedStudent.student_name || `Student #${verifiedStudent.student_id}`} marked Present via ${methodUsed}`);
   };
 
   // Submit Session Attendance
@@ -178,6 +261,7 @@ export default function Attendance() {
         attendance: studentsRoster.map((s) => ({
           student_id: s.student_id || s.id,
           status: s.status || "Present",
+          attendance_method: s.status === "Present" ? (s.attendance_method || selectedMethod || "MANUAL") : "MANUAL",
         })),
       };
 
@@ -376,7 +460,74 @@ export default function Attendance() {
               </span>
             </div>
           </div>
+
+          {/* TEACHER ATTENDANCE TODAY'S CLASS CARD & METHOD SELECTOR */}
+          <div
+            style={{
+              marginTop: "1.25rem",
+              padding: "1.25rem",
+              background: "rgba(0, 0, 0, 0.4)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              borderRadius: "12px",
+            }}
+          >
+            <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#818cf8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              TODAY'S CLASS
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: "1rem",
+                marginTop: "0.75rem",
+                paddingBottom: "1rem",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+              }}
+            >
+              <div>
+                <span style={{ color: "#94a3b8", fontSize: "0.75rem", display: "block" }}>Subject:</span>
+                <span style={{ color: "#f8fafc", fontWeight: 700, fontSize: "1.05rem" }}>{sessionData.subject_name}</span>
+              </div>
+              <div>
+                <span style={{ color: "#94a3b8", fontSize: "0.75rem", display: "block" }}>Time:</span>
+                <span style={{ color: "#f8fafc", fontWeight: 700, fontSize: "1.05rem" }}>{sessionData.time}</span>
+              </div>
+              <div>
+                <span style={{ color: "#94a3b8", fontSize: "0.75rem", display: "block" }}>Current Duration:</span>
+                <span style={{ color: "#38bdf8", fontWeight: 700, fontSize: "1.05rem" }}>
+                  {getCurrentDuration(sessionData.time)}
+                </span>
+              </div>
+            </div>
+
+            <div style={{ marginTop: "1rem" }}>
+              <div style={{ color: "#94a3b8", fontSize: "0.78rem", fontWeight: 600, marginBottom: "0.5rem" }}>
+                Attendance Method:
+              </div>
+              <AttendanceMethodSelector
+                selectedMethod={selectedMethod}
+                onSelectMethod={setSelectedMethod}
+                disabled={sessionData.attendance_completed}
+              />
+            </div>
+          </div>
         </div>
+
+        {/* Dynamic Verification Scanner based on selected method */}
+        {!sessionData.attendance_completed && selectedMethod === "FACE" && (
+          <FaceScanner
+            timetableId={sessionData.timetable_id}
+            onVerified={handleLiveVerified}
+          />
+        )}
+
+        {!sessionData.attendance_completed && selectedMethod === "BIOMETRIC" && (
+          <BiometricScanner
+            timetableId={sessionData.timetable_id}
+            onVerified={handleLiveVerified}
+          />
+        )}
 
         {/* Action Controls & Roster Summary */}
         <div
@@ -448,7 +599,7 @@ export default function Attendance() {
           )}
         </div>
 
-        {/* Student Attendance Table */}
+        {/* Student Attendance Table: Student ID | Student Name | Status | Method | Time */}
         <div
           style={{
             background: "rgba(17, 24, 39, 0.85)",
@@ -460,14 +611,23 @@ export default function Attendance() {
           <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.9rem" }}>
             <thead>
               <tr style={{ background: "rgba(255, 255, 255, 0.03)", borderBottom: "1px solid rgba(255, 255, 255, 0.08)", color: "#94a3b8" }}>
-                <th style={{ padding: "0.9rem 1.25rem", width: "120px" }}>Roll No / USN</th>
+                <th style={{ padding: "0.9rem 1.25rem", width: "130px" }}>Student ID</th>
                 <th style={{ padding: "0.9rem 1.25rem" }}>Student Name</th>
-                <th style={{ padding: "0.9rem 1.25rem", width: "240px", textAlign: "right" }}>Attendance Status</th>
+                <th style={{ padding: "0.9rem 1rem", width: "120px", textAlign: "center" }}>Status</th>
+                <th style={{ padding: "0.9rem 1rem", width: "120px", textAlign: "center" }}>Method</th>
+                <th style={{ padding: "0.9rem 1rem", width: "100px", textAlign: "center" }}>Time</th>
+                {!sessionData.attendance_completed && (
+                  <th style={{ padding: "0.9rem 1.25rem", width: "150px", textAlign: "right" }}>Toggle</th>
+                )}
               </tr>
             </thead>
             <tbody>
               {studentsRoster.map((st, index) => {
                 const isPresent = st.status === "Present";
+                const studentIdFormatted = st.roll_no || st.usn || (st.id ? `STU${String(st.id).padStart(3, "0")}` : `STU${String(index + 1).padStart(3, "0")}`);
+                const methodStr = (st.attendance_method || "MANUAL").toUpperCase();
+                const markedTime = isPresent ? (st.time && st.time !== "-" ? st.time : "09:00") : "-";
+
                 return (
                   <tr
                     key={st.id || index}
@@ -476,31 +636,95 @@ export default function Attendance() {
                       background: isPresent ? "rgba(16, 185, 129, 0.02)" : "rgba(239, 68, 68, 0.03)",
                     }}
                   >
-                    <td style={{ padding: "0.9rem 1.25rem", fontWeight: 700, color: "#818cf8" }}>
-                      {st.roll_no || st.usn || String(index + 1).padStart(2, "0")}
+                    <td style={{ padding: "0.9rem 1.25rem", fontWeight: 700, color: "#818cf8", fontFamily: "monospace" }}>
+                      {studentIdFormatted}
                     </td>
                     <td style={{ padding: "0.9rem 1.25rem", color: "#f8fafc", fontWeight: 600 }}>
                       {st.name}
                     </td>
-                    <td style={{ padding: "0.9rem 1.25rem", textAlign: "right" }}>
-                      {sessionData.attendance_completed ? (
+                    <td style={{ padding: "0.9rem 1rem", textAlign: "center" }}>
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                          background: isPresent ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)",
+                          color: isPresent ? "#34d399" : "#f87171",
+                          border: isPresent ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid rgba(239, 68, 68, 0.3)",
+                          padding: "0.25rem 0.65rem",
+                          borderRadius: "20px",
+                          fontSize: "0.8rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {isPresent ? <Check size={13} /> : <X size={13} />}
+                        {st.status}
+                      </span>
+                    </td>
+
+                    <td style={{ padding: "0.9rem 1rem", textAlign: "center" }}>
+                      {!isPresent ? (
+                        <span style={{ color: "#64748b", fontFamily: "monospace" }}>-</span>
+                      ) : methodStr === "FACE" ? (
                         <span
                           style={{
                             display: "inline-flex",
                             alignItems: "center",
-                            gap: "0.35rem",
-                            background: isPresent ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)",
-                            color: isPresent ? "#34d399" : "#f87171",
-                            padding: "0.3rem 0.75rem",
-                            borderRadius: "20px",
-                            fontSize: "0.82rem",
+                            gap: "0.3rem",
+                            background: "rgba(99, 102, 241, 0.15)",
+                            color: "#818cf8",
+                            border: "1px solid rgba(99, 102, 241, 0.3)",
+                            padding: "0.2rem 0.55rem",
+                            borderRadius: "12px",
+                            fontSize: "0.75rem",
                             fontWeight: 700,
                           }}
                         >
-                          {isPresent ? <Check size={14} /> : <X size={14} />}
-                          {st.status}
+                          <ScanFace size={13} /> FACE
+                        </span>
+                      ) : methodStr === "BIOMETRIC" ? (
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.3rem",
+                            background: "rgba(168, 85, 247, 0.15)",
+                            color: "#c084fc",
+                            border: "1px solid rgba(168, 85, 247, 0.3)",
+                            padding: "0.2rem 0.55rem",
+                            borderRadius: "12px",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                          }}
+                        >
+                          <Fingerprint size={13} /> BIOMETRIC
                         </span>
                       ) : (
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.3rem",
+                            background: "rgba(255, 255, 255, 0.08)",
+                            color: "#cbd5e1",
+                            border: "1px solid rgba(255, 255, 255, 0.15)",
+                            padding: "0.2rem 0.55rem",
+                            borderRadius: "12px",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                          }}
+                        >
+                          <Edit3 size={13} /> MANUAL
+                        </span>
+                      )}
+                    </td>
+
+                    <td style={{ padding: "0.9rem 1rem", textAlign: "center", fontFamily: "monospace", color: "#94a3b8", fontSize: "0.85rem" }}>
+                      {markedTime}
+                    </td>
+
+                    {!sessionData.attendance_completed && (
+                      <td style={{ padding: "0.9rem 1.25rem", textAlign: "right" }}>
                         <div style={{ display: "inline-flex", background: "rgba(0,0,0,0.3)", borderRadius: "8px", padding: "3px", border: "1px solid rgba(255,255,255,0.08)" }}>
                           <button
                             type="button"
@@ -510,8 +734,8 @@ export default function Attendance() {
                               color: isPresent ? "#fff" : "#94a3b8",
                               border: "none",
                               borderRadius: "6px",
-                              padding: "0.35rem 0.85rem",
-                              fontSize: "0.82rem",
+                              padding: "0.3rem 0.65rem",
+                              fontSize: "0.78rem",
                               fontWeight: 700,
                               cursor: "pointer",
                               transition: "all 0.15s ease",
@@ -527,8 +751,8 @@ export default function Attendance() {
                               color: !isPresent ? "#fff" : "#94a3b8",
                               border: "none",
                               borderRadius: "6px",
-                              padding: "0.35rem 0.85rem",
-                              fontSize: "0.82rem",
+                              padding: "0.3rem 0.65rem",
+                              fontSize: "0.78rem",
                               fontWeight: 700,
                               cursor: "pointer",
                               transition: "all 0.15s ease",
@@ -537,8 +761,8 @@ export default function Attendance() {
                             Absent
                           </button>
                         </div>
-                      )}
-                    </td>
+                      </td>
+                    )}
                   </tr>
                 );
               })}
@@ -782,11 +1006,14 @@ export default function Attendance() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1rem" }}>
               {todayClasses.map((slot) => {
                 const isCompleted = slot.attendance_completed;
+                const timeDisplay = `${slot.start_time || "09:00"}–${slot.end_time || "10:00"}`;
+                const currentDuration = getCurrentDuration(slot.start_time, slot.end_time);
+
                 return (
                   <div
                     key={slot.id}
                     style={{
-                      background: "rgba(17, 24, 39, 0.85)",
+                      background: "rgba(17, 24, 39, 0.9)",
                       border: "1px solid rgba(255, 255, 255, 0.08)",
                       borderRadius: "14px",
                       padding: "1.25rem",
@@ -798,18 +1025,41 @@ export default function Attendance() {
                   >
                     <div>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                        <span style={{ background: "rgba(99, 102, 241, 0.15)", color: "#c7d2fe", padding: "0.2rem 0.5rem", borderRadius: "6px", fontSize: "0.75rem", fontWeight: 600 }}>
-                          {slot.start_time} - {slot.end_time}
+                        <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#818cf8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                          TODAY'S CLASS
                         </span>
                         <span style={{ color: "#94a3b8", fontSize: "0.75rem" }}>
                           Room {slot.room_name || "Hall"}
                         </span>
                       </div>
-                      <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#f8fafc", margin: "0 0 0.35rem 0" }}>
-                        {slot.subject_name}
-                      </h3>
-                      <div style={{ color: "#94a3b8", fontSize: "0.85rem" }}>
-                        Semester {slot.semester} - Section {slot.section}
+
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem", marginTop: "0.5rem" }}>
+                        <div>
+                          <span style={{ display: "block", color: "#94a3b8", fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 600 }}>
+                            Subject:
+                          </span>
+                          <span style={{ color: "#f8fafc", fontWeight: 700, fontSize: "1.1rem" }}>
+                            {slot.subject_name}
+                          </span>
+                        </div>
+
+                        <div>
+                          <span style={{ display: "block", color: "#94a3b8", fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 600 }}>
+                            Time:
+                          </span>
+                          <span style={{ color: "#f8fafc", fontWeight: 600, fontSize: "0.95rem" }}>
+                            {timeDisplay}
+                          </span>
+                        </div>
+
+                        <div>
+                          <span style={{ display: "block", color: "#94a3b8", fontSize: "0.75rem", textTransform: "uppercase", fontWeight: 600 }}>
+                            Current Duration:
+                          </span>
+                          <span style={{ color: "#38bdf8", fontWeight: 700, fontSize: "0.95rem" }}>
+                            {currentDuration}
+                          </span>
+                        </div>
                       </div>
                     </div>
 
@@ -834,23 +1084,78 @@ export default function Attendance() {
                           <CheckCircle2 size={16} /> ✓ Attendance Completed
                         </div>
                       ) : (
-                        <Link
-                          to={`/attendance/session/${slot.id}`}
-                          style={{
-                            display: "block",
-                            background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
-                            color: "#fff",
-                            textAlign: "center",
-                            padding: "0.65rem",
-                            borderRadius: "8px",
-                            fontWeight: 700,
-                            fontSize: "0.88rem",
-                            textDecoration: "none",
-                            boxShadow: "0 4px 12px rgba(99, 102, 241, 0.3)",
-                          }}
-                        >
-                          [ TAKE ATTENDANCE ]
-                        </Link>
+                        <div>
+                          <span style={{ display: "block", color: "#94a3b8", fontSize: "0.75rem", fontWeight: 600, marginBottom: "0.45rem" }}>
+                            Attendance Method:
+                          </span>
+                          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                            <Link
+                              to={`/attendance/session/${slot.id}?method=FACE`}
+                              style={{
+                                flex: 1,
+                                textAlign: "center",
+                                background: "rgba(99, 102, 241, 0.15)",
+                                border: "1px solid rgba(99, 102, 241, 0.3)",
+                                color: "#c7d2fe",
+                                padding: "0.45rem 0.3rem",
+                                borderRadius: "8px",
+                                fontSize: "0.72rem",
+                                fontWeight: 700,
+                                textDecoration: "none",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "0.25rem",
+                              }}
+                            >
+                              <ScanFace size={13} /> [ FACE RECOGNITION ]
+                            </Link>
+
+                            <Link
+                              to={`/attendance/session/${slot.id}?method=BIOMETRIC`}
+                              style={{
+                                flex: 1,
+                                textAlign: "center",
+                                background: "rgba(168, 85, 247, 0.15)",
+                                border: "1px solid rgba(168, 85, 247, 0.3)",
+                                color: "#e9d5ff",
+                                padding: "0.45rem 0.3rem",
+                                borderRadius: "8px",
+                                fontSize: "0.72rem",
+                                fontWeight: 700,
+                                textDecoration: "none",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "0.25rem",
+                              }}
+                            >
+                              <Fingerprint size={13} /> [ BIOMETRIC ]
+                            </Link>
+
+                            <Link
+                              to={`/attendance/session/${slot.id}?method=MANUAL`}
+                              style={{
+                                flex: 1,
+                                textAlign: "center",
+                                background: "rgba(255, 255, 255, 0.08)",
+                                border: "1px solid rgba(255, 255, 255, 0.15)",
+                                color: "#f8fafc",
+                                padding: "0.45rem 0.3rem",
+                                borderRadius: "8px",
+                                fontSize: "0.72rem",
+                                fontWeight: 700,
+                                textDecoration: "none",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "0.25rem",
+                              }}
+                            >
+                              <Edit3 size={13} /> [ MANUAL ]
+                            </Link>
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>

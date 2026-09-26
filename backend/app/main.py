@@ -21,6 +21,8 @@ from app.routers import (
     locations_router,
     notices_router,
     dashboard_router,
+    face_router,
+    biometric_router,
 )
 
 
@@ -136,6 +138,8 @@ def health_check():
     }
 
 
+
+
 # ---------------------------------------------------------
 # Mount All 11 API Routers
 # ---------------------------------------------------------
@@ -152,6 +156,8 @@ app.include_router(timetable_router)
 app.include_router(locations_router)
 app.include_router(notices_router)
 app.include_router(dashboard_router)
+app.include_router(face_router)
+app.include_router(biometric_router)
 
 # ---------------------------------------------------------
 # Combined Frontend Mounting & SPA Fallback Route

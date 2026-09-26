@@ -13,13 +13,19 @@ import Students from "./pages/Students";
 import Teachers from "./pages/Teachers";
 import Departments from "./pages/Departments";
 import Subjects from "./pages/Subjects";
+import Rooms from "./pages/Rooms";
 import Attendance from "./pages/Attendance";
+import StudentAttendance from "./pages/StudentAttendance";
 import Timetable from "./pages/Timetable";
 import LiveLocation from "./pages/LiveLocation";
 import Notices from "./pages/Notices";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Reports from "./pages/Reports";
+import FaceRegistration from "./pages/FaceRegistration";
+import BiometricRegistration from "./pages/BiometricRegistration";
+import FaceAttendance from "./pages/FaceAttendance";
+import BiometricAttendance from "./pages/BiometricAttendance";
 
 export default function App() {
   return (
@@ -174,9 +180,27 @@ export default function App() {
                 }
               />
 
-              {/* 6. Attendance Routes */}
+              {/* 5.1 Rooms Management (Admin, HOD) */}
+              <Route
+                path="rooms"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <Rooms />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* 6. Attendance & Biometric/Face Recognition Routes */}
               <Route path="attendance" element={<Attendance />} />
               <Route path="attendance/session/:timetableId" element={<Attendance />} />
+              <Route path="my-attendance" element={<StudentAttendance />} />
+              <Route path="student/attendance" element={<StudentAttendance />} />
+              <Route path="face/attendance" element={<FaceAttendance />} />
+              <Route path="biometric/attendance" element={<BiometricAttendance />} />
+              <Route path="face/register" element={<FaceRegistration />} />
+              <Route path="face/register/:studentId" element={<FaceRegistration />} />
+              <Route path="biometric/register" element={<BiometricRegistration />} />
+              <Route path="biometric/register/:studentId" element={<BiometricRegistration />} />
 
               {/* 7. Timetable Routes */}
               <Route path="timetable" element={<Timetable />} />

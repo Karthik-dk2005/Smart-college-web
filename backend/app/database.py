@@ -66,6 +66,21 @@ def create_dev_tables():
     """Ensure all SQLAlchemy tables are created in development."""
     import app.models
     Base.metadata.create_all(bind=engine)
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            try:
+                conn.execute(text("ALTER TABLE student_attendance ADD COLUMN attendance_method VARCHAR(50) DEFAULT 'MANUAL'"))
+                conn.commit()
+            except Exception:
+                pass
+            try:
+                conn.execute(text("ALTER TABLE attendance ADD COLUMN attendance_method VARCHAR(50) DEFAULT 'MANUAL'"))
+                conn.commit()
+            except Exception:
+                pass
+    except Exception:
+        pass
 
 
 def init_db():

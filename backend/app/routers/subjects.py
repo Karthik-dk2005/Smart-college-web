@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models import Subject, Teacher, Department, User
 from app.schemas import SubjectCreate, SubjectUpdate, SubjectResponse
 from app.dependencies import get_current_user, require_any_role
+from app.utils.response import success_response
 
 router = APIRouter(prefix="/api/subjects", tags=["Subjects"])
 
@@ -25,7 +26,7 @@ def format_subject(s: Subject) -> dict:
     }
 
 
-@router.get("", response_model=List[SubjectResponse])
+@router.get("")
 def list_subjects(
     department_id: Optional[int] = None,
     semester: Optional[int] = None,
@@ -43,10 +44,11 @@ def list_subjects(
         query = query.filter(Subject.semester == semester)
     
     subjects = query.order_by(Subject.subject_code, Subject.subject_name).all()
-    return [format_subject(s) for s in subjects]
+    data = [format_subject(s) for s in subjects]
+    return success_response(data=data, message=f"Retrieved {len(data)} subjects")
 
 
-@router.get("/{subject_id}", response_model=SubjectResponse)
+@router.get("/{subject_id}")
 def get_subject(
     subject_id: int,
     db: Session = Depends(get_db),
@@ -63,10 +65,10 @@ def get_subject(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Subject with ID {subject_id} not found."
         )
-    return format_subject(s)
+    return success_response(data=format_subject(s))
 
 
-@router.post("", response_model=SubjectResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 def create_subject(
     payload: SubjectCreate,
     db: Session = Depends(get_db),
@@ -98,10 +100,10 @@ def create_subject(
         joinedload(Subject.department),
         joinedload(Subject.teacher)
     ).filter(Subject.id == subject.id).first()
-    return format_subject(s)
+    return success_response(data=format_subject(s), message="Subject created successfully", status_code=201)
 
 
-@router.put("/{subject_id}", response_model=SubjectResponse)
+@router.put("/{subject_id}")
 def update_subject(
     subject_id: int,
     payload: SubjectUpdate,
@@ -147,7 +149,7 @@ def update_subject(
         joinedload(Subject.department),
         joinedload(Subject.teacher)
     ).filter(Subject.id == subject_id).first()
-    return format_subject(s)
+    return success_response(data=format_subject(s), message="Subject updated successfully")
 
 
 @router.delete("/{subject_id}")
@@ -165,4 +167,4 @@ def delete_subject(
         )
     db.delete(subject)
     db.commit()
-    return {"success": True, "message": f"Subject #{subject_id} deleted successfully."}
+    return success_response(data={"id": subject_id}, message=f"Subject #{subject_id} deleted successfully.")

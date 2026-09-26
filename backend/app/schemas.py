@@ -190,10 +190,13 @@ class TimetableCreate(BaseModel):
     start_time: str
     end_time: str
     subject_id: int
-    teacher_id: int
+    teacher_id: Optional[int] = None
+    faculty_id: Optional[int] = None
     room_id: Optional[int] = None
+    room_number: Optional[str] = None
     timetable_type: Optional[str] = "regular"
     status: Optional[str] = "active"
+
 
 
 class TimetableUpdate(BaseModel):
@@ -206,9 +209,12 @@ class TimetableUpdate(BaseModel):
     end_time: Optional[str] = None
     subject_id: Optional[int] = None
     teacher_id: Optional[int] = None
+    faculty_id: Optional[int] = None
     room_id: Optional[int] = None
+    room_number: Optional[str] = None
     timetable_type: Optional[str] = None
     status: Optional[str] = None
+
 
 
 class TimetableResponse(BaseModel):
@@ -235,3 +241,72 @@ class TimetableResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ==========================================================
+# 8. FACE RECOGNITION SCHEMAS
+# ==========================================================
+class FaceRegisterRequest(BaseModel):
+    image: str  # Base64 or DataURL
+
+
+class FaceVerifyRequest(BaseModel):
+    image: str  # Base64 or DataURL
+    timetable_id: int
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    duration_number: Optional[int] = None
+    interval_id: Optional[int] = None
+    bypass_location: Optional[bool] = False
+
+
+class FaceVerifyResponse(BaseModel):
+    success: bool
+    message: str
+    student_id: int
+    student_code: str
+    student_name: str
+    subject: str
+    timetable_id: int
+    duration_number: int
+    duration_time: str
+    status: str = "Present"
+    attendance_method: str = "FACE"
+    time: str
+    marked_at: str
+
+
+# ==========================================================
+# 9. BIOMETRIC SCHEMAS
+# ==========================================================
+class BiometricRegisterRequest(BaseModel):
+    biometric_token: Optional[str] = None
+    device_id: Optional[str] = None
+
+
+class BiometricVerifyRequest(BaseModel):
+    timetable_id: int
+    student_id: Optional[int] = None
+    student_code: Optional[str] = None
+    biometric_token: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    duration_number: Optional[int] = None
+    interval_id: Optional[int] = None
+    bypass_location: Optional[bool] = False
+
+
+class BiometricVerifyResponse(BaseModel):
+    success: bool
+    message: str
+    student_id: int
+    student_code: str
+    student_name: str
+    subject: str
+    timetable_id: int
+    duration_number: int
+    duration_time: str
+    status: str = "Present"
+    attendance_method: str = "BIOMETRIC"
+    time: str
+    marked_at: str

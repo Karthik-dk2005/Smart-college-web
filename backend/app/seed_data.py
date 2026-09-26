@@ -18,8 +18,14 @@ if sys.platform == "win32":
 
 from datetime import datetime, timedelta
 from app.database import SessionLocal, Base, engine
-from app.models import Department, Teacher, Subject, Room, Timetable, User, Student, Attendance, AttendanceSession, AttendanceInterval, StudentAttendance
+from app.models import (
+    Department, Teacher, Subject, Room, Timetable, User, Student,
+    Attendance, AttendanceSession, AttendanceInterval, StudentAttendance,
+    StudentFace, StudentBiometric
+)
 from app.auth import get_password_hash
+import json
+import hashlib
 
 
 
@@ -380,6 +386,7 @@ def seed_database():
                 user.teacher_id = udata.get("teacher_id")
                 user.semester = udata.get("semester")
                 user.section = udata.get("section")
+                user.is_active = True
                 db.commit()
 
             # Create or update Student record if student role
@@ -624,11 +631,14 @@ def seed_database():
                 for int_obj in intervals_for_slot:
                     for idx, std in enumerate(students_in_slot):
                         status_val = "Absent" if (idx + len(p_day) + int_obj.duration_number) % 7 == 0 else "Present"
+                        methods_cycle = ["FACE", "BIOMETRIC", "MANUAL", "FACE"]
+                        method_val = methods_cycle[(idx + int_obj.duration_number) % len(methods_cycle)] if status_val == "Present" else "MANUAL"
                         st_att = StudentAttendance(
                             attendance_session_id=att_session.id,
                             attendance_interval_id=int_obj.id,
                             student_id=std.id,
                             status=status_val,
+                            attendance_method=method_val,
                             marked_at=datetime.utcnow()
                         )
                         db.add(st_att)
@@ -637,6 +647,7 @@ def seed_database():
                 # 4. Legacy Attendance record for backwards compatibility
                 for idx, std in enumerate(students_in_slot):
                     legacy_status = "Absent" if (idx + len(p_day)) % 7 == 0 else "Present"
+                    leg_method = "FACE" if (idx % 2 == 0) else "BIOMETRIC" if legacy_status == "Present" else "MANUAL"
                     att = Attendance(
                         student_id=std.id,
                         timetable_id=s.id,
@@ -646,12 +657,38 @@ def seed_database():
                         start_time=s.start_time,
                         end_time=s.end_time,
                         status=legacy_status,
+                        attendance_method=leg_method if legacy_status == "Present" else "MANUAL",
                         marked_at=datetime.utcnow()
                     )
                     db.add(att)
 
+        # 5. Seed Student Face and Biometric Profiles
+        all_students = db.query(Student).all()
+        for idx, stu in enumerate(all_students):
+            # Deterministic distinct 128-dimensional embedding for testing
+            v = [float((((idx + 1) * (i + 1) * 31) % 100) / 100.0) for i in range(128)]
+            norm = sum(x * x for x in v) ** 0.5 or 1.0
+            norm_v = [round(x / norm, 6) for x in v]
+
+            face = StudentFace(
+                student_id=stu.id,
+                embedding=json.dumps(norm_v),
+                quality_score="high"
+            )
+            db.add(face)
+
+            bio_hash = hashlib.sha256(f"BIOMETRIC_TEMPLATE_STUDENT_{stu.id}_{stu.usn}".encode("utf-8")).hexdigest()
+            bio = StudentBiometric(
+                student_id=stu.id,
+                template_hash=bio_hash,
+                provider="DEVELOPMENT_MOCK",
+                status="active"
+            )
+            db.add(bio)
+
         db.commit()
         print(f"[+] Inserted {session_count} attendance sessions, {interval_count} 30-min intervals, and {att_count} student attendance records!")
+        print(f"[+] Seeded Face and Biometric profiles for {len(all_students)} students.")
         print("=" * 60)
 
 

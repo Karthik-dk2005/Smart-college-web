@@ -6,6 +6,7 @@ from datetime import datetime
 class StudentAttendanceItem(BaseModel):
     student_id: int
     status: str = "Present"  # Present, Absent
+    attendance_method: Optional[str] = "MANUAL"  # FACE, BIOMETRIC, MANUAL
     interval_id: Optional[int] = None
     duration_number: Optional[int] = None
 
@@ -20,6 +21,7 @@ class SessionAttendanceSubmit(BaseModel):
     attendance: Optional[List[StudentAttendanceItem]] = None
     intervals: Optional[List[IntervalSubmission]] = None
     date: Optional[str] = None  # YYYY-MM-DD, defaults to today
+    attendance_method: Optional[str] = "MANUAL"
 
 
 class StudentSessionItem(BaseModel):
@@ -28,8 +30,11 @@ class StudentSessionItem(BaseModel):
     roll_no: str
     name: str
     status: str = "Present"
+    attendance_method: Optional[str] = "MANUAL"
+    time: Optional[str] = None
     attendance_id: Optional[int] = None
     interval_statuses: Optional[Dict[str, str]] = None
+    interval_methods: Optional[Dict[str, str]] = None
 
 
 class IntervalStudentItem(BaseModel):
@@ -38,6 +43,8 @@ class IntervalStudentItem(BaseModel):
     roll_no: str
     name: str
     status: str = "Present"
+    attendance_method: Optional[str] = "MANUAL"
+    time: Optional[str] = None
     marked_at: Optional[datetime] = None
 
 

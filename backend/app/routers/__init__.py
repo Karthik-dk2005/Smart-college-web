@@ -11,6 +11,8 @@ from app.routers.timetable import router as timetable_router
 from app.routers.locations import router as locations_router
 from app.routers.notices import router as notices_router
 from app.routers.dashboard import router as dashboard_router
+from app.routers.face import router as face_router
+from app.routers.biometric import router as biometric_router
 
 __all__ = [
     "auth_router",
@@ -26,4 +28,6 @@ __all__ = [
     "locations_router",
     "notices_router",
     "dashboard_router",
+    "face_router",
+    "biometric_router",
 ]

@@ -13,8 +13,9 @@ if sys.platform == "win32":
 from fastapi.testclient import TestClient
 from app.main import app
 from app.database import SessionLocal
-from app.models import User, Timetable, Teacher, Student, Attendance
+from app.models import User, Timetable, Teacher, Student, Attendance, AttendanceSession, StudentAttendance
 from app.utils.security import create_access_token
+
 
 client = TestClient(app)
 
@@ -66,7 +67,12 @@ def test_all():
         test_date = "2026-09-26"
         # Ensure clean state for this date and slot
         db.query(Attendance).filter(Attendance.timetable_id == slot_id, Attendance.date == test_date).delete()
+        old_sessions = db.query(AttendanceSession).filter(AttendanceSession.timetable_id == slot_id, AttendanceSession.date == test_date).all()
+        for osess in old_sessions:
+            db.query(StudentAttendance).filter(StudentAttendance.attendance_session_id == osess.id).delete()
+            db.delete(osess)
         db.commit()
+
 
         res = client.get(f"/api/attendance/session/{slot_id}?date={test_date}", headers=headers_ananya)
         assert res.status_code == 200, f"Failed: {res.text}"

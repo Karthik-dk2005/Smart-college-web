@@ -16,6 +16,7 @@ class Attendance(Base):
     start_time = Column(String(50), nullable=True)
     end_time = Column(String(50), nullable=True)
     status = Column(String(50), nullable=False, default="Present")  # Present, Absent
+    attendance_method = Column(String(50), nullable=False, default="MANUAL")  # FACE, BIOMETRIC, MANUAL
     marked_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (

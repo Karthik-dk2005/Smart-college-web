@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Any, Dict
 
 from app.database import get_db
 from app.models import Department, User
 from app.schemas import DepartmentCreate, DepartmentResponse
 from app.dependencies import get_current_user, require_role
+from app.utils.response import success_response
 
 router = APIRouter(prefix="/api/departments", tags=["Departments"])
 
@@ -20,17 +21,18 @@ def format_department(d: Department) -> dict:
     }
 
 
-@router.get("", response_model=List[DepartmentResponse])
+@router.get("")
 def list_departments(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """List all departments."""
     depts = db.query(Department).order_by(Department.name).all()
-    return [format_department(d) for d in depts]
+    data = [format_department(d) for d in depts]
+    return success_response(data=data, message=f"Retrieved {len(data)} departments")
 
 
-@router.get("/{dept_id}", response_model=DepartmentResponse)
+@router.get("/{dept_id}")
 def get_department(
     dept_id: int,
     db: Session = Depends(get_db),
@@ -43,10 +45,10 @@ def get_department(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Department with ID {dept_id} not found."
         )
-    return format_department(d)
+    return success_response(data=format_department(d))
 
 
-@router.post("", response_model=DepartmentResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 def create_department(
     payload: DepartmentCreate,
     db: Session = Depends(get_db),
@@ -70,4 +72,4 @@ def create_department(
     db.add(dept)
     db.commit()
     db.refresh(dept)
-    return format_department(dept)
+    return success_response(data=format_department(dept), message="Department created successfully")

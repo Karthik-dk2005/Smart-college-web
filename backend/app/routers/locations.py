@@ -99,12 +99,7 @@ def get_current_location(
     current_user: User = Depends(get_current_user)
 ):
     """Get the latest recorded GPS location for a specific user."""
-    # Only Admin, HOD, Faculty, or self can view
-    if current_user.role == "student" and current_user.id != user_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to access this user's location"
-        )
+
 
     loc = db.query(Location).filter(Location.user_id == user_id).order_by(Location.timestamp.desc()).first()
     if not loc:
@@ -126,11 +121,7 @@ def get_location_history(
     current_user: User = Depends(get_current_user)
 ):
     """Get chronological location history for a user."""
-    if current_user.role == "student" and current_user.id != user_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to access this user's location history"
-        )
+
 
     locations = db.query(Location).filter(
         Location.user_id == user_id

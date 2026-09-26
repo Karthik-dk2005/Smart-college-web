@@ -12,6 +12,8 @@ from app.models.student_attendance import StudentAttendance
 from app.models.location import Location
 from app.models.notice import Notice
 from app.models.user import User
+from app.models.student_face import StudentFace
+from app.models.student_biometric import StudentBiometric
 
 __all__ = [
     "Department",
@@ -28,4 +30,6 @@ __all__ = [
     "Location",
     "Notice",
     "User",
+    "StudentFace",
+    "StudentBiometric",
 ]

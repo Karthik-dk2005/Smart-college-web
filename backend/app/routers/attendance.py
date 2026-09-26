@@ -221,10 +221,16 @@ def get_attendance_session(
             rec = interval_att_map.get((interval.id, s.id))
             if rec:
                 s_status = rec.status
+                s_method = getattr(rec, "attendance_method", "MANUAL") or "MANUAL"
+                s_time = rec.marked_at.strftime("%H:%M") if rec.marked_at else None
             elif s.id in legacy_map:
                 s_status = legacy_map[s.id].status
+                s_method = getattr(legacy_map[s.id], "attendance_method", "MANUAL") or "MANUAL"
+                s_time = legacy_map[s.id].marked_at.strftime("%H:%M") if legacy_map[s.id].marked_at else None
             else:
                 s_status = "Present"
+                s_method = "MANUAL"
+                s_time = None
 
             if s_status == "Present":
                 int_present += 1
@@ -244,6 +250,8 @@ def get_attendance_session(
                 roll_no=s.usn or s.student_id or f"ST-{s.id}",
                 name=s.name,
                 status=s_status,
+                attendance_method=s_method,
+                time=s_time,
                 marked_at=rec.marked_at if rec else None
             ))
 
@@ -266,14 +274,29 @@ def get_attendance_session(
 
     for s in students:
         interval_statuses = {}
+        interval_methods = {}
+        last_time = None
+        last_method = "MANUAL"
+
         for interval in att_session.intervals:
             rec = interval_att_map.get((interval.id, s.id))
             if rec:
                 interval_statuses[str(interval.duration_number)] = rec.status
+                m = getattr(rec, "attendance_method", "MANUAL") or "MANUAL"
+                interval_methods[str(interval.duration_number)] = m
+                last_method = m
+                if rec.marked_at:
+                    last_time = rec.marked_at.strftime("%H:%M")
             elif s.id in legacy_map:
                 interval_statuses[str(interval.duration_number)] = legacy_map[s.id].status
+                m = getattr(legacy_map[s.id], "attendance_method", "MANUAL") or "MANUAL"
+                interval_methods[str(interval.duration_number)] = m
+                last_method = m
+                if legacy_map[s.id].marked_at:
+                    last_time = legacy_map[s.id].marked_at.strftime("%H:%M")
             else:
                 interval_statuses[str(interval.duration_number)] = "Present"
+                interval_methods[str(interval.duration_number)] = "MANUAL"
 
         # Overall student status for session
         overall_stat = "Present" if all(v == "Present" for v in interval_statuses.values()) else "Absent"
@@ -288,8 +311,11 @@ def get_attendance_session(
             roll_no=s.usn or s.student_id or f"ST-{s.id}",
             name=s.name,
             status=overall_stat,
+            attendance_method=last_method if overall_stat == "Present" else "-",
+            time=last_time if overall_stat == "Present" else "-",
             attendance_id=legacy_map.get(s.id).id if s.id in legacy_map else None,
-            interval_statuses=interval_statuses
+            interval_statuses=interval_statuses,
+            interval_methods=interval_methods
         ))
 
     time_str = f"{slot.start_time} - {slot.end_time}"
@@ -415,11 +441,15 @@ def submit_attendance_session(
 
             for item in int_sub.attendance:
                 status_clean = "Present" if (item.status or "").strip().capitalize() == "Present" else "Absent"
+                method_clean = (getattr(item, "attendance_method", None) or payload.attendance_method or "MANUAL").strip().upper()
+                if method_clean not in ("FACE", "BIOMETRIC", "MANUAL"):
+                    method_clean = "MANUAL"
                 st_att = StudentAttendance(
                     attendance_session_id=att_session.id,
                     attendance_interval_id=target_interval.id,
                     student_id=item.student_id,
                     status=status_clean,
+                    attendance_method=method_clean,
                     marked_at=datetime.utcnow()
                 )
                 db.add(st_att)
@@ -1305,3 +1335,154 @@ def get_attendance_shortage(
         data=shortage_list,
         message=f"Found {len(shortage_list)} students with attendance below {threshold}%"
     )
+
+
+# ==========================================================
+# 12. GENERAL ATTENDANCE CRUD & PERCENTAGE ENDPOINTS
+# ==========================================================
+def format_attendance_record(att: Attendance) -> dict:
+    return {
+        "id": att.id,
+        "student_id": att.student_id,
+        "subject_id": att.subject_id,
+        "timetable_id": att.timetable_id,
+        "teacher_id": att.teacher_id,
+        "date": att.date,
+        "start_time": att.start_time,
+        "end_time": att.end_time,
+        "status": att.status,
+        "marked_at": att.marked_at.isoformat() if att.marked_at else None,
+        "student_name": att.student.name if att.student else None,
+        "student_usn": (att.student.usn or att.student.student_id) if att.student else None,
+        "subject_name": att.subject.subject_name if att.subject else None,
+        "teacher_name": att.teacher.name if att.teacher else None,
+    }
+
+
+@router.post("", status_code=status.HTTP_201_CREATED)
+def create_single_attendance(
+    payload: Dict[str, Any],
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod", "teacher", "faculty"))
+):
+    student_id = payload.get("student_id")
+    subject_id = payload.get("subject_id")
+    date_val = payload.get("date") or datetime.now().strftime("%Y-%m-%d")
+    status_val = (payload.get("status") or "Present").strip().capitalize()
+    teacher_id = payload.get("teacher_id") or get_user_teacher_id(current_user, db) or 1
+    timetable_id = payload.get("timetable_id")
+
+    if not timetable_id:
+        slot = db.query(Timetable).filter(Timetable.subject_id == subject_id).first()
+        timetable_id = slot.id if slot else 1
+
+    att = Attendance(
+        student_id=student_id,
+        subject_id=subject_id,
+        teacher_id=teacher_id,
+        timetable_id=timetable_id,
+        date=date_val,
+        status=status_val,
+        start_time=payload.get("start_time", "09:00"),
+        end_time=payload.get("end_time", "10:00"),
+        marked_at=datetime.utcnow()
+    )
+    db.add(att)
+    db.commit()
+    db.refresh(att)
+    return success_response(data=format_attendance_record(att), message="Attendance marked successfully", status_code=201)
+
+
+@router.get("")
+def list_attendance(
+    student_id: Optional[int] = None,
+    subject_id: Optional[int] = None,
+    date: Optional[str] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    query = db.query(Attendance).options(
+        joinedload(Attendance.student),
+        joinedload(Attendance.subject),
+        joinedload(Attendance.teacher)
+    )
+    if student_id:
+        query = query.filter(Attendance.student_id == student_id)
+    if subject_id:
+        query = query.filter(Attendance.subject_id == subject_id)
+    if date:
+        query = query.filter(Attendance.date == date)
+    records = query.order_by(Attendance.date.desc(), Attendance.id.desc()).all()
+    return success_response(data=[format_attendance_record(r) for r in records])
+
+
+@router.get("/date/{date_str}")
+def get_attendance_by_date(
+    date_str: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    records = db.query(Attendance).options(
+        joinedload(Attendance.student),
+        joinedload(Attendance.subject),
+        joinedload(Attendance.teacher)
+    ).filter(Attendance.date == date_str).all()
+    return success_response(data=[format_attendance_record(r) for r in records])
+
+
+@router.get("/percentage/{student_id}")
+def get_student_percentage(
+    student_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    student = db.query(Student).filter(Student.id == student_id).first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found.")
+
+    records = db.query(Attendance).filter(Attendance.student_id == student_id).all()
+    total = len(records)
+    present = sum(1 for r in records if r.status.lower() in ("present", "late"))
+    absent = total - present
+    pct = round((present / total * 100), 2) if total > 0 else 100.0
+    return success_response(data={
+        "student_id": student.id,
+        "student_name": student.name,
+        "usn": student.usn or student.student_id,
+        "total_classes": total,
+        "present_classes": present,
+        "absent_classes": absent,
+        "percentage": pct
+    })
+
+
+@router.put("/{att_id}")
+def update_single_attendance(
+    att_id: int,
+    payload: Dict[str, Any],
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod", "teacher", "faculty"))
+):
+    att = db.query(Attendance).filter(Attendance.id == att_id).first()
+    if not att:
+        raise HTTPException(status_code=404, detail="Attendance record not found.")
+    if "status" in payload:
+        att.status = payload["status"]
+    db.commit()
+    db.refresh(att)
+    return success_response(data=format_attendance_record(att), message="Attendance updated successfully")
+
+
+@router.delete("/{att_id}")
+def delete_single_attendance(
+    att_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod", "teacher", "faculty"))
+):
+    att = db.query(Attendance).filter(Attendance.id == att_id).first()
+    if not att:
+        raise HTTPException(status_code=404, detail="Attendance record not found.")
+    db.delete(att)
+    db.commit()
+    return success_response(data={"id": att_id}, message="Attendance deleted successfully")
+

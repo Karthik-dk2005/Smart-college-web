@@ -16,6 +16,8 @@ import {
   Settings,
   LogOut,
   Sparkles,
+  ScanFace,
+  Fingerprint,
 } from "lucide-react";
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -29,17 +31,20 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const currentRole = role?.toLowerCase() || "student";
 
-  // Build menu items strictly based on role permissions
+  // Build menu items strictly based on role permissions (Section 22)
   const getNavItems = () => {
     if (currentRole === "admin") {
       return [
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={19} /> },
-        { to: "/admin/students", label: "Students", icon: <Users size={19} /> },
-        { to: "/admin/teachers", label: "Teachers", icon: <GraduationCap size={19} /> },
+        { to: "/students", label: "Students", icon: <Users size={19} /> },
+        { to: "/teachers", label: "Teachers", icon: <GraduationCap size={19} /> },
         { to: "/departments", label: "Departments", icon: <Building2 size={19} /> },
         { to: "/subjects", label: "Subjects", icon: <BookOpen size={19} /> },
+        { to: "/rooms", label: "Rooms", icon: <Building2 size={19} /> },
         { to: "/timetable", label: "Timetable", icon: <Calendar size={19} /> },
         { to: "/attendance", label: "Attendance", icon: <CalendarCheck size={19} /> },
+        { to: "/face/register", label: "Face Registration", icon: <ScanFace size={19} /> },
+        { to: "/biometric/register", label: "Biometric Setup", icon: <Fingerprint size={19} /> },
         { to: "/reports", label: "Reports", icon: <FileBarChart size={19} /> },
         { to: "/settings", label: "Settings", icon: <Settings size={19} /> },
       ];
@@ -48,10 +53,12 @@ export default function Sidebar({ isOpen, onClose }) {
     if (currentRole === "hod") {
       return [
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={19} /> },
-        { to: "/hod/students", label: "Students", icon: <Users size={19} /> },
-        { to: "/hod/teachers", label: "Teachers", icon: <GraduationCap size={19} /> },
+        { to: "/students", label: "Students", icon: <Users size={19} /> },
+        { to: "/teachers", label: "Teachers", icon: <GraduationCap size={19} /> },
         { to: "/timetable", label: "Timetable", icon: <Calendar size={19} /> },
         { to: "/attendance", label: "Attendance", icon: <CalendarCheck size={19} /> },
+        { to: "/face/register", label: "Face Registration", icon: <ScanFace size={19} /> },
+        { to: "/biometric/register", label: "Biometric Setup", icon: <Fingerprint size={19} /> },
         { to: "/reports", label: "Reports", icon: <FileBarChart size={19} /> },
       ];
     }
@@ -61,6 +68,8 @@ export default function Sidebar({ isOpen, onClose }) {
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={19} /> },
         { to: "/teacher/timetable", label: "My Timetable", icon: <Calendar size={19} /> },
         { to: "/attendance", label: "Attendance", icon: <CalendarCheck size={19} /> },
+        { to: "/face/attendance", label: "Face Attendance", icon: <ScanFace size={19} /> },
+        { to: "/biometric/attendance", label: "Biometric Attendance", icon: <Fingerprint size={19} /> },
         { to: "/profile", label: "My Profile", icon: <User size={19} /> },
       ];
     }
@@ -69,7 +78,8 @@ export default function Sidebar({ isOpen, onClose }) {
     return [
       { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={19} /> },
       { to: "/timetable", label: "My Timetable", icon: <Calendar size={19} /> },
-      { to: "/attendance", label: "My Attendance", icon: <CalendarCheck size={19} /> },
+      { to: "/my-attendance", label: "My Attendance", icon: <CalendarCheck size={19} /> },
+      { to: "/face/register", label: "Register Face ID", icon: <ScanFace size={19} /> },
       { to: "/profile", label: "My Profile", icon: <User size={19} /> },
     ];
   };
