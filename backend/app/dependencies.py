@@ -78,3 +78,32 @@ def require_any_role(*allowed_roles):
             )
         return current_user
     return role_checker
+
+def require_admin(current_user: User = Depends(get_current_user)) -> User:
+    """Enforce ADMIN role privileges."""
+    if current_user.role.lower() != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to perform this action."
+        )
+    return current_user
+
+
+def require_hod(current_user: User = Depends(get_current_user)) -> User:
+    """Enforce HOD role privileges."""
+    if current_user.role.lower() != "hod":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to perform this action."
+        )
+    return current_user
+
+
+def require_admin_or_hod(current_user: User = Depends(get_current_user)) -> User:
+    """Enforce ADMIN or HOD role privileges. Teachers and Students are blocked."""
+    if current_user.role.lower() not in ("admin", "hod"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to perform this action."
+        )
+    return current_user

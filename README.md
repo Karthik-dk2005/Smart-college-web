@@ -1,80 +1,102 @@
-# 🎓 Smart Department Academic Management System
+# 🎓 Smart Department Management System
 
-A production-grade, full-stack academic enterprise platform built with **React**, **FastAPI (Python 3.11+)**, **SQLAlchemy ORM**, **Pydantic**, and **JWT Authentication**.
+A complete, production-ready, full-stack **Smart Department Management System** built with **React (Vite)**, **Python FastAPI (3.11+)**, **SQLAlchemy ORM**, **Pydantic v2**, **Alembic Migrations**, **SQLite/PostgreSQL**, and **JWT Authentication**.
 
 ---
 
-## 🏗️ Architecture Overview
+## 🏛️ Project Architecture
 
 ```text
 smart-department/
 │
 ├── frontend/                     # React + Vite Frontend Application
 │   ├── src/
-│   │   ├── components/           # Navbar, Sidebar, modals
-│   │   ├── context/              # AuthContext (JWT, session persistence, role routing)
-│   │   ├── layouts/              # DashboardLayout with responsive sidebar & navbar
-│   │   ├── pages/
-│   │   │   ├── LoginPage.jsx     # 1-Click demo role picker & login form
-│   │   │   ├── student/          # StudentDashboard, Attendance (GPS geofenced), Timetable, Marks, Exams, Materials, Bus, Notices
-│   │   │   ├── teacher/          # TeacherDashboard, Attendance session creator, Marks entry
-│   │   │   ├── hod/              # HodDashboard, <75% shortage detector, Marks finalization
-│   │   │   ├── admin/            # AdminDashboard, User management, Rooms, Audit logs
-│   │   │   └── ProfileView.jsx   # Universal authenticated identity profile
-│   │   ├── services/
-│   │   │   └── api.js            # Unified API service layer connecting to http://localhost:8000/api
-│   │   ├── App.jsx               # Role-based route rendering
-│   │   └── index.css             # Vanilla CSS design system with glassmorphism & dark theme
+│   │   ├── api/                  # Central Axios API client modules
+│   │   │   ├── axios.js          # Central Axios instance with JWT interceptors
+│   │   │   ├── auth.js           # Login, register, token refresh
+│   │   │   ├── students.js       # Student CRUD
+│   │   │   ├── faculty.js        # Faculty CRUD
+│   │   │   ├── departments.js    # Department CRUD
+│   │   │   ├── subjects.js       # Subject CRUD
+│   │   │   ├── attendance.js     # Attendance marking, percentage calculation
+│   │   │   ├── timetable.py      # Timetable API with day & section filters
+│   │   │   ├── locations.js      # Browser GPS update & history
+│   │   │   ├── notices.js        # Circulars and announcements CRUD
+│   │   │   ├── dashboard.js      # Metrics & chart datasets
+│   │   │   └── users.js          # User profile & credentials management
+│   │   ├── components/           # Navbar, Sidebar, Modal, ConfirmDialog, TableSkeleton, Toast
+│   │   ├── context/              # AuthContext (JWT tokens, role state, auto-refresh)
+│   │   ├── layouts/              # MainLayout (responsive sidebar & header)
+│   │   ├── pages/                # All 14 Dedicated Full-Stack Pages
+│   │   │   ├── 1. Login.jsx      # JWT Auth with 1-click role quick login
+│   │   │   ├── 2. Register.jsx   # Real account creation with role picker
+│   │   │   ├── 3. Dashboard.jsx  # Metrics, live charts, today's schedule, circulars
+│   │   │   ├── 4. Students.jsx   # Full CRUD, USN search, semester/section filter
+│   │   │   ├── 5. Faculty.jsx    # Full CRUD, Employee ID, designation
+│   │   │   ├── 6. Departments.jsx# Full CRUD, department statistics & HOD linkage
+│   │   │   ├── 7. Subjects.jsx   # Full CRUD, subject code, credits, faculty allocation
+│   │   │   ├── 8. Attendance.jsx # Geofence-verified marking, roster, percentages
+│   │   │   ├── 9. Timetable.jsx  # 5th Sem ODD 2026-27 (5A: CS-303, 5B: CS-304)
+│   │   │   ├── 10. LiveLocation.jsx # navigator.geolocation, radar visualizer, WebSocket
+│   │   │   ├── 11. Notices.jsx   # Announcements CRUD, target audience filter
+│   │   │   ├── 12. Profile.jsx   # Academic credentials, profile & password edit
+│   │   │   ├── 13. Settings.jsx  # Geofence configuration, API health diagnostic
+│   │   │   └── 14. Reports.jsx   # VTU attendance shortage (<75%), CSV export, print
+│   │   ├── App.jsx               # React Router v6 setup with ProtectedRoute boundaries
+│   │   └── index.css             # High-contrast, modern dark theme design system
 │   ├── package.json
 │   └── vite.config.js
 │
 ├── backend/                      # Python 3.11+ FastAPI Backend
+│   ├── alembic/                  # Alembic database migrations
+│   │   ├── versions/
+│   │   │   └── 001_initial_schema.py # Initial database schema migration
+│   │   └── env.py
 │   ├── app/
-│   │   ├── main.py               # FastAPI app, CORS, exception handlers, /health
-│   │   ├── database.py           # Engine, SessionLocal, get_db(), init_db() with auto-seeding
-│   │   ├── models.py             # 18 SQLAlchemy models (Student, Teacher, Attendance, Timetable, Marks, etc.)
-│   │   ├── schemas.py            # Pydantic request/response schemas
-│   │   ├── auth.py               # Bcrypt password hashing & JWT encoding/decoding
-│   │   ├── dependencies.py       # Role-based access control (student, teacher, hod, admin)
-│   │   ├── config.py             # Settings reading .env
-│   │   ├── utils.py              # Haversine distance formula, session ID generator, audit logger
-│   │   │
-│   │   ├── routers/              # 16 REST API routers (all prefixed with /api/*)
-│   │   │   ├── auth.py
-│   │   │   ├── students.py
-│   │   │   ├── teachers.py
-│   │   │   ├── hod.py
-│   │   │   ├── admin.py
-│   │   │   ├── attendance.py     # Live GPS geofence validation, session tokens
-│   │   │   ├── timetable.py      # Room & teacher conflict checks, substitutes
-│   │   │   ├── rooms.py
-│   │   │   ├── exams.py
-│   │   │   ├── marks.py          # Continuous assessment & VTU letter grades
-│   │   │   ├── assignments.py
-│   │   │   ├── materials.py
-│   │   │   ├── notices.py
-│   │   │   ├── notifications.py
-│   │   │   ├── bus.py            # Transit routes & timings
-│   │   │   └── dashboard.py      # Role-aggregated dashboards
-│   │   │
-│   │   └── services/
-│   │       ├── attendance_service.py # Haversine distance, duplicate prevention
-│   │       ├── timetable_service.py  # Collision detection
-│   │       └── notification_service.py
-│   │
-│   ├── requirements.txt
-│   ├── .env
-│   ├── .env.example
-│   └── test_suite.py             # 15-step automated test suite
+│   │   ├── main.py               # FastAPI application, CORS, routers mount, /health
+│   │   ├── database.py           # SQLAlchemy engine, SessionLocal, Base, SQLite/PostgreSQL
+│   │   ├── config.py             # App configuration & geofence parameters
+│   │   ├── dependencies.py       # Role-based dependency injection (admin, hod, faculty, student)
+│   │   ├── models/               # SQLAlchemy ORM Models
+│   │   │   ├── user.py           # User account model
+│   │   │   ├── student.py        # Student profile model (USN, Sem, Sec)
+│   │   │   ├── faculty.py        # Faculty profile model (Emp ID, Designation)
+│   │   │   ├── department.py     # Academic department model
+│   │   │   ├── subject.py        # Subject syllabus model (Code, Credits)
+│   │   │   ├── attendance.py     # Daily attendance log model
+│   │   │   ├── timetable.py      # Weekly timetable slot model
+│   │   │   ├── location.py       # Geolocation coordinate model
+│   │   │   └── notice.py         # Department circular model
+│   │   ├── schemas/              # Pydantic v2 Request/Response validation schemas
+│   │   ├── routers/              # 11 REST API Routers
+│   │   │   ├── auth.py           # /api/auth (Login, Register, Refresh)
+│   │   │   ├── users.py          # /api/users (User CRUD, password change)
+│   │   │   ├── students.py       # /api/students (Student CRUD, filters)
+│   │   │   ├── faculty.py        # /api/faculty (Faculty CRUD)
+│   │   │   ├── departments.py    # /api/departments (Department CRUD)
+│   │   │   ├── subjects.py       # /api/subjects (Subject CRUD)
+│   │   │   ├── attendance.py     # /api/attendance (Marking, percentage calculation)
+│   │   │   ├── timetable.py      # /api/timetable (Weekly schedule, room allocation)
+│   │   │   ├── locations.py      # /api/location (Browser GPS updates, WebSocket)
+│   │   │   ├── notices.py        # /api/notices (Department bulletins CRUD)
+│   │   │   └── dashboard.py      # /api/dashboard (Aggregated metrics & charts)
+│   │   └── utils/
+│   │       ├── security.py       # Passlib bcrypt & PyJWT token management
+│   │       ├── geofence.py       # Haversine distance geofence algorithm
+│   │       └── response.py       # Standardized JSON response envelope
+│   ├── seed.py                   # Realistic seed script for 2026–2027 ODD Semester
+│   ├── test_api.py               # Automated pytest suite (11 test suites)
+│   ├── verify_live.py            # Live end-to-end API verification script
+│   └── requirements.txt
 │
 └── README.md
 ```
 
 ---
 
-## 🚀 Running the Application
+## 🚀 Quick Start Guide
 
-### 1. Start the Backend Server (Port 8000)
+### 1. Start the FastAPI Backend (Port 8000)
 
 ```bash
 cd backend
@@ -83,56 +105,82 @@ cd backend
 uv venv .venv --python 3.11
 uv pip install -r requirements.txt
 
-# Or with standard Python venv:
-# python -m venv venv
-# venv\Scripts\activate
-# pip install -r requirements.txt
+# Run migrations & seed data (Academic Year 2026–2027 ODD Sem)
+uv run python seed.py
 
-# Run FastAPI backend server
-uv run python -m uvicorn app.main:app --reload --port 8000
+# Launch FastAPI development server
+uv run python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 - **Interactive API Documentation (Swagger)**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-- **Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
+- **ReDoc API Documentation**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+- **System Health Probe**: [http://localhost:8000/health](http://localhost:8000/health)
 
-### 2. Start the Frontend Server (Port 5173)
+---
+
+### 2. Start the React Frontend (Port 5173)
 
 ```bash
 cd frontend
+
+# Install dependencies
 npm install
-npm run dev
+
+# Start Vite server
+npm run dev -- --host 0.0.0.0 --port 5173
 ```
 
-- **Web Portal**: [http://localhost:5173](http://localhost:5173)
+- **Application Web Portal**: [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## 👥 Development Login Credentials
+## 👥 Default Demo Credentials
 
-All accounts are pre-seeded upon initial startup. Password for all accounts: **`password123`**.
+Password for all pre-seeded accounts: **`password123`**
 
-| Role | Name | Email | Password | Persona & Privileges |
-|------|------|-------|----------|----------------------|
-| **Student** | Amulya H S | `amulya.h.s@mitt.ac.in` | `password123` | Sem 6 (USN: `4MT22CS010`), live geofence attendance, marks, timetable. |
-| **Teacher** | Prof. Ananya Iyer | `ananya.iyer@faculty.campus.edu` | `password123` | CSE Faculty (`FAC-CSE-001`), creates attendance sessions, enters marks. |
-| **HOD** | Dr. Vikramaditya Sen | `hod.cse@campus.edu` | `password123` | Department oversight, attendance shortage alerts (&lt;75%), locks & finalizes marks. |
-| **Admin** | Dr. Robert Hawthorne | `admin@campus.edu` | `password123` | Master user directory, facilities allocation, bus schedules, audit logs. |
+| Role | Name | Email / Username | Persona & Privileges |
+|------|------|------------------|----------------------|
+| **Admin** | System Administrator | `admin@campus.edu` | Master access across all departments: add/edit/remove students & teachers, rooms, subjects, timetable. |
+| **HOD** | Dr. Vikramaditya Sen | `hod.cse@campus.edu` | Professor & HOD (CSE): Manage students and teachers in own department only. Timetable, attendance, reports. |
+| **Teacher** | Prof. Ananya Iyer | `ananya.iyer@faculty.campus.edu` | Associate Professor: View assigned timetable, take timetable-based attendance. NO student/teacher CRUD. |
+| **Student (5A)** | Karthik D K | `karthik.dk@college.edu` | 5th Sem Sec A (USN: `4MT22CS008`): View own profile, timetable, and attendance history. NO student/teacher CRUD. |
+| **Student (5A)** | Aarav Sharma | `aarav.sharma@college.edu` | 5th Sem Sec A (USN: `4MT22CS001`): View own profile, timetable, and attendance history. NO student/teacher CRUD. |
 
 ---
 
-## 📍 GPS Geofence Attendance Verification
+## 🛡️ Role-Based Permissions & Management
 
-The system validates attendance marking using the **server-side Haversine formula**:
+### Admin
+- **Full student & teacher management** across all departments.
+- Add, View, Edit, Remove/Deactivate students and teachers.
+- Assign departments, semesters, sections.
+- Access: `/admin/students`, `/admin/students/add`, `/admin/teachers`, `/admin/teachers/add`.
 
-- **College Coordinates**: `12.183700° N, 76.694200° E` (Configurable via `COLLEGE_LAT`, `COLLEGE_LON` in `.env`)
-- **Allowed Radius**: `300 meters` (Configurable via `ATTENDANCE_RADIUS_METERS`)
-- **Workflow**:
-  1. Teacher opens a session: backend generates a human-readable unique code (e.g. `SESSION-2026-000001`).
-  2. Student inputs session code and clicks **"MARK ATTENDANCE"**.
-  3. Browser requests device GPS coordinates via HTML5 Geolocation API.
-  4. Coordinates are sent to `POST /api/attendance/mark`.
-  5. Backend calculates the great-circle distance.
-  6. If distance ≤ 300m: attendance marked as `PRESENT`, generates SHA-256 verification hash, records audit log.
-  7. If distance &gt; 300m: rejected with `"You are outside the college attendance area"`.
-  8. Duplicate check-ins are strictly blocked (`409 Conflict`).
+### HOD
+- Manage students and teachers **in own department only** (`current_user.department_id == target.department_id`).
+- Backend strictly enforces department boundary (`403 Forbidden` if attempting to modify other departments).
+- Access: `/hod/students`, `/hod/students/add`, `/hod/teachers`, `/hod/teachers/add`.
+
+### Teacher & Student Restrictions
+- **Zero CRUD Permissions**: Teachers and Students are blocked from creating, editing, or deleting students/teachers.
+- Front-end hides action buttons, and back-end strictly returns **`403 Forbidden`** on any unauthorized API request.
+
+### Safe Historical Deactivation
+- Before removing a student or teacher, the system checks for existing attendance records or timetable entries.
+- If historical data exists, the record is safely set to **`status = "inactive"`** (`Student/Teacher deactivated successfully.`), permanently preserving academic and attendance history.
+
+---
+
+## 🧪 Automated Test Verification
+
+Run all test suites anytime using the Python virtual environment:
+
+```powershell
+# 1. Test Attendance Strictly Connected to Timetable (10/10 tests)
+backend\.venv\Scripts\python.exe backend\test_attendance.py
+
+# 2. Test Student & Teacher Management Role-Based Permissions
+backend\.venv\Scripts\python.exe backend\test_management_permissions.py
+```
+
+Both tests verify backend HTTP status codes (`200`, `201`, `403 Forbidden`, `409 Conflict`), safe deactivation, and timetable-linked attendance.

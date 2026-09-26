@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+import datetime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -8,16 +9,25 @@ class Timetable(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     department_id = Column(Integer, ForeignKey("departments.id"), nullable=False)
-    semester = Column(Integer, nullable=False, default=5)
-    section = Column(String(10), nullable=False, default="A")
-    day = Column(String(50), nullable=False)  # Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
-    start_time = Column(String(50), nullable=False)  # e.g. 09:00
-    end_time = Column(String(50), nullable=False)    # e.g. 10:00
+    semester = Column(Integer, nullable=True)
+    section = Column(String(50), nullable=True)
+    day = Column(String(50), nullable=False)
+    period_number = Column(Integer, nullable=True)
+    start_time = Column(String(50), nullable=False)
+    end_time = Column(String(50), nullable=False)
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
-    faculty_id = Column(Integer, ForeignKey("faculties.id"), nullable=False)
-    room_number = Column(String(50), nullable=False)  # e.g. CS-303, CS-304
+    teacher_id = Column(Integer, ForeignKey("teachers.id"), nullable=False)
+    room_id = Column(Integer, ForeignKey("rooms.id"), nullable=True)
+    timetable_type = Column(String(50), default="regular")
+    status = Column(String(50), default="active")
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     # Relationships
     department = relationship("Department", back_populates="timetables")
     subject = relationship("Subject", back_populates="timetables")
-    faculty = relationship("Faculty", back_populates="timetables")
+    teacher = relationship("Teacher", back_populates="timetables")
+    room = relationship("Room", back_populates="timetables")
+    attendances = relationship("Attendance", back_populates="timetable", cascade="all, delete-orphan")
+    attendance_sessions = relationship("AttendanceSession", back_populates="timetable", cascade="all, delete-orphan")
+

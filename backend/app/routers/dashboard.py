@@ -19,7 +19,13 @@ from app.utils.response import success_response
 router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
 
 
+@router.get("")
 @router.get("/stats")
+@router.get("/student")
+@router.get("/teacher")
+@router.get("/faculty")
+@router.get("/hod")
+@router.get("/admin")
 def get_dashboard_statistics(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)

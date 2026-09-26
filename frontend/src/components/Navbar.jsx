@@ -1,199 +1,194 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import api from "../services/api";
 import {
+  Menu,
   Bell,
-  LogOut,
   MapPin,
-  User,
+  Clock,
   ShieldCheck,
-  CheckCircle,
-  ExternalLink,
+  User,
+  LogOut,
 } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ onMenuToggle }) {
   const { user, role, logout } = useAuth();
-  const [notifications, setNotifications] = useState([]);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const navigate = useNavigate();
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [geofenceStatus, setGeofenceStatus] = useState("Checking...");
 
+  // Update clock every minute
   useEffect(() => {
-    async function loadNotifications() {
-      try {
-        const data = await api.getNotifications();
-        if (Array.isArray(data)) {
-          setNotifications(data);
-          setUnreadCount(data.filter((n) => !n.read).length);
-        }
-      } catch (err) {
-        console.warn("Could not fetch notifications:", err);
-      }
-    }
-
-    loadNotifications();
-    const interval = setInterval(loadNotifications, 30000);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => setCurrentTime(new Date()), 30000);
+    return () => clearInterval(timer);
   }, []);
 
-  const handleMarkAllRead = async () => {
-    try {
-      await api.markAllNotificationsRead();
-      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      setUnreadCount(0);
-    } catch (e) {
-      console.error(e);
+  // Check browser geolocation for header badge
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          // Approximate distance to campus center (12.183700, 76.694200)
+          const dLat = (lat - 12.1837) * 111000;
+          const dLon = (lon - 76.6942) * 111000 * Math.cos((12.1837 * Math.PI) / 180);
+          const dist = Math.sqrt(dLat * dLat + dLon * dLon);
+          if (dist <= 500) {
+            setGeofenceStatus(`On Campus (${Math.round(dist)}m)`);
+          } else {
+            setGeofenceStatus(`Outside (${(dist / 1000).toFixed(1)}km)`);
+          }
+        },
+        () => {
+          setGeofenceStatus("Campus Boundary Active");
+        },
+        { timeout: 5000, maximumAge: 60000 }
+      );
+    } else {
+      setGeofenceStatus("Campus Boundary Active");
     }
-  };
+  }, []);
 
-  const getRoleBadgeClass = (r) => {
-    switch (r) {
-      case "admin":
-        return "badge-danger";
-      case "hod":
-        return "badge-purple";
-      case "teacher":
-        return "badge-info";
-      default:
-        return "badge-success";
-    }
-  };
+  const formattedDate = currentTime.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const formattedTime = currentTime.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
-    <header className="navbar">
-      <div className="nav-left">
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <MapPin size={16} color="#06b6d4" />
-          <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
-            Campus GPS: <strong>12.1837° N, 76.6942° E</strong> (Thandavapura)
-          </span>
+    <header
+      style={{
+        height: "var(--navbar-height, 68px)",
+        position: "sticky",
+        top: 0,
+        zIndex: 30,
+        background: "rgba(17, 24, 39, 0.85)",
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid var(--border-color, rgba(255, 255, 255, 0.08))",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 1.5rem",
+      }}
+    >
+      {/* Left: Mobile Menu & Breadcrumb */}
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <button
+          onClick={onMenuToggle}
+          className="mobile-menu-btn"
+          style={{
+            background: "rgba(255, 255, 255, 0.05)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            color: "#f8fafc",
+            borderRadius: "8px",
+            padding: "0.5rem",
+            cursor: "pointer",
+            display: "none",
+            alignItems: "center",
+          }}
+        >
+          <Menu size={20} />
+        </button>
+
+        <div>
+          <div style={{ fontSize: "1rem", fontWeight: 700, color: "#f8fafc" }}>
+            Dept of Computer Science & Engineering
+          </div>
+          <div style={{ fontSize: "0.75rem", color: "var(--text-muted, #64748b)" }}>
+            Academic Year 2026–2027 • 5th Semester ODD SEM
+          </div>
         </div>
       </div>
 
-      <div className="nav-right">
-        {/* Notification Bell Dropdown */}
-        <div style={{ position: "relative" }}>
-          <button
-            className="btn-icon"
-            onClick={() => setShowNotifications(!showNotifications)}
-            title="Notifications"
-          >
-            <Bell size={18} />
-            {unreadCount > 0 && <span className="badge-dot" />}
-          </button>
-
-          {showNotifications && (
-            <div
-              style={{
-                position: "absolute",
-                top: "50px",
-                right: "0",
-                width: "360px",
-                background: "#111827",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                borderRadius: "12px",
-                padding: "1rem",
-                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5)",
-                zIndex: 150,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "0.75rem",
-                  paddingBottom: "0.5rem",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                }}
-              >
-                <div style={{ fontWeight: 700, fontSize: "0.9rem", color: "#fff" }}>
-                  Notifications ({unreadCount} new)
-                </div>
-                {unreadCount > 0 && (
-                  <button
-                    onClick={handleMarkAllRead}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "#6366f1",
-                      fontSize: "0.75rem",
-                      cursor: "pointer",
-                      fontWeight: 600,
-                    }}
-                  >
-                    Mark all read
-                  </button>
-                )}
-              </div>
-
-              <div style={{ maxHeight: "300px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                {notifications.length === 0 ? (
-                  <div style={{ textAlign: "center", padding: "1.5rem", color: "#64748b", fontSize: "0.85rem" }}>
-                    No notifications right now
-                  </div>
-                ) : (
-                  notifications.slice(0, 6).map((n) => (
-                    <div
-                      key={n.id}
-                      style={{
-                        padding: "0.6rem 0.75rem",
-                        background: n.read ? "rgba(255, 255, 255, 0.02)" : "rgba(99, 102, 241, 0.1)",
-                        borderRadius: "8px",
-                        borderLeft: n.read ? "3px solid #334155" : "3px solid #6366f1",
-                      }}
-                    >
-                      <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff" }}>
-                        {n.title}
-                      </div>
-                      <div style={{ fontSize: "0.75rem", color: "#94a3b8", marginTop: "2px" }}>
-                        {n.message}
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
+      {/* Right Controls */}
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        {/* Live Geofence Badge */}
+        <div
+          title="Configured Department GPS Geofence (300m radius)"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            padding: "0.35rem 0.75rem",
+            borderRadius: "20px",
+            background: geofenceStatus.includes("Outside")
+              ? "rgba(245, 158, 11, 0.15)"
+              : "rgba(16, 185, 129, 0.15)",
+            border: `1px solid ${
+              geofenceStatus.includes("Outside")
+                ? "rgba(245, 158, 11, 0.3)"
+                : "rgba(16, 185, 129, 0.3)"
+            }`,
+            color: geofenceStatus.includes("Outside") ? "#f59e0b" : "#10b981",
+            fontSize: "0.75rem",
+            fontWeight: 600,
+          }}
+          className="geofence-badge"
+        >
+          <MapPin size={13} />
+          <span>{geofenceStatus}</span>
         </div>
 
-        {/* User Badge */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        {/* Live Clock */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            fontSize: "0.8rem",
+            color: "var(--text-secondary, #94a3b8)",
+            padding: "0.35rem 0.65rem",
+            background: "rgba(255, 255, 255, 0.03)",
+            borderRadius: "8px",
+            border: "1px solid rgba(255, 255, 255, 0.05)",
+          }}
+          className="time-badge"
+        >
+          <Clock size={13} />
+          <span>
+            {formattedDate}, {formattedTime}
+          </span>
+        </div>
+
+        {/* Profile Avatar Pill */}
+        <Link
+          to="/profile"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.6rem",
+            textDecoration: "none",
+            color: "#f8fafc",
+            padding: "0.35rem 0.75rem",
+            background: "rgba(255, 255, 255, 0.05)",
+            borderRadius: "8px",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            fontSize: "0.85rem",
+            fontWeight: 500,
+          }}
+        >
           <div
             style={{
-              width: "36px",
-              height: "36px",
+              width: "26px",
+              height: "26px",
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #6366f1, #06b6d4)",
+              background: "#6366f1",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#fff",
+              fontSize: "0.75rem",
               fontWeight: 700,
-              fontSize: "0.9rem",
             }}
           >
-            {user?.full_name ? user.full_name.charAt(0).toUpperCase() : "U"}
+            {user?.name ? user.name[0].toUpperCase() : "U"}
           </div>
-
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#fff" }}>
-              {user?.full_name || "Academic User"}
-            </span>
-            <span className={`badge ${getRoleBadgeClass(role)}`} style={{ padding: "1px 6px", fontSize: "0.65rem", width: "fit-content" }}>
-              {role?.toUpperCase()}
-            </span>
-          </div>
-        </div>
-
-        {/* Logout Button */}
-        <button
-          className="btn-icon"
-          onClick={logout}
-          title="Sign Out"
-          style={{ color: "#f87171" }}
-        >
-          <LogOut size={18} />
-        </button>
+          <span className="user-name-text">{user?.name?.split(" ")[0] || "User"}</span>
+        </Link>
       </div>
     </header>
   );

@@ -4,7 +4,8 @@ from typing import List
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "sqlite:///./smart_department.db"
+    MYSQL_PASSWORD: str = ""
+    DATABASE_URL: str = "mysql+pymysql://root:${MYSQL_PASSWORD}@localhost:3306/smart_department_db"
     SECRET_KEY: str = "smart_department_production_secret_key_jwt_2026_safe"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
@@ -27,6 +28,27 @@ class Settings(BaseSettings):
         if self.FRONTEND_URL not in origins:
             origins.append(self.FRONTEND_URL)
         return origins
+
+    @property
+    def effective_database_url(self) -> str:
+        url = self.DATABASE_URL
+        mysql_pwd = self.MYSQL_PASSWORD or os.environ.get("MYSQL_PASSWORD", "")
+        if "${MYSQL_PASSWORD}" in url:
+            url = url.replace("${MYSQL_PASSWORD}", mysql_pwd)
+        elif "$MYSQL_PASSWORD" in url:
+            url = url.replace("$MYSQL_PASSWORD", mysql_pwd)
+
+        # On Vercel serverless, root is read-only so fallback SQLite uses /tmp
+        if os.environ.get("VERCEL") and "sqlite:///./" in url:
+            return "sqlite:////tmp/smart_department.db"
+        # Support postgres:// URL format provided by Supabase / Neon / Render
+        if url.startswith("postgres://"):
+            return url.replace("postgres://", "postgresql://", 1)
+        if url.startswith("sqlite:///./"):
+            backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            db_path = os.path.join(backend_dir, url.replace("sqlite:///./", ""))
+            return f"sqlite:///{db_path.replace(chr(92), '/')}"
+        return url
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

@@ -12,19 +12,35 @@ from app.routers import (
     users_router,
     students_router,
     faculty_router,
+    teachers_router,
+    rooms_router,
     departments_router,
     subjects_router,
     attendance_router,
     timetable_router,
     locations_router,
     notices_router,
+    dashboard_router,
 )
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Ensure database schema is created on startup in development
+    # Ensure database schema is created on startup in development / serverless
     create_dev_tables()
+    # Auto-seed initial department, users, subjects, and timetable if fresh database
+    try:
+        from app.database import SessionLocal
+        from app.models.department import Department
+        with SessionLocal() as db:
+            if not db.query(Department).first():
+                try:
+                    from seed import seed_database
+                    seed_database()
+                except Exception as seed_err:
+                    print(f"Auto-seed notice: {seed_err}")
+    except Exception as e:
+        print(f"Database startup check: {e}")
     yield
 
 
@@ -72,6 +88,7 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
             "success": False,
             "message": str(exc.detail),
             "error": str(exc.detail),
+            "detail": str(exc.detail),
         },
     )
 
@@ -119,29 +136,51 @@ def health_check():
     }
 
 
-@app.get("/", tags=["Health"])
-def root():
-    """Root info endpoint."""
-    return {
-        "service": "Smart Department Backend",
-        "status": "online",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "redoc": "/redoc",
-        "health": "/health"
-    }
-
-
 # ---------------------------------------------------------
-# Mount All 10 API Routers
+# Mount All 11 API Routers
 # ---------------------------------------------------------
 app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(students_router)
 app.include_router(faculty_router)
+app.include_router(teachers_router)
+app.include_router(rooms_router)
 app.include_router(departments_router)
 app.include_router(subjects_router)
 app.include_router(attendance_router)
 app.include_router(timetable_router)
 app.include_router(locations_router)
 app.include_router(notices_router)
+app.include_router(dashboard_router)
+
+# ---------------------------------------------------------
+# Combined Frontend Mounting & SPA Fallback Route
+# ---------------------------------------------------------
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+FRONTEND_DIST = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist")
+)
+
+if os.path.exists(FRONTEND_DIST):
+    assets_dir = os.path.join(FRONTEND_DIST, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/{full_path:path}", tags=["Frontend"])
+    async def serve_spa_frontend(request: Request, full_path: str):
+        # Allow API routes, docs, and health checks to pass through
+        if full_path.startswith("api/") or full_path in ("docs", "redoc", "openapi.json", "health"):
+            raise StarletteHTTPException(status_code=404, detail="Not Found")
+
+        file_path = os.path.join(FRONTEND_DIST, full_path)
+        if full_path and os.path.isfile(file_path):
+            return FileResponse(file_path)
+
+        # Fallback to index.html for React Router client-side routing
+        index_file = os.path.join(FRONTEND_DIST, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+        return JSONResponse({"status": "Frontend build not found"}, status_code=404)

@@ -1,27 +1,20 @@
 {
-  "name": "campusconnect-academic-erp",
-  "version": "2.4.0",
-  "description": "CampusConnect - Comprehensive College Academic ERP featuring College Gmail SSO, Multi-Role Dashboards (Student, Teacher, HOD, Admin), Attendance Registers, Continuous Assessment Gradebook, and FERPA-Compliant Data Privacy",
-  "main": "server.js",
+  "name": "smart-department-management-system",
+  "version": "1.0.0",
+  "description": "Smart Department Academic Management System - Full-stack React + FastAPI",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "build": "node scripts/build.js",
-    "db:seed": "node scripts/seed.js",
-    "test": "node scripts/test_hod_teacher_feature.js && node scripts/test_geofence_attendance.js && node scripts/test_student_management.js",
-    "test:geofence": "node scripts/test_geofence_attendance.js",
-    "test:students": "node scripts/test_student_management.js"
+    "build": "cd frontend && npm install && npm run build",
+    "dev": "python run.py",
+    "start": "python run.py"
   },
   "keywords": [
-    "campusconnect",
+    "smart-department",
     "react",
-    "college-erp",
-    "academic-portal",
-    "student-privacy",
-    "attendance-tracking",
-    "gradebook",
-    "ferpa"
+    "fastapi",
+    "attendance",
+    "timetable",
+    "geofence"
   ],
-  "author": "CampusConnect Systems",
+  "author": "Smart Department Team",
   "license": "MIT"
 }

@@ -1,117 +1,153 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 
 from app.database import get_db
-from app.models.subject import Subject
-from app.models.user import User
-from app.schemas.subject import SubjectCreate, SubjectUpdate, SubjectOut
-from app.dependencies import get_current_user, require_role, require_any_role
-from app.utils.response import success_response
+from app.models import Subject, Teacher, Department, User
+from app.schemas import SubjectCreate, SubjectUpdate, SubjectResponse
+from app.dependencies import get_current_user, require_any_role
 
 router = APIRouter(prefix="/api/subjects", tags=["Subjects"])
 
 
-@router.post("", status_code=status.HTTP_201_CREATED)
-def create_subject(
-    payload: SubjectCreate,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("admin", "hod"))
-):
-    """Admin & HOD: Create a subject."""
-    existing = db.query(Subject).filter(Subject.subject_code == payload.subject_code.upper()).first()
-    if existing:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Subject with code {payload.subject_code} already exists"
-        )
-
-    subject = Subject(
-        subject_code=payload.subject_code.upper(),
-        subject_name=payload.subject_name,
-        credits=payload.credits,
-        semester=payload.semester,
-        department_id=payload.department_id,
-        faculty_id=payload.faculty_id
-    )
-    db.add(subject)
-    db.commit()
-    db.refresh(subject)
-
-    data = SubjectOut.model_validate(subject).model_dump()
-    return success_response(data=data, message="Subject created successfully", status_code=status.HTTP_201_CREATED)
+def format_subject(s: Subject) -> dict:
+    return {
+        "id": s.id,
+        "subject_code": s.subject_code,
+        "subject_name": s.subject_name,
+        "department_id": s.department_id,
+        "department_name": s.department.name if s.department else None,
+        "semester": s.semester,
+        "credits": s.credits,
+        "teacher_id": s.teacher_id,
+        "teacher_name": s.teacher.name if s.teacher else None,
+        "status": s.status or "active",
+    }
 
 
-@router.get("")
+@router.get("", response_model=List[SubjectResponse])
 def list_subjects(
     department_id: Optional[int] = None,
     semester: Optional[int] = None,
-    faculty_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """List subjects with filters (department, semester, faculty)."""
-    query = db.query(Subject)
+    """List all subjects, optionally filtered by department and semester."""
+    query = db.query(Subject).options(
+        joinedload(Subject.department),
+        joinedload(Subject.teacher)
+    )
     if department_id:
         query = query.filter(Subject.department_id == department_id)
     if semester:
         query = query.filter(Subject.semester == semester)
-    if faculty_id:
-        query = query.filter(Subject.faculty_id == faculty_id)
-
-    # If faculty, can filter easily or default
-    if current_user.role == "faculty" and not faculty_id and not department_id and not semester:
-        if current_user.faculty_profile:
-            query = query.filter(Subject.faculty_id == current_user.faculty_profile.id)
-
-    subjects = query.all()
-    data = [SubjectOut.model_validate(s).model_dump() for s in subjects]
-    return success_response(data=data, message="Subjects retrieved successfully")
+    
+    subjects = query.order_by(Subject.subject_code, Subject.subject_name).all()
+    return [format_subject(s) for s in subjects]
 
 
-@router.get("/{subject_id}")
+@router.get("/{subject_id}", response_model=SubjectResponse)
 def get_subject(
     subject_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Get subject by ID."""
-    subject = db.query(Subject).filter(Subject.id == subject_id).first()
-    if not subject:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Subject not found")
+    """Get single subject details."""
+    s = db.query(Subject).options(
+        joinedload(Subject.department),
+        joinedload(Subject.teacher)
+    ).filter(Subject.id == subject_id).first()
 
-    data = SubjectOut.model_validate(subject).model_dump()
-    return success_response(data=data, message="Subject details retrieved")
+    if not s:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Subject with ID {subject_id} not found."
+        )
+    return format_subject(s)
 
 
-@router.put("/{subject_id}")
+@router.post("", response_model=SubjectResponse, status_code=status.HTTP_201_CREATED)
+def create_subject(
+    payload: SubjectCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod"))
+):
+    """Create a new subject."""
+    if payload.subject_code:
+        existing = db.query(Subject).filter(Subject.subject_code == payload.subject_code).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Subject with code '{payload.subject_code}' already exists."
+            )
+
+    subject = Subject(
+        subject_code=payload.subject_code,
+        subject_name=payload.subject_name,
+        department_id=payload.department_id,
+        semester=payload.semester,
+        credits=payload.credits or 4,
+        teacher_id=payload.teacher_id,
+        status=payload.status or "active"
+    )
+    db.add(subject)
+    db.commit()
+    db.refresh(subject)
+
+    s = db.query(Subject).options(
+        joinedload(Subject.department),
+        joinedload(Subject.teacher)
+    ).filter(Subject.id == subject.id).first()
+    return format_subject(s)
+
+
+@router.put("/{subject_id}", response_model=SubjectResponse)
 def update_subject(
     subject_id: int,
     payload: SubjectUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_any_role("admin", "hod"))
 ):
-    """Admin & HOD: Update subject details."""
+    """Update a subject."""
     subject = db.query(Subject).filter(Subject.id == subject_id).first()
     if not subject:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Subject not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Subject with ID {subject_id} not found."
+        )
+
+    if payload.subject_code and payload.subject_code != subject.subject_code:
+        existing = db.query(Subject).filter(
+            Subject.subject_code == payload.subject_code,
+            Subject.id != subject_id
+        ).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Another subject already has code '{payload.subject_code}'."
+            )
 
     if payload.subject_name is not None:
         subject.subject_name = payload.subject_name
-    if payload.credits is not None:
-        subject.credits = payload.credits
-    if payload.semester is not None:
-        subject.semester = payload.semester
+    if payload.subject_code is not None:
+        subject.subject_code = payload.subject_code
     if payload.department_id is not None:
         subject.department_id = payload.department_id
-    if payload.faculty_id is not None:
-        subject.faculty_id = payload.faculty_id
+    if payload.semester is not None:
+        subject.semester = payload.semester
+    if payload.credits is not None:
+        subject.credits = payload.credits
+    if payload.teacher_id is not None:
+        subject.teacher_id = payload.teacher_id
+    if payload.status is not None:
+        subject.status = payload.status
 
     db.commit()
-    db.refresh(subject)
-
-    data = SubjectOut.model_validate(subject).model_dump()
-    return success_response(data=data, message="Subject updated successfully")
+    s = db.query(Subject).options(
+        joinedload(Subject.department),
+        joinedload(Subject.teacher)
+    ).filter(Subject.id == subject_id).first()
+    return format_subject(s)
 
 
 @router.delete("/{subject_id}")
@@ -120,11 +156,13 @@ def delete_subject(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_any_role("admin", "hod"))
 ):
-    """Admin & HOD: Delete a subject."""
+    """Delete a subject."""
     subject = db.query(Subject).filter(Subject.id == subject_id).first()
     if not subject:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Subject not found")
-
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Subject with ID {subject_id} not found."
+        )
     db.delete(subject)
     db.commit()
-    return success_response(data={"id": subject_id}, message="Subject deleted successfully")
+    return {"success": True, "message": f"Subject #{subject_id} deleted successfully."}

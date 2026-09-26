@@ -1,224 +1,389 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlalchemy.orm import Session
-from typing import List, Optional, Dict, Any
+from fastapi import APIRouter, Depends, HTTPException, status, Query
+from sqlalchemy.orm import Session, joinedload
+from typing import List, Optional
+from datetime import datetime
 
 from app.database import get_db
-from app.models import Teacher, User, Session as SessionModel, Attendance
-from app.schemas import TeacherCreate, TeacherUpdate, TeacherOut, ApiResponse
-from app.dependencies import get_current_user, require_role, require_any_role, get_client_ip
-from app.auth import get_password_hash
-from app.utils import log_audit
+from app.models import Teacher, Department, User, Timetable, Attendance
+from app.schemas import TeacherCreate, TeacherUpdate, TeacherResponse
+from app.dependencies import get_current_user, require_admin_or_hod
+from app.utils.security import get_password_hash
+from app.utils.response import success_response
 
-router = APIRouter(prefix="/api/teachers", tags=["Teacher Management"])
-
-
-@router.get("", response_model=Dict[str, Any])
-def list_teachers(
-    department: Optional[str] = None,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """List all faculty members."""
-    query = db.query(Teacher)
-    if department:
-        query = query.filter(Teacher.department == department)
-    teachers = query.all()
-    
-    results = []
-    for t in teachers:
-        results.append({
-            "id": t.id,
-            "faculty_id": t.faculty_id,
-            "name": t.user.full_name if t.user else None,
-            "email": t.user.email if t.user else None,
-            "department": t.department,
-            "designation": t.designation,
-            "qualification": t.qualification,
-            "specialization": t.specialization,
-            "office_location": t.office_location,
-            "phone": t.user.phone if t.user else None,
-            "status": t.status
-        })
-    return {"success": True, "count": len(results), "teachers": results}
+router = APIRouter(prefix="/api/teachers", tags=["Teachers"])
 
 
-@router.get("/{teacher_id}", response_model=Dict[str, Any])
-def get_teacher(
-    teacher_id: int,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Get single teacher details."""
-    t = db.query(Teacher).filter(Teacher.id == teacher_id).first()
-    if not t:
-        raise HTTPException(status_code=404, detail="Faculty member not found.")
-
+def format_teacher(t: Teacher) -> dict:
+    dept_name = t.department.name if t.department else None
     return {
-        "success": True,
-        "teacher": {
-            "id": t.id,
-            "faculty_id": t.faculty_id,
-            "name": t.user.full_name if t.user else None,
-            "email": t.user.email if t.user else None,
-            "department": t.department,
-            "designation": t.designation,
-            "qualification": t.qualification,
-            "specialization": t.specialization,
-            "office_location": t.office_location,
-            "phone": t.user.phone if t.user else None,
-            "status": t.status
-        }
+        "id": t.id,
+        "name": t.name,
+        "employee_id": t.employee_id,
+        "email": t.email,
+        "phone": t.phone,
+        "department_id": t.department_id,
+        "department_name": dept_name,
+        "designation": t.designation or "Assistant Professor",
+        "username": t.username or (t.email if t.email else None),
+        "status": t.status or "active",
+        "created_at": t.created_at,
+        "updated_at": t.updated_at,
     }
 
 
-@router.post("", response_model=ApiResponse, status_code=status.HTTP_201_CREATED)
-def create_teacher(
-    req: TeacherCreate,
-    request: Request,
-    current_user: User = Depends(require_any_role("hod", "admin")),
-    db: Session = Depends(get_db)
+# ==========================================================
+# 1. LIST TEACHERS (GET /api/teachers)
+# ==========================================================
+@router.get("", response_model=List[TeacherResponse])
+def list_teachers(
+    department_id: Optional[int] = None,
+    status_filter: Optional[str] = Query(None, alias="status"),
+    search: Optional[str] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
-    """Add a new teacher/faculty member (HOD and Admin only)."""
-    # Check duplicate email
-    if db.query(User).filter(User.email == req.email.lower()).first():
-        raise HTTPException(status_code=409, detail="A user with this email address already exists.")
+    """
+    List teachers.
+    - Admin: Full access to view teachers across all departments.
+    - HOD: Restricted to viewing teachers in their own department.
+    - Teacher / Student: Blocked from teacher administration listing (403 Forbidden).
+    """
+    user_role = current_user.role.lower()
+    if user_role not in ("admin", "hod"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to perform this action."
+        )
 
-    # Check duplicate faculty ID
-    if db.query(Teacher).filter(Teacher.faculty_id == req.faculty_id.upper()).first():
-        raise HTTPException(status_code=409, detail=f"Faculty ID {req.faculty_id} already exists.")
+    query = db.query(Teacher).options(joinedload(Teacher.department))
 
-    # Create User
-    new_user = User(
-        email=req.email.lower(),
-        hashed_password=get_password_hash(req.password or "password123"),
-        full_name=req.full_name,
-        role="teacher",
-        phone=req.phone,
-        is_active=True
+    # HOD department restriction
+    if user_role == "hod":
+        if current_user.department_id:
+            query = query.filter(Teacher.department_id == current_user.department_id)
+        else:
+            return []
+    elif department_id:
+        query = query.filter(Teacher.department_id == department_id)
+
+    if status_filter and status_filter.lower() != "all":
+        query = query.filter(Teacher.status == status_filter.lower())
+
+    if search:
+        s = f"%{search.strip()}%"
+        query = query.filter(
+            (Teacher.name.ilike(s)) |
+            (Teacher.employee_id.ilike(s)) |
+            (Teacher.email.ilike(s)) |
+            (Teacher.designation.ilike(s))
+        )
+
+    teachers = query.order_by(Teacher.name.asc()).all()
+    return [format_teacher(t) for t in teachers]
+
+
+# ==========================================================
+# 2. GET SINGLE TEACHER (GET /api/teachers/{id})
+# ==========================================================
+@router.get("/{teacher_id}", response_model=TeacherResponse)
+def get_teacher(
+    teacher_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get teacher details by ID.
+    - Admin: Can view any teacher.
+    - HOD: Can view teachers in own department only.
+    - Teacher: Can view own teacher profile.
+    - Student: 403 Forbidden.
+    """
+    t = db.query(Teacher).options(joinedload(Teacher.department)).filter(Teacher.id == teacher_id).first()
+    if not t:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Teacher with ID {teacher_id} not found."
+        )
+
+    user_role = current_user.role.lower()
+    if user_role == "teacher":
+        if current_user.teacher_id != t.id and current_user.email != t.email:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to view other teachers' profiles."
+            )
+    elif user_role == "hod":
+        if current_user.department_id and t.department_id != current_user.department_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to perform this action. Teacher belongs to another department."
+            )
+    elif user_role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to perform this action."
+        )
+
+    return format_teacher(t)
+
+
+# ==========================================================
+# 3. CREATE TEACHER (POST /api/teachers)
+# ==========================================================
+@router.post("", response_model=TeacherResponse, status_code=status.HTTP_201_CREATED)
+def create_teacher(
+    payload: TeacherCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_or_hod)
+):
+    """
+    Create a new teacher with linked login account.
+    - Admin: Can assign any department.
+    - HOD: Can create teachers ONLY in their own department.
+    - Teacher / Student: 403 Forbidden.
+    """
+    emp_id = (payload.employee_id or "").strip().upper()
+    if not emp_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Employee ID is required."
+        )
+
+    # Department permission enforcement
+    target_dept_id = payload.department_id or current_user.department_id or 1
+    if current_user.role.lower() == "hod":
+        if current_user.department_id and target_dept_id != current_user.department_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to perform this action. HODs can only add teachers to their own department."
+            )
+        target_dept_id = current_user.department_id
+
+    # Check Employee ID uniqueness
+    existing_emp = db.query(Teacher).filter(Teacher.employee_id == emp_id).first()
+    if existing_emp:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Teacher with Employee ID '{emp_id}' already exists."
+        )
+
+    email_clean = payload.email.lower().strip() if payload.email else f"{emp_id.lower()}@faculty.campus.edu"
+    existing_user = db.query(User).filter(User.email == email_clean).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"User with email '{email_clean}' already exists."
+        )
+
+    plain_pwd = payload.password or "password123"
+    hashed_pwd = get_password_hash(plain_pwd)
+    username_val = (payload.username or email_clean).strip().lower()
+
+    # Create Teacher record
+    teacher = Teacher(
+        name=payload.name.strip(),
+        email=email_clean,
+        employee_id=emp_id,
+        phone=payload.phone,
+        department_id=target_dept_id,
+        designation=payload.designation or "Assistant Professor",
+        username=username_val,
+        password_hash=hashed_pwd,
+        status=payload.status or "active"
     )
-    db.add(new_user)
-    db.flush()
-
-    new_teacher = Teacher(
-        user_id=new_user.id,
-        faculty_id=req.faculty_id.upper(),
-        department=req.department,
-        designation=req.designation,
-        qualification=req.qualification,
-        specialization=req.specialization,
-        office_location=req.office_location,
-        phone=req.phone,
-        status="ACTIVE"
-    )
-    db.add(new_teacher)
+    db.add(teacher)
     db.commit()
-    db.refresh(new_teacher)
+    db.refresh(teacher)
 
-    log_audit(
-        db=db,
-        action="ADD_TEACHER",
-        module="Faculty",
-        user_id=current_user.id,
-        record_id=str(new_teacher.id),
-        details=f"HOD added faculty: {req.full_name} ({req.faculty_id})",
-        ip_address=get_client_ip(request)
+    # Create linked User account for authentication
+    user = User(
+        name=payload.name.strip(),
+        email=email_clean,
+        password_hash=hashed_pwd,
+        role="teacher",
+        department_id=target_dept_id,
+        teacher_id=teacher.id,
+        phone=payload.phone,
+        is_active=(payload.status != "inactive")
     )
+    db.add(user)
+    db.commit()
 
-    return ApiResponse(
-        success=True,
-        message="Teacher added successfully.",
-        data={"teacher_id": new_teacher.id, "faculty_id": new_teacher.faculty_id, "email": new_user.email}
-    )
+    t = db.query(Teacher).options(joinedload(Teacher.department)).filter(Teacher.id == teacher.id).first()
+    return format_teacher(t)
 
 
-@router.put("/{teacher_id}", response_model=ApiResponse)
+# ==========================================================
+# 4. UPDATE TEACHER (PUT /api/teachers/{id})
+# ==========================================================
+@router.put("/{teacher_id}", response_model=TeacherResponse)
 def update_teacher(
     teacher_id: int,
-    req: TeacherUpdate,
-    request: Request,
-    current_user: User = Depends(require_any_role("hod", "admin")),
-    db: Session = Depends(get_db)
+    payload: TeacherUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_or_hod)
 ):
-    """Update faculty member details (HOD & Admin only)."""
-    t = db.query(Teacher).filter(Teacher.id == teacher_id).first()
-    if not t:
-        raise HTTPException(status_code=404, detail="Faculty member not found.")
+    """
+    Update teacher profile details.
+    - Admin: Can edit teachers in any department and change department.
+    - HOD: Can edit ONLY teachers in own department. Cannot reassign department.
+    - Teacher / Student: 403 Forbidden.
+    """
+    teacher = db.query(Teacher).filter(Teacher.id == teacher_id).first()
+    if not teacher:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Teacher with ID {teacher_id} not found."
+        )
 
-    if req.full_name and t.user:
-        t.user.full_name = req.full_name
-    if req.designation:
-        t.designation = req.designation
-    if req.qualification:
-        t.qualification = req.qualification
-    if req.specialization:
-        t.specialization = req.specialization
-    if req.office_location:
-        t.office_location = req.office_location
-    if req.phone and t.user:
-        t.user.phone = req.phone
-    if req.status:
-        t.status = req.status.upper()
+    # HOD department check
+    if current_user.role.lower() == "hod":
+        if current_user.department_id and teacher.department_id != current_user.department_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to perform this action. Teacher belongs to another department."
+            )
+        if payload.department_id is not None and payload.department_id != current_user.department_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to transfer teachers to another department."
+            )
 
+    # Check Employee ID uniqueness
+    if payload.employee_id and payload.employee_id.strip().upper() != teacher.employee_id:
+        emp_clean = payload.employee_id.strip().upper()
+        existing = db.query(Teacher).filter(
+            Teacher.employee_id == emp_clean,
+            Teacher.id != teacher_id
+        ).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Another teacher already has Employee ID '{emp_clean}'."
+            )
+        teacher.employee_id = emp_clean
+
+    # Find linked user account
+    linked_user = db.query(User).filter(
+        (User.teacher_id == teacher.id) | (User.email == teacher.email)
+    ).first()
+
+    if payload.name is not None:
+        teacher.name = payload.name.strip()
+        if linked_user:
+            linked_user.name = payload.name.strip()
+
+    if payload.email is not None:
+        email_clean = payload.email.lower().strip()
+        if email_clean != teacher.email:
+            existing_user = db.query(User).filter(
+                User.email == email_clean,
+                User.id != (linked_user.id if linked_user else None)
+            ).first()
+            if existing_user:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Email '{email_clean}' already taken.")
+            teacher.email = email_clean
+            if linked_user:
+                linked_user.email = email_clean
+
+    if payload.phone is not None:
+        teacher.phone = payload.phone
+        if linked_user:
+            linked_user.phone = payload.phone
+
+    if payload.department_id is not None and current_user.role.lower() == "admin":
+        teacher.department_id = payload.department_id
+        if linked_user:
+            linked_user.department_id = payload.department_id
+
+    if payload.designation is not None:
+        teacher.designation = payload.designation
+
+    if payload.username is not None:
+        teacher.username = payload.username.strip()
+
+    if payload.status is not None:
+        st_clean = payload.status.lower().strip()
+        if st_clean in ("active", "inactive"):
+            teacher.status = st_clean
+            if linked_user:
+                linked_user.is_active = (st_clean == "active")
+
+    if payload.password:
+        pwd_hash = get_password_hash(payload.password)
+        teacher.password_hash = pwd_hash
+        if linked_user:
+            linked_user.password_hash = pwd_hash
+
+    teacher.updated_at = datetime.utcnow()
     db.commit()
 
-    log_audit(
-        db=db,
-        action="EDIT_TEACHER",
-        module="Faculty",
-        user_id=current_user.id,
-        record_id=str(t.id),
-        details=f"Updated faculty profile for {t.faculty_id}",
-        ip_address=get_client_ip(request)
+    t = db.query(Teacher).options(joinedload(Teacher.department)).filter(Teacher.id == teacher_id).first()
+    return format_teacher(t)
+
+
+# ==========================================================
+# 5. DELETE / DEACTIVATE TEACHER (DELETE /api/teachers/{id})
+# ==========================================================
+@router.delete("/{teacher_id}")
+def delete_teacher(
+    teacher_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_or_hod)
+):
+    """
+    Remove or deactivate a teacher.
+    - If teacher has timetable history or attendance records: Do NOT permanently delete historical data.
+      Instead set status = 'inactive' so historical records remain intact.
+    - If no timetable assignments or attendance exist: Permanently delete teacher and linked user.
+    - HOD: Can manage only own department.
+    - Teacher / Student: 403 Forbidden.
+    """
+    teacher = db.query(Teacher).filter(Teacher.id == teacher_id).first()
+    if not teacher:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Teacher with ID {teacher_id} not found."
+        )
+
+    # HOD department check
+    if current_user.role.lower() == "hod":
+        if current_user.department_id and teacher.department_id != current_user.department_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to perform this action. Teacher belongs to another department."
+            )
+
+    # Check timetable assignments and attendance records
+    timetable_count = db.query(Timetable).filter(Timetable.teacher_id == teacher_id).count()
+    attendance_count = db.query(Attendance).filter(Attendance.teacher_id == teacher_id).count()
+
+    if timetable_count > 0 or attendance_count > 0:
+        # Preserve historical timetable & attendance data
+        teacher.status = "inactive"
+        linked_user = db.query(User).filter(
+            (User.teacher_id == teacher.id) | (User.email == teacher.email)
+        ).first()
+        if linked_user:
+            linked_user.is_active = False
+
+        teacher.updated_at = datetime.utcnow()
+        db.commit()
+        return success_response(
+            data={"id": teacher_id, "status": "inactive", "action": "deactivated"},
+            message="Teacher deactivated successfully."
+        )
+
+    # Clean delete if no historical records exist
+    linked_user = db.query(User).filter(
+        (User.teacher_id == teacher.id) | (User.email == teacher.email)
+    ).first()
+    if linked_user:
+        db.delete(linked_user)
+
+    db.delete(teacher)
+    db.commit()
+    return success_response(
+        data={"id": teacher_id, "status": "deleted", "action": "deleted"},
+        message="Teacher removed successfully."
     )
-
-    return ApiResponse(success=True, message="Teacher profile updated successfully.")
-
-
-@router.get("/{teacher_id}/sessions", response_model=Dict[str, Any])
-def get_teacher_sessions(
-    teacher_id: int,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Retrieve classroom sessions conducted by a faculty member."""
-    sessions = db.query(SessionModel).filter(SessionModel.teacher_id == teacher_id).order_by(SessionModel.created_at.desc()).all()
-    results = []
-    for s in sessions:
-        results.append({
-            "id": s.id,
-            "session_id": s.session_id,
-            "subject_code": s.subject.code if s.subject else None,
-            "subject_name": s.subject.name if s.subject else None,
-            "room": s.room.room_number if s.room else None,
-            "date": s.date,
-            "start_time": s.start_time,
-            "end_time": s.end_time,
-            "status": s.status
-        })
-    return {"success": True, "sessions": results}
-
-
-@router.get("/{teacher_id}/attendance", response_model=Dict[str, Any])
-def get_teacher_attendance(
-    teacher_id: int,
-    current_user: User = Depends(require_any_role("hod", "admin", "teacher")),
-    db: Session = Depends(get_db)
-):
-    """Retrieve all student attendance records verified across this faculty's sessions."""
-    sessions = db.query(SessionModel).filter(SessionModel.teacher_id == teacher_id).all()
-    sess_ids = [s.id for s in sessions]
-    records = db.query(Attendance).filter(Attendance.session_id.in_(sess_ids)).order_by(Attendance.check_in_time.desc()).all() if sess_ids else []
-
-    results = []
-    for r in records:
-        results.append({
-            "attendance_id": r.id,
-            "session_id": r.session.session_id if r.session else None,
-            "student_id": r.student_id,
-            "student_name": r.student.user.full_name if r.student and r.student.user else None,
-            "usn": r.student.usn if r.student else None,
-            "status": r.status,
-            "distance_meters": r.distance_meters,
-            "check_in_time": r.check_in_time.isoformat() if r.check_in_time else None
-        })
-    return {"success": True, "count": len(results), "records": results}

@@ -1,170 +1,134 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import Dict, Any, List, Optional
+from typing import List, Optional
 
 from app.database import get_db
 from app.models import Room, User
-from app.schemas import RoomCreate, RoomUpdate, RoomOut, ApiResponse
-from app.dependencies import get_current_user, require_role, require_any_role, get_client_ip
-from app.utils import log_audit
+from app.schemas import RoomCreate, RoomUpdate, RoomResponse
+from app.dependencies import get_current_user, require_any_role
 
-router = APIRouter(prefix="/api/rooms", tags=["Room & Lab Management"])
+router = APIRouter(prefix="/api/rooms", tags=["Rooms"])
 
 
-@router.get("", response_model=Dict[str, Any])
+def format_room(r: Room) -> dict:
+    return {
+        "id": r.id,
+        "room_name": r.room_name,
+        "room_type": r.room_type or "Classroom",
+        "capacity": r.capacity or 60,
+        "status": r.status or "active",
+    }
+
+
+@router.get("", response_model=List[RoomResponse])
 def list_rooms(
-    building: Optional[str] = None,
     room_type: Optional[str] = None,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
-    """List all rooms, lecture halls, and laboratories."""
+    """List all rooms."""
     query = db.query(Room)
-    if building:
-        query = query.filter(Room.building == building)
     if room_type:
         query = query.filter(Room.room_type == room_type)
-    rooms = query.all()
-
-    results = [
-        {
-            "id": r.id,
-            "room_number": r.room_number,
-            "building": r.building,
-            "floor": r.floor,
-            "room_type": r.room_type,
-            "capacity": r.capacity,
-            "is_available": r.is_available,
-            "status": r.status
-        }
-        for r in rooms
-    ]
-    return {"success": True, "count": len(results), "rooms": results}
+    rooms = query.order_by(Room.room_name).all()
+    return [format_room(r) for r in rooms]
 
 
-@router.get("/available", response_model=Dict[str, Any])
-def list_available_rooms(
-    min_capacity: Optional[int] = None,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+@router.get("/{room_id}", response_model=RoomResponse)
+def get_room(
+    room_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
-    """List currently available facilities for instant scheduling or lab booking."""
-    query = db.query(Room).filter(Room.is_available == True, Room.status == "Available")
-    if min_capacity:
-        query = query.filter(Room.capacity >= min_capacity)
-    rooms = query.all()
-
-    results = [
-        {
-            "id": r.id,
-            "room_number": r.room_number,
-            "building": r.building,
-            "floor": r.floor,
-            "room_type": r.room_type,
-            "capacity": r.capacity
-        }
-        for r in rooms
-    ]
-    return {"success": True, "count": len(results), "available_rooms": results}
+    """Get single room details."""
+    r = db.query(Room).filter(Room.id == room_id).first()
+    if not r:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Room with ID {room_id} not found."
+        )
+    return format_room(r)
 
 
-@router.post("", response_model=ApiResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=RoomResponse, status_code=status.HTTP_201_CREATED)
 def create_room(
-    req: RoomCreate,
-    request: Request,
-    current_user: User = Depends(require_any_role("hod", "admin")),
-    db: Session = Depends(get_db)
+    payload: RoomCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod"))
 ):
-    """Register a new room or laboratory (HOD/Admin only)."""
-    if db.query(Room).filter(Room.room_number == req.room_number.upper()).first():
-        raise HTTPException(status_code=409, detail=f"Room {req.room_number} already exists.")
+    """Create a new room."""
+    existing = db.query(Room).filter(Room.room_name == payload.room_name).first()
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Room '{payload.room_name}' already exists."
+        )
 
-    new_room = Room(
-        room_number=req.room_number.upper(),
-        building=req.building,
-        floor=req.floor,
-        room_type=req.room_type,
-        capacity=req.capacity,
-        is_available=req.is_available,
-        status=req.status
+    room = Room(
+        room_name=payload.room_name,
+        room_type=payload.room_type or "Classroom",
+        capacity=payload.capacity or 60,
+        status=payload.status or "active"
     )
-    db.add(new_room)
+    db.add(room)
     db.commit()
-    db.refresh(new_room)
-
-    log_audit(
-        db=db,
-        action="CREATE_ROOM",
-        module="Infrastructure",
-        user_id=current_user.id,
-        record_id=str(new_room.id),
-        details=f"Created room {new_room.room_number} ({new_room.room_type})",
-        ip_address=get_client_ip(request)
-    )
-
-    return ApiResponse(success=True, message=f"Room {new_room.room_number} created successfully.", data={"id": new_room.id})
+    db.refresh(room)
+    return format_room(room)
 
 
-@router.put("/{id}", response_model=ApiResponse)
+@router.put("/{room_id}", response_model=RoomResponse)
 def update_room(
-    id: int,
-    req: RoomUpdate,
-    request: Request,
-    current_user: User = Depends(require_any_role("hod", "admin")),
-    db: Session = Depends(get_db)
+    room_id: int,
+    payload: RoomUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod"))
 ):
-    """Update room capacity, availability, or status."""
-    room = db.query(Room).filter(Room.id == id).first()
+    """Update a room."""
+    room = db.query(Room).filter(Room.id == room_id).first()
     if not room:
-        raise HTTPException(status_code=404, detail="Room not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Room with ID {room_id} not found."
+        )
 
-    if req.room_number: room.room_number = req.room_number.upper()
-    if req.building: room.building = req.building
-    if req.floor: room.floor = req.floor
-    if req.room_type: room.room_type = req.room_type
-    if req.capacity is not None: room.capacity = req.capacity
-    if req.is_available is not None: room.is_available = req.is_available
-    if req.status: room.status = req.status
+    if payload.room_name and payload.room_name != room.room_name:
+        existing = db.query(Room).filter(
+            Room.room_name == payload.room_name,
+            Room.id != room_id
+        ).first()
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Another room already has name '{payload.room_name}'."
+            )
+
+    if payload.room_name is not None:
+        room.room_name = payload.room_name
+    if payload.room_type is not None:
+        room.room_type = payload.room_type
+    if payload.capacity is not None:
+        room.capacity = payload.capacity
+    if payload.status is not None:
+        room.status = payload.status
 
     db.commit()
-
-    log_audit(
-        db=db,
-        action="UPDATE_ROOM",
-        module="Infrastructure",
-        user_id=current_user.id,
-        record_id=str(room.id),
-        details=f"Updated room {room.room_number} status to {room.status}",
-        ip_address=get_client_ip(request)
-    )
-
-    return ApiResponse(success=True, message="Room details updated successfully.")
+    db.refresh(room)
+    return format_room(room)
 
 
-@router.delete("/{id}", response_model=ApiResponse)
+@router.delete("/{room_id}")
 def delete_room(
-    id: int,
-    request: Request,
-    current_user: User = Depends(require_role("admin")),
-    db: Session = Depends(get_db)
+    room_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_any_role("admin", "hod"))
 ):
-    """Delete room record (Admin only)."""
-    room = db.query(Room).filter(Room.id == id).first()
+    """Delete a room."""
+    room = db.query(Room).filter(Room.id == room_id).first()
     if not room:
-        raise HTTPException(status_code=404, detail="Room not found.")
-
-    room_num = room.room_number
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Room with ID {room_id} not found."
+        )
     db.delete(room)
     db.commit()
-
-    log_audit(
-        db=db,
-        action="DELETE_ROOM",
-        module="Infrastructure",
-        user_id=current_user.id,
-        record_id=str(id),
-        details=f"Deleted room {room_num}",
-        ip_address=get_client_ip(request)
-    )
-
-    return ApiResponse(success=True, message=f"Room {room_num} deleted successfully.")
+    return {"success": True, "message": f"Room #{room_id} deleted successfully."}

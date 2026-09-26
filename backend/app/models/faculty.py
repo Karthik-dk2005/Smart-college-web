@@ -20,6 +20,3 @@ class Faculty(Base):
     # Relationships
     user = relationship("User", back_populates="faculty_profile")
     department = relationship("Department", back_populates="faculties")
-    subjects = relationship("Subject", back_populates="faculty")
-    attendances = relationship("Attendance", back_populates="faculty")
-    timetables = relationship("Timetable", back_populates="faculty")

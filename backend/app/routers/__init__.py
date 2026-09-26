@@ -2,6 +2,8 @@ from app.routers.auth import router as auth_router
 from app.routers.users import router as users_router
 from app.routers.students import router as students_router
 from app.routers.faculty import router as faculty_router
+from app.routers.teachers import router as teachers_router
+from app.routers.rooms import router as rooms_router
 from app.routers.departments import router as departments_router
 from app.routers.subjects import router as subjects_router
 from app.routers.attendance import router as attendance_router
@@ -15,6 +17,8 @@ __all__ = [
     "users_router",
     "students_router",
     "faculty_router",
+    "teachers_router",
+    "rooms_router",
     "departments_router",
     "subjects_router",
     "attendance_router",

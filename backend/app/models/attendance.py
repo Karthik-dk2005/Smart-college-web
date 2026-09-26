@@ -1,24 +1,29 @@
 import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from app.database import Base
 
 
 class Attendance(Base):
-    __tablename__ = "attendances"
+    __tablename__ = "attendance"
 
     id = Column(Integer, primary_key=True, index=True)
     student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
+    timetable_id = Column(Integer, ForeignKey("timetables.id"), nullable=False)
+    teacher_id = Column(Integer, ForeignKey("teachers.id"), nullable=False)
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
-    faculty_id = Column(Integer, ForeignKey("faculties.id"), nullable=False)
     date = Column(String(50), nullable=False)  # YYYY-MM-DD
-    status = Column(String(50), nullable=False, default="present")  # present, absent, late, leave
-    check_in_time = Column(DateTime, default=datetime.datetime.utcnow)
-    latitude = Column(Float, nullable=True)
-    longitude = Column(Float, nullable=True)
-    remarks = Column(String(255), nullable=True)
+    start_time = Column(String(50), nullable=True)
+    end_time = Column(String(50), nullable=True)
+    status = Column(String(50), nullable=False, default="Present")  # Present, Absent
+    marked_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("student_id", "timetable_id", "date", name="uq_student_timetable_date"),
+    )
 
     # Relationships
     student = relationship("Student", back_populates="attendances")
+    timetable = relationship("Timetable", back_populates="attendances")
+    teacher = relationship("Teacher", back_populates="attendances")
     subject = relationship("Subject", back_populates="attendances")
-    faculty = relationship("Faculty", back_populates="attendances")
