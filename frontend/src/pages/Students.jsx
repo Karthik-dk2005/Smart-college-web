@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
 import Modal from "../components/Modal";
 import TableSkeleton from "../components/TableSkeleton";
+import { busApi } from "../services/busApi";
 import {
   Users,
   Search,
@@ -21,6 +22,7 @@ import {
   CheckCircle2,
   XCircle,
   Building,
+  Bus,
 } from "lucide-react";
 
 export default function Students() {
@@ -50,6 +52,15 @@ export default function Students() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  // Bus Transport State
+  const [studentBus, setStudentBus] = useState(null);
+  const [busLoading, setBusLoading] = useState(false);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [busRoutes, setBusRoutes] = useState([]);
+  const [busStops, setBusStops] = useState([]);
+  const [assignForm, setAssignForm] = useState({ route_id: "", stop_id: "", transport_status: "Using Bus" });
+  const [assignSubmitting, setAssignSubmitting] = useState(false);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
@@ -106,6 +117,98 @@ export default function Students() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchData();
+  };
+
+  // Bus Transport Handlers (Section 15)
+  const fetchStudentBusAssignment = async (studentId) => {
+    try {
+      setBusLoading(true);
+      const res = await busApi.getStudentBus(studentId);
+      const data = res.data?.data !== undefined ? res.data.data : res.data;
+      setStudentBus(data || null);
+    } catch {
+      setStudentBus(null);
+    } finally {
+      setBusLoading(false);
+    }
+  };
+
+  const handleOpenViewStudent = (st) => {
+    setSelectedStudent(st);
+    setIsViewOpen(true);
+    fetchStudentBusAssignment(st.id);
+  };
+
+  const handleOpenAssignModal = async () => {
+    try {
+      setIsAssignModalOpen(true);
+      const resRoutes = await busApi.getBuses({ status: "active" });
+      const rList = resRoutes.data?.data || resRoutes.data || [];
+      const routesArray = Array.isArray(rList) ? rList : [];
+      setBusRoutes(routesArray);
+
+      const initialRouteId = studentBus?.route_id || (routesArray[0]?.id ? String(routesArray[0].id) : "");
+      setAssignForm({
+        route_id: initialRouteId,
+        stop_id: studentBus?.stop_id ? String(studentBus.stop_id) : "",
+        transport_status: studentBus?.transport_status || "Using Bus",
+      });
+
+      if (initialRouteId) {
+        const resStops = await busApi.getBusStops(initialRouteId);
+        const sList = resStops.data?.data || resStops.data || [];
+        setBusStops(Array.isArray(sList) ? sList : []);
+      }
+    } catch (err) {
+      error("Failed to load bus routes for assignment");
+    }
+  };
+
+  const handleRouteChange = async (routeId) => {
+    setAssignForm((prev) => ({ ...prev, route_id: routeId, stop_id: "" }));
+    if (routeId) {
+      try {
+        const resStops = await busApi.getBusStops(routeId);
+        const sList = resStops.data?.data || resStops.data || [];
+        setBusStops(Array.isArray(sList) ? sList : []);
+      } catch (err) {
+        setBusStops([]);
+      }
+    }
+  };
+
+  const handleSaveStudentBus = async (e) => {
+    e.preventDefault();
+    if (!assignForm.route_id || !selectedStudent) return;
+    try {
+      setAssignSubmitting(true);
+      await busApi.assignStudentBus(selectedStudent.id, {
+        route_id: Number(assignForm.route_id),
+        stop_id: assignForm.stop_id ? Number(assignForm.stop_id) : null,
+        transport_status: assignForm.transport_status || "Using Bus",
+      });
+      success("✓ Student bus route assigned successfully.");
+      setIsAssignModalOpen(false);
+      fetchStudentBusAssignment(selectedStudent.id);
+    } catch (err) {
+      error(err.response?.data?.detail || err.message || "Failed to assign bus route");
+    } finally {
+      setAssignSubmitting(false);
+    }
+  };
+
+  const handleRemoveStudentBus = async () => {
+    if (!selectedStudent) return;
+    try {
+      setBusLoading(true);
+      await busApi.removeStudentBus(selectedStudent.id);
+      success("✓ Student bus assignment removed.");
+      setStudentBus(null);
+    } catch (err) {
+      error(err.response?.data?.detail || err.message || "Failed to remove bus assignment");
+    } finally {
+      setBusLoading(false);
+    }
   };
 
   // Close Add Modal and sync URL if on /add
@@ -584,10 +687,7 @@ export default function Students() {
                       <div style={{ display: "inline-flex", gap: "0.5rem" }}>
                         <button
                           title="View Details"
-                          onClick={() => {
-                            setSelectedStudent(st);
-                            setIsViewOpen(true);
-                          }}
+                          onClick={() => handleOpenViewStudent(st)}
                           style={{
                             background: "rgba(255, 255, 255, 0.05)",
                             border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -1100,6 +1200,122 @@ export default function Students() {
               </div>
             </div>
 
+            {/* BUS TRANSPORT SECTION (Section 15) */}
+            <div
+              style={{
+                background: "rgba(255, 255, 255, 0.02)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "10px",
+                padding: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <Bus size={17} style={{ color: "#818cf8" }} />
+                  <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#f8fafc", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                    BUS TRANSPORT
+                  </span>
+                </div>
+                {isAdmin && !studentBus && !busLoading && (
+                  <button
+                    type="button"
+                    onClick={handleOpenAssignModal}
+                    style={{
+                      background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                      border: "none",
+                      color: "#fff",
+                      padding: "0.35rem 0.85rem",
+                      borderRadius: "6px",
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Assign Bus
+                  </button>
+                )}
+              </div>
+
+              {busLoading ? (
+                <div style={{ fontSize: "0.82rem", color: "#94a3b8", textAlign: "center", padding: "0.75rem" }}>
+                  Loading transport status...
+                </div>
+              ) : studentBus ? (
+                <div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.75rem", fontSize: "0.82rem" }}>
+                    <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                      <span style={{ color: "#94a3b8", display: "block", fontSize: "0.72rem" }}>Bus Route</span>
+                      <span style={{ color: "#f8fafc", fontWeight: 700 }}>
+                        {studentBus.route_name || `Route ${studentBus.route_number || "—"}`}
+                      </span>
+                    </div>
+
+                    <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                      <span style={{ color: "#94a3b8", display: "block", fontSize: "0.72rem" }}>Pickup Stop</span>
+                      <span style={{ color: "#f8fafc", fontWeight: 600 }}>
+                        {studentBus.stop_name || "Not provided"}
+                      </span>
+                    </div>
+
+                    <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.6rem 0.75rem", borderRadius: "6px" }}>
+                      <span style={{ color: "#94a3b8", display: "block", fontSize: "0.72rem" }}>Transport Status</span>
+                      <span style={{ color: "#34d399", fontWeight: 600 }}>
+                        {studentBus.transport_status || "Using Bus"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {isAdmin && (
+                    <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem", marginTop: "0.75rem" }}>
+                      <button
+                        type="button"
+                        onClick={handleOpenAssignModal}
+                        style={{
+                          background: "rgba(99, 102, 241, 0.15)",
+                          border: "1px solid rgba(99, 102, 241, 0.3)",
+                          color: "#a5b4fc",
+                          padding: "0.35rem 0.85rem",
+                          borderRadius: "6px",
+                          fontSize: "0.78rem",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Change
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleRemoveStudentBus}
+                        style={{
+                          background: "rgba(239, 68, 68, 0.15)",
+                          border: "1px solid rgba(239, 68, 68, 0.3)",
+                          color: "#f87171",
+                          padding: "0.35rem 0.85rem",
+                          borderRadius: "6px",
+                          fontSize: "0.78rem",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div style={{ fontSize: "0.85rem", color: "#94a3b8", padding: "0.5rem 0" }}>
+                  No bus route has been assigned to this student.
+                </div>
+              )}
+            </div>
+
             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.5rem" }}>
               <button
                 onClick={() => setIsViewOpen(false)}
@@ -1118,6 +1334,124 @@ export default function Students() {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* 3.1 ASSIGN / CHANGE BUS MODAL */}
+      <Modal
+        isOpen={isAssignModalOpen}
+        onClose={() => setIsAssignModalOpen(false)}
+        title={studentBus ? "Change Bus Assignment" : "Assign Bus Route"}
+      >
+        <form onSubmit={handleSaveStudentBus} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <div>
+            <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.35rem" }}>
+              Bus Route *
+            </label>
+            <select
+              required
+              value={assignForm.route_id}
+              onChange={(e) => handleRouteChange(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "0.6rem 0.85rem",
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                borderRadius: "8px",
+                color: "#fff",
+                outline: "none",
+              }}
+            >
+              <option value="" disabled>Select Route</option>
+              {busRoutes.map((r) => (
+                <option key={r.id} value={r.id} style={{ background: "#1e293b", color: "#fff" }}>
+                  Route {r.route_number}: {r.route_name} ({r.bus_number})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.35rem" }}>
+              Pickup Stop (Optional)
+            </label>
+            <select
+              value={assignForm.stop_id}
+              onChange={(e) => setAssignForm({ ...assignForm, stop_id: e.target.value })}
+              style={{
+                width: "100%",
+                padding: "0.6rem 0.85rem",
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                borderRadius: "8px",
+                color: "#fff",
+                outline: "none",
+              }}
+            >
+              <option value="">No specific stop designated</option>
+              {busStops.map((s) => (
+                <option key={s.id} value={s.id} style={{ background: "#1e293b", color: "#fff" }}>
+                  #{s.stop_order} — {s.stop_name} (Pickup: {s.pickup_time || "—"})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.35rem" }}>
+              Transport Status
+            </label>
+            <select
+              value={assignForm.transport_status}
+              onChange={(e) => setAssignForm({ ...assignForm, transport_status: e.target.value })}
+              style={{
+                width: "100%",
+                padding: "0.6rem 0.85rem",
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                borderRadius: "8px",
+                color: "#fff",
+                outline: "none",
+              }}
+            >
+              <option value="Using Bus">Using Bus</option>
+              <option value="Active">Active</option>
+              <option value="Temporary Pass">Temporary Pass</option>
+            </select>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem", marginTop: "0.5rem" }}>
+            <button
+              type="button"
+              onClick={() => setIsAssignModalOpen(false)}
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "#cbd5e1",
+                padding: "0.6rem 1.25rem",
+                borderRadius: "8px",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={assignSubmitting}
+              style={{
+                background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                border: "none",
+                color: "#fff",
+                padding: "0.6rem 1.5rem",
+                borderRadius: "8px",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              {assignSubmitting ? "Saving..." : "Save Assignment"}
+            </button>
+          </div>
+        </form>
       </Modal>
 
       {/* 4. CONFIRM REMOVE MODAL */}

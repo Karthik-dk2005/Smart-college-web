@@ -14,4 +14,7 @@ export { default as teachersApi } from "./teachers";
 export { default as roomsApi } from "./rooms";
 export { default as faceApi } from "./face";
 export { default as biometricApi } from "./biometric";
+export { default as busesApi } from "./buses";
+export { default as busApi } from "./buses";
+
 

@@ -31,4 +31,5 @@ class Student(Base):
     interval_attendances = relationship("StudentAttendance", back_populates="student", cascade="all, delete-orphan")
     face_profile = relationship("StudentFace", back_populates="student", uselist=False, cascade="all, delete-orphan")
     biometric_profile = relationship("StudentBiometric", back_populates="student", uselist=False, cascade="all, delete-orphan")
+    bus_assignment = relationship("StudentBusAssignment", back_populates="student", uselist=False, cascade="all, delete-orphan")
 

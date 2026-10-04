@@ -13,6 +13,7 @@ from app.routers.notices import router as notices_router
 from app.routers.dashboard import router as dashboard_router
 from app.routers.face import router as face_router
 from app.routers.biometric import router as biometric_router
+from app.routers.buses import router as buses_router
 
 __all__ = [
     "auth_router",
@@ -30,4 +31,6 @@ __all__ = [
     "dashboard_router",
     "face_router",
     "biometric_router",
+    "buses_router",
 ]
+

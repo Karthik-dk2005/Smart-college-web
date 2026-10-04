@@ -18,6 +18,11 @@ try:
     from app.schemas.timetable import TimetableCreate as TTCreateLegacy, TimetableUpdate as TTUpdateLegacy, TimetableOut
     from app.schemas.location import LocationUpdate, LocationOut
     from app.schemas.notice import NoticeCreate, NoticeUpdate, NoticeOut
+    from app.schemas.bus import (
+        BusStopBase, BusStopCreate, BusStopUpdate, BusStopOut,
+        BusRouteBase, BusRouteCreate, BusRouteUpdate, BusRouteOut, BusRouteDetailOut,
+        StudentBusAssignCreate, StudentBusAssignmentOut
+    )
 except Exception:
     pass
 

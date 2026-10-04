@@ -14,6 +14,9 @@ from app.models.notice import Notice
 from app.models.user import User
 from app.models.student_face import StudentFace
 from app.models.student_biometric import StudentBiometric
+from app.models.bus_route import BusRoute
+from app.models.bus_stop import BusStop
+from app.models.student_bus_assignment import StudentBusAssignment
 
 __all__ = [
     "Department",
@@ -32,4 +35,7 @@ __all__ = [
     "User",
     "StudentFace",
     "StudentBiometric",
+    "BusRoute",
+    "BusStop",
+    "StudentBusAssignment",
 ]

@@ -23,7 +23,9 @@ from app.routers import (
     dashboard_router,
     face_router,
     biometric_router,
+    buses_router,
 )
+
 
 
 @asynccontextmanager
@@ -158,6 +160,8 @@ app.include_router(notices_router)
 app.include_router(dashboard_router)
 app.include_router(face_router)
 app.include_router(biometric_router)
+app.include_router(buses_router)
+
 
 # ---------------------------------------------------------
 # Combined Frontend Mounting & SPA Fallback Route

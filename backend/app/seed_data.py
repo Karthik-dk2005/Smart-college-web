@@ -689,7 +689,58 @@ def seed_database():
         db.commit()
         print(f"[+] Inserted {session_count} attendance sessions, {interval_count} 30-min intervals, and {att_count} student attendance records!")
         print(f"[+] Seeded Face and Biometric profiles for {len(all_students)} students.")
+
+        # 6. Seed Bus Routes 1-28
+        from app.models.bus_route import BusRoute
+        from app.models.bus_stop import BusStop
+        from app.models.student_bus_assignment import StudentBusAssignment
+
+        for r_num in range(1, 29):
+            existing_route = db.query(BusRoute).filter(BusRoute.route_number == r_num).first()
+            if not existing_route:
+                r_obj = BusRoute(
+                    route_number=r_num,
+                    route_name=f"Route {r_num}",
+                    bus_number=f"KA-09-F-{1000 + r_num}" if r_num in (1, 12) else "Not provided",
+                    driver_name="Suresh Gowda" if r_num == 1 else "Manjunath K" if r_num == 12 else "Not provided",
+                    driver_phone="+91 98450 12345" if r_num == 1 else "+91 98450 67890" if r_num == 12 else "Not provided",
+                    start_point="Suburban Bus Stand" if r_num == 1 else "Kuvempunagar Complex" if r_num == 12 else "Not provided",
+                    end_point="Campus Main Gate",
+                    departure_time="07:45 AM" if r_num in (1, 12) else "Not provided",
+                    arrival_time="08:35 AM" if r_num in (1, 12) else "Not provided",
+                    status="active"
+                )
+                db.add(r_obj)
+        db.commit()
+
+        # Seed stops for Route 1 and Route 12
+        r12 = db.query(BusRoute).filter(BusRoute.route_number == 12).first()
+        if r12 and not r12.stops:
+            s1 = BusStop(route_id=r12.id, stop_order=1, stop_name="Kuvempunagar Depot", pickup_time="07:45 AM", drop_time="05:15 PM", status="active")
+            s2 = BusStop(route_id=r12.id, stop_order=2, stop_name="Kamakshi Hospital", pickup_time="07:55 AM", drop_time="05:05 PM", status="active")
+            s3 = BusStop(route_id=r12.id, stop_order=3, stop_name="Saraswathipuram Fire Station", pickup_time="08:10 AM", drop_time="04:50 PM", status="active")
+            s4 = BusStop(route_id=r12.id, stop_order=4, stop_name="Campus Main Gate", pickup_time="08:35 AM", drop_time="04:30 PM", status="active")
+            db.add_all([s1, s2, s3, s4])
+            db.commit()
+
+        # Assign sample student (Karthik D K / 4MT22CS008) to Route 12 Stop 3
+        karthik_stu = db.query(Student).filter(Student.usn == "4MT22CS008").first()
+        if karthik_stu and r12:
+            existing_asgn = db.query(StudentBusAssignment).filter(StudentBusAssignment.student_id == karthik_stu.id).first()
+            if not existing_asgn:
+                stop3 = db.query(BusStop).filter(BusStop.route_id == r12.id, BusStop.stop_order == 3).first()
+                asgn = StudentBusAssignment(
+                    student_id=karthik_stu.id,
+                    route_id=r12.id,
+                    stop_id=stop3.id if stop3 else None,
+                    transport_status="Using Bus"
+                )
+                db.add(asgn)
+                db.commit()
+
+        print("[+] Seeded exactly 28 Bus Routes (Route 1 to Route 28) and initial stops!")
         print("=" * 60)
+
 
 
     except Exception as e:

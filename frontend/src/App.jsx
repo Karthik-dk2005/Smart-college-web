@@ -27,6 +27,15 @@ import BiometricRegistration from "./pages/BiometricRegistration";
 import FaceAttendance from "./pages/FaceAttendance";
 import BiometricAttendance from "./pages/BiometricAttendance";
 
+// Bus Route Management Pages
+import BusDashboard from "./pages/BusDashboard";
+import BusRoutes from "./pages/BusRoutes";
+import AddBusRoute from "./pages/AddBusRoute";
+import EditBusRoute from "./pages/EditBusRoute";
+import BusRouteDetails from "./pages/BusRouteDetails";
+import BusStops from "./pages/BusStops";
+import StudentBus from "./pages/StudentBus";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -227,6 +236,73 @@ export default function App() {
 
               {/* 12. Settings & Geofence Health Probe */}
               <Route path="settings" element={<Settings />} />
+
+              {/* 13. Bus Route Management System */}
+              <Route path="admin/buses" element={<BusDashboard />} />
+              <Route path="buses" element={<BusDashboard />} />
+              <Route path="buses/routes" element={<BusRoutes />} />
+
+              {/* Add Bus Route (Admin only) */}
+              <Route
+                path="admin/buses/add"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AddBusRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="buses/add"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AddBusRoute />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Edit Bus Route (Admin only) */}
+              <Route
+                path="admin/buses/:routeId/edit"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <EditBusRoute />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="buses/:routeId/edit"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <EditBusRoute />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Bus Route Details */}
+              <Route path="admin/buses/:routeId" element={<BusRouteDetails />} />
+              <Route path="buses/:routeId" element={<BusRouteDetails />} />
+
+              {/* Bus Stops Management */}
+              <Route path="admin/buses/stops" element={<BusStops />} />
+              <Route path="buses/stops" element={<BusStops />} />
+
+              {/* Student Bus Assignment View */}
+              <Route
+                path="student/bus"
+                element={
+                  <ProtectedRoute allowedRoles={["student"]}>
+                    <StudentBus />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="my-bus"
+                element={
+                  <ProtectedRoute allowedRoles={["student"]}>
+                    <StudentBus />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
 
             {/* Catch-all Wildcard Route */}
