@@ -1,53 +1,150 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { useToast } from "../components/Toast";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import studentAuthApi from "../api/studentAuth";
 import CollegeLogo from "../components/CollegeLogo";
 import {
+  IdCard,
+  Lock,
   Mail,
   KeyRound,
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   AlertCircle,
   ShieldCheck,
-  ArrowRight,
+  Eye,
+  EyeOff,
+  RefreshCw,
 } from "lucide-react";
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  // Workflow steps: "request" | "verify_reset" | "success"
+  const [step, setStep] = useState("request");
+
+  // Form Fields
+  const [usn, setUsn] = useState("");
+  const [maskedGmail, setMaskedGmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  // UI state
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [resetToken, setResetToken] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [resendCooldown, setResendCooldown] = useState(0);
 
-  const { forgotPassword } = useAuth();
-  const { error: toastError, success: toastSuccess } = useToast();
+  // Resend cooldown timer
+  useEffect(() => {
+    let timer;
+    if (resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
-  const handleSubmit = async (e) => {
+  // Step 1: Send Recovery OTP to registered Gmail
+  const handleRequestOtp = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    setSuccessMessage("");
 
-    if (!email.trim()) {
-      setErrorMessage("Please enter your registered email address.");
-      toastError("Please enter your registered email address.");
+    const cleanUsn = usn.trim().toUpperCase();
+    if (!cleanUsn) {
+      setErrorMessage("Please enter your registered USN.");
       return;
     }
 
     setLoading(true);
+
     try {
-      const res = await forgotPassword(email.trim());
-      setSubmitted(true);
-      if (res?.reset_token) {
-        setResetToken(res.reset_token);
-      }
-      toastSuccess("Password recovery instructions generated.");
+      const res = await studentAuthApi.forgotPassword(cleanUsn);
+      setMaskedGmail(res.masked_gmail || res.gmail || "your registered Gmail");
+      setSuccessMessage(res.message || "A recovery OTP has been sent to your registered Gmail.");
+      setStep("verify_reset");
+      setResendCooldown(60);
     } catch (err) {
-      const msg =
+      if (err.response?.status === 404) {
+        setErrorMessage("Student record not found. Please contact your Admin.");
+      } else {
+        setErrorMessage(
+          err.response?.data?.detail ||
+          err.response?.data?.message ||
+          "Student record not found. Please contact your Admin."
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Step 2: Verify OTP and Reset Password
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const cleanOtp = otp.trim();
+    if (!cleanOtp || cleanOtp.length !== 6) {
+      setErrorMessage("Please enter the 6-digit OTP received on your registered Gmail.");
+      return;
+    }
+
+    if (!newPassword || newPassword.length < 6) {
+      setErrorMessage("New password must be at least 6 characters long.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("New password and confirm password do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await studentAuthApi.resetPassword({
+        usn: usn.trim().toUpperCase(),
+        otp: cleanOtp,
+        new_password: newPassword,
+        confirm_password: confirmPassword,
+      });
+
+      setSuccessMessage(res.message || "Password updated successfully!");
+      setStep("success");
+    } catch (err) {
+      setErrorMessage(
         err.response?.data?.detail ||
-        err.message ||
-        "Unable to process password reset request.";
-      setErrorMessage(msg);
-      toastError(msg);
+        err.response?.data?.message ||
+        "Failed to reset password. Please verify the OTP code."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Resend Recovery OTP
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0) return;
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const res = await studentAuthApi.forgotPassword(usn.trim().toUpperCase());
+      setSuccessMessage(res.message || "A fresh OTP code has been sent.");
+      setResendCooldown(60);
+    } catch (err) {
+      setErrorMessage(
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        "Failed to resend OTP. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -61,35 +158,36 @@ export default function ForgotPassword() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%)",
-        padding: "1.5rem",
-        fontFamily: "'Inter', sans-serif",
+        background: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #172554 100%)",
+        padding: "1.5rem 1rem",
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
+      {/* Centered White Card in Blue & White Theme */}
       <div
         style={{
           width: "100%",
-          maxWidth: "460px",
+          maxWidth: "440px",
           background: "#ffffff",
-          borderRadius: "20px",
-          padding: "2.5rem 2.25rem",
-          boxShadow: "0 20px 45px -10px rgba(15, 23, 42, 0.12)",
+          borderRadius: "16px",
+          padding: "2.25rem 2rem",
+          boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05)",
           border: "1px solid #e2e8f0",
+          boxSizing: "border-box",
         }}
       >
         {/* Brand Header */}
-        <div style={{ textAlign: "center", marginBottom: "1.75rem" }}>
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginBottom: "1rem",
+              marginBottom: "0.85rem",
             }}
           >
             <CollegeLogo
               size="lg"
-              className="login-college-logo"
               style={{
                 height: "64px",
                 width: "auto",
@@ -100,212 +198,119 @@ export default function ForgotPassword() {
 
           <h1
             style={{
-              fontSize: "1.45rem",
+              fontSize: "1.35rem",
               fontWeight: 800,
               color: "#0f172a",
-              letterSpacing: "0.02em",
-              margin: 0,
+              margin: "0 0 0.35rem 0",
+              letterSpacing: "-0.02em",
             }}
           >
-            RESET PASSWORD
+            Password Recovery
           </h1>
-
-          <div
+          <p
             style={{
-              color: "#334155",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              marginTop: "0.25rem",
+              fontSize: "0.82rem",
+              color: "#64748b",
+              margin: 0,
+              fontWeight: 500,
             }}
           >
             Smart Department Academic Management System
-          </div>
-
-          <div
-            style={{
-              color: "#64748b",
-              fontSize: "0.78rem",
-              marginTop: "0.2rem",
-            }}
-          >
-            Maharaja Institute of Technology Thandavapura
-          </div>
+          </p>
         </div>
 
-        {submitted ? (
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{
-                width: "56px",
-                height: "56px",
-                borderRadius: "50%",
-                background: "#ecfdf5",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 1.25rem",
-                color: "#059669",
-              }}
-            >
-              <CheckCircle2 size={32} />
-            </div>
-
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#0f172a", margin: "0 0 0.5rem" }}>
-              Reset Request Sent
-            </h2>
-            <p style={{ color: "#475569", fontSize: "0.88rem", lineHeight: 1.5, margin: "0 0 1.5rem" }}>
-              If an account is associated with <strong>{email}</strong>, a password reset token has been
-              created.
-            </p>
-
-            {resetToken && (
-              <div
-                style={{
-                  background: "#f0fdf4",
-                  border: "1px solid #bbf7d0",
-                  borderRadius: "10px",
-                  padding: "1rem",
-                  marginBottom: "1.5rem",
-                  textAlign: "left",
-                }}
-              >
-                <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#166534", marginBottom: "0.35rem" }}>
-                  Dev / Academic Verification Token:
-                </div>
-                <code
-                  style={{
-                    display: "block",
-                    background: "#ffffff",
-                    padding: "0.5rem",
-                    borderRadius: "6px",
-                    border: "1px solid #dcfce7",
-                    fontSize: "0.82rem",
-                    color: "#15803d",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {resetToken}
-                </code>
-                <Link
-                  to={`/reset-password?token=${encodeURIComponent(resetToken)}`}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.35rem",
-                    marginTop: "0.75rem",
-                    fontSize: "0.85rem",
-                    color: "#166534",
-                    fontWeight: 700,
-                    textDecoration: "underline",
-                  }}
-                >
-                  <span>Click here to set your new password directly</span>
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-            )}
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              <Link
-                to="/reset-password"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem",
-                  background: "#1e3a8a",
-                  color: "#ffffff",
-                  padding: "0.75rem 1rem",
-                  borderRadius: "10px",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  fontSize: "0.9rem",
-                }}
-              >
-                <KeyRound size={16} /> Enter Reset Token
-              </Link>
-
-              <Link
-                to="/login"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.4rem",
-                  color: "#475569",
-                  padding: "0.5rem",
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                }}
-              >
-                <ArrowLeft size={16} /> Return to Login
-              </Link>
-            </div>
+        {/* Error Alert */}
+        {errorMessage && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "0.6rem",
+              padding: "0.85rem 1rem",
+              background: "#fef2f2",
+              border: "1px solid #fecaca",
+              borderRadius: "10px",
+              color: "#b91c1c",
+              fontSize: "0.84rem",
+              lineHeight: 1.4,
+              marginBottom: "1.25rem",
+            }}
+          >
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "1px" }} />
+            <div>{errorMessage}</div>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-            <p style={{ color: "#64748b", fontSize: "0.88rem", margin: "0 0 0.5rem", lineHeight: 1.5 }}>
-              Enter your registered institutional or personal email address. We will verify your account and
-              generate a password recovery token.
+        )}
+
+        {/* Success Alert */}
+        {successMessage && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.6rem",
+              padding: "0.85rem 1rem",
+              background: "#f0fdf4",
+              border: "1px solid #bbf7d0",
+              borderRadius: "10px",
+              color: "#16a34a",
+              fontSize: "0.84rem",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <CheckCircle2 size={18} style={{ flexShrink: 0 }} />
+            <div>{successMessage}</div>
+          </div>
+        )}
+
+        {/* STEP 1: ENTER REGISTERED USN */}
+        {step === "request" && (
+          <form onSubmit={handleRequestOtp}>
+            <p style={{ fontSize: "0.84rem", color: "#475569", margin: "0 0 1.25rem 0", lineHeight: 1.5 }}>
+              Enter your registered University Seat Number (USN). A verification OTP will be sent to your registered Gmail address.
             </p>
 
-            {errorMessage && (
-              <div
-                style={{
-                  background: "#fef2f2",
-                  border: "1px solid #fecaca",
-                  borderRadius: "10px",
-                  padding: "0.75rem 1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.6rem",
-                  color: "#b91c1c",
-                  fontSize: "0.85rem",
-                }}
-              >
-                <AlertCircle size={18} flexShrink={0} />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            <div>
+            <div style={{ marginBottom: "1.35rem" }}>
               <label
+                htmlFor="forgot-usn"
                 style={{
                   display: "block",
-                  fontSize: "0.85rem",
+                  fontSize: "0.82rem",
                   fontWeight: 600,
                   color: "#1e293b",
                   marginBottom: "0.4rem",
                 }}
               >
-                Registered Email Address *
+                Registered USN *
               </label>
               <div style={{ position: "relative" }}>
-                <Mail
+                <IdCard
                   size={18}
                   style={{
                     position: "absolute",
-                    left: "14px",
+                    left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "#64748b",
                   }}
                 />
                 <input
-                  type="email"
+                  id="forgot-usn"
+                  type="text"
+                  placeholder="e.g. 4MN23CS001 or 4MN25CS410"
+                  value={usn}
+                  onChange={(e) => setUsn(e.target.value.toUpperCase())}
+                  autoFocus
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. student@mitt.ac.in"
                   style={{
                     width: "100%",
-                    padding: "0.75rem 0.85rem 0.75rem 2.6rem",
+                    padding: "0.75rem 1rem 0.75rem 2.5rem",
                     background: "#f8fafc",
                     border: "1px solid #cbd5e1",
                     borderRadius: "10px",
                     color: "#0f172a",
                     fontSize: "0.92rem",
+                    fontWeight: 600,
+                    fontFamily: "monospace",
                     outline: "none",
                     boxSizing: "border-box",
                   }}
@@ -315,81 +320,399 @@ export default function ForgotPassword() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !usn.trim()}
               style={{
-                padding: "0.85rem 1.25rem",
-                borderRadius: "10px",
-                background: "#1e3a8a",
-                color: "#ffffff",
+                width: "100%",
+                padding: "0.85rem",
+                background: loading
+                  ? "#93c5fd"
+                  : "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)",
                 border: "none",
-                fontSize: "0.95rem",
+                borderRadius: "10px",
+                color: "#ffffff",
                 fontWeight: 700,
-                cursor: loading ? "not-allowed" : "pointer",
+                fontSize: "0.95rem",
+                cursor: loading ? "wait" : "pointer",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "0.6rem",
-                boxShadow: "0 4px 14px rgba(30, 58, 138, 0.25)",
-                opacity: loading ? 0.7 : 1,
+                gap: "0.5rem",
+                boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+                transition: "all 0.2s ease",
               }}
             >
               {loading ? (
-                <span>Generating Token...</span>
+                <>
+                  <RefreshCw size={18} style={{ animation: "spin 1s linear infinite" }} />
+                  <span>Sending OTP...</span>
+                </>
               ) : (
                 <>
-                  <KeyRound size={18} />
-                  <span>REQUEST PASSWORD RESET</span>
+                  <span>SEND RECOVERY OTP</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </button>
+          </form>
+        )}
+
+        {/* STEP 2: VERIFY OTP & ENTER NEW PASSWORD */}
+        {step === "verify_reset" && (
+          <form onSubmit={handleResetPassword}>
+            <div
+              style={{
+                background: "#eff6ff",
+                border: "1px solid #bfdbfe",
+                borderRadius: "10px",
+                padding: "0.75rem",
+                marginBottom: "1.25rem",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: "0.75rem", color: "#1e40af", fontWeight: 600 }}>
+                OTP Sent to Registered Gmail:
+              </div>
+              <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "#1d4ed8", fontFamily: "monospace", marginTop: "2px" }}>
+                {maskedGmail}
+              </div>
+            </div>
+
+            {/* OTP Input */}
+            <div style={{ marginBottom: "1.15rem" }}>
+              <label
+                htmlFor="reset-otp"
+                style={{
+                  display: "block",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  color: "#1e293b",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                6-Digit OTP Code *
+              </label>
+              <input
+                id="reset-otp"
+                type="text"
+                maxLength={6}
+                placeholder="• • • • • •"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ""))}
+                autoFocus
+                required
+                style={{
+                  width: "100%",
+                  padding: "0.75rem",
+                  background: "#f8fafc",
+                  border: "2px solid #2563eb",
+                  borderRadius: "10px",
+                  color: "#0f172a",
+                  fontSize: "1.3rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.4em",
+                  textAlign: "center",
+                  boxSizing: "border-box",
+                  outline: "none",
+                }}
+              />
+            </div>
+
+            {/* New Password Input */}
+            <div style={{ marginBottom: "1.15rem" }}>
+              <label
+                htmlFor="reset-new-password"
+                style={{
+                  display: "block",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  color: "#1e293b",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                New Password *
+              </label>
+              <div style={{ position: "relative" }}>
+                <Lock
+                  size={18}
+                  style={{
+                    position: "absolute",
+                    left: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "#64748b",
+                  }}
+                />
+                <input
+                  id="reset-new-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="At least 6 characters"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem 2.6rem 0.75rem 2.5rem",
+                    background: "#f8fafc",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "10px",
+                    color: "#0f172a",
+                    fontSize: "0.92rem",
+                    outline: "none",
+                    boxSizing: "border-box",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    color: "#64748b",
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm New Password Input */}
+            <div style={{ marginBottom: "1.35rem" }}>
+              <label
+                htmlFor="reset-confirm-password"
+                style={{
+                  display: "block",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  color: "#1e293b",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                Confirm New Password *
+              </label>
+              <div style={{ position: "relative" }}>
+                <Lock
+                  size={18}
+                  style={{
+                    position: "absolute",
+                    left: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "#64748b",
+                  }}
+                />
+                <input
+                  id="reset-confirm-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Re-enter new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem 2.6rem 0.75rem 2.5rem",
+                    background: "#f8fafc",
+                    border:
+                      confirmPassword && newPassword !== confirmPassword
+                        ? "1px solid #ef4444"
+                        : "1px solid #cbd5e1",
+                    borderRadius: "10px",
+                    color: "#0f172a",
+                    fontSize: "0.92rem",
+                    outline: "none",
+                    boxSizing: "border-box",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    color: "#64748b",
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading || otp.length !== 6 || !newPassword || newPassword !== confirmPassword}
+              style={{
+                width: "100%",
+                padding: "0.85rem",
+                background:
+                  otp.length === 6 && newPassword && newPassword === confirmPassword
+                    ? "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)"
+                    : "#cbd5e1",
+                border: "none",
+                borderRadius: "10px",
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "0.95rem",
+                cursor:
+                  otp.length === 6 && newPassword && newPassword === confirmPassword
+                    ? "pointer"
+                    : "not-allowed",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {loading ? (
+                <>
+                  <RefreshCw size={18} style={{ animation: "spin 1s linear infinite" }} />
+                  <span>Updating Password...</span>
+                </>
+              ) : (
+                <>
+                  <ShieldCheck size={18} />
+                  <span>UPDATE PASSWORD</span>
                 </>
               )}
             </button>
 
-            <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
-              <Link
-                to="/login"
+            {/* Resend and Back Buttons */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: "1.25rem",
+                fontSize: "0.82rem",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setStep("request")}
                 style={{
-                  display: "inline-flex",
+                  background: "none",
+                  border: "none",
+                  color: "#64748b",
+                  cursor: "pointer",
+                  padding: 0,
+                  display: "flex",
                   alignItems: "center",
-                  gap: "0.4rem",
-                  color: "#1e3a8a",
-                  fontWeight: 600,
-                  fontSize: "0.88rem",
-                  textDecoration: "none",
+                  gap: "0.25rem",
+                  fontWeight: 500,
                 }}
               >
-                <ArrowLeft size={16} /> Return to Login
-              </Link>
+                <ArrowLeft size={14} /> Back
+              </button>
+
+              <button
+                type="button"
+                onClick={handleResendOtp}
+                disabled={resendCooldown > 0 || loading}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: resendCooldown > 0 ? "#94a3b8" : "#2563eb",
+                  cursor: resendCooldown > 0 ? "not-allowed" : "pointer",
+                  fontWeight: 600,
+                  padding: 0,
+                }}
+              >
+                {resendCooldown > 0 ? `Resend OTP in ${resendCooldown}s` : "Resend OTP"}
+              </button>
             </div>
           </form>
         )}
 
+        {/* STEP 3: SUCCESS */}
+        {step === "success" && (
+          <div style={{ textAlign: "center", padding: "0.5rem 0" }}>
+            <div
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                background: "#ecfdf5",
+                color: "#16a34a",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.15rem auto",
+                border: "2px solid #16a34a",
+              }}
+            >
+              <CheckCircle2 size={32} />
+            </div>
+
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 800, margin: "0 0 0.5rem 0", color: "#0f172a" }}>
+              Password Updated!
+            </h2>
+            <p style={{ fontSize: "0.86rem", color: "#64748b", margin: "0 0 1.5rem 0", lineHeight: 1.5 }}>
+              Your password has been securely updated. You can now log in using your USN and new password.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              style={{
+                width: "100%",
+                padding: "0.85rem",
+                background: "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)",
+                border: "none",
+                borderRadius: "10px",
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "0.95rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+              }}
+            >
+              <span>PROCEED TO LOGIN</span>
+              <ArrowRight size={18} />
+            </button>
+          </div>
+        )}
+
+        {/* Footer Back to Login Link */}
         <div
           style={{
+            marginTop: "1.5rem",
+            paddingTop: "1.15rem",
+            borderTop: "1px solid #f1f5f9",
             textAlign: "center",
-            marginTop: "1.75rem",
-            fontSize: "0.78rem",
+            fontSize: "0.84rem",
             color: "#64748b",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.4rem",
           }}
         >
-          <ShieldCheck size={16} color="#059669" />
-          <span>VTU Affiliated & AICTE Approved Institutional Portal</span>
+          Remember your password?{" "}
+          <Link
+            to="/login"
+            style={{
+              color: "#2563eb",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            Back to Login →
+          </Link>
         </div>
       </div>
-
-      <footer
-        style={{
-          marginTop: "1.5rem",
-          textAlign: "center",
-          fontSize: "0.75rem",
-          color: "#64748b",
-        }}
-      >
-        Maharaja Institute of Technology Thandavapura • NH 766, Nanjangud Taluk, Mysuru
-      </footer>
     </div>
   );
 }
-

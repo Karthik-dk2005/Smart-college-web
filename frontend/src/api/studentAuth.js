@@ -52,6 +52,32 @@ export const studentAuthApi = {
     const res = await api.get("/api/auth/student/profile");
     return res.data;
   },
+
+  // Password Recovery - Send OTP to registered Gmail
+  forgotPassword: async (usn) => {
+    const res = await api.post("/api/auth/student/forgot-password", { usn: usn.trim() });
+    return res.data;
+  },
+
+  // Password Recovery - Verify OTP
+  verifyRecoveryOtp: async (usn, otp) => {
+    const res = await api.post("/api/auth/student/verify-recovery-otp", {
+      usn: usn.trim(),
+      otp: otp.trim(),
+    });
+    return res.data;
+  },
+
+  // Password Recovery - Reset Password
+  resetPassword: async ({ usn, otp, new_password, confirm_password }) => {
+    const res = await api.post("/api/auth/student/reset-password", {
+      usn: usn.trim(),
+      otp: otp.trim(),
+      new_password,
+      confirm_password,
+    });
+    return res.data;
+  },
 };
 
 export default studentAuthApi;

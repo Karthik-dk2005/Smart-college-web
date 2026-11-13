@@ -31,6 +31,9 @@ from app.schemas.student_auth import (
     StudentLoginRequest,
     StudentAuthResponse,
     StudentDashboardProfile,
+    StudentForgotPasswordRequest,
+    StudentVerifyRecoveryOTPRequest,
+    StudentResetPasswordRequest,
 )
 from app.utils.security import (
     verify_password,
@@ -442,6 +445,130 @@ def student_login(req: StudentLoginRequest, db: Session = Depends(get_db)):
         token_type="bearer",
         user=user_info
     )
+
+# 4.1 POST /api/auth/student/forgot-password
+@router.post("/forgot-password")
+def student_forgot_password(req: StudentForgotPasswordRequest, db: Session = Depends(get_db)):
+    clean_usn = req.usn.strip().upper()
+    student = db.query(Student).filter(Student.usn == clean_usn).first()
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student record not found. Please contact your Admin."
+        )
+
+    if not student.gmail or "@" not in student.gmail:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No registered Gmail address found for this USN. Please contact your Admin."
+        )
+
+    # Generate secure 6-digit recovery OTP
+    otp = f"{secrets.randbelow(900000) + 100000:06d}"
+    now = datetime.datetime.utcnow()
+
+    student.otp_code = otp
+    student.otp_expires_at = now + datetime.timedelta(minutes=10)
+    student.otp_resend_count = 0
+    student.otp_last_sent_at = now
+    db.commit()
+
+    print(f"[*] Password recovery OTP generated for {student.usn} ({student.gmail}): {otp}")
+
+    return {
+        "success": True,
+        "message": f"Password recovery OTP has been sent to your registered Gmail address ({mask_email(student.gmail)}).",
+        "usn": student.usn,
+        "masked_gmail": mask_email(student.gmail),
+        "gmail": student.gmail
+    }
+
+# 4.2 POST /api/auth/student/verify-recovery-otp
+@router.post("/verify-recovery-otp")
+def student_verify_recovery_otp(req: StudentVerifyRecoveryOTPRequest, db: Session = Depends(get_db)):
+    clean_usn = req.usn.strip().upper()
+    student = db.query(Student).filter(Student.usn == clean_usn).first()
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student record not found. Please contact your Admin."
+        )
+
+    if not student.otp_code or student.otp_code != req.otp.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid OTP code. Please check your Gmail and try again."
+        )
+
+    now = datetime.datetime.utcnow()
+    if student.otp_expires_at and now > student.otp_expires_at:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="OTP code has expired. Please request a new recovery code."
+        )
+
+    return {
+        "success": True,
+        "message": "OTP verified successfully. You may now enter your new password.",
+        "usn": student.usn
+    }
+
+# 4.3 POST /api/auth/student/reset-password
+@router.post("/reset-password")
+def student_reset_password(req: StudentResetPasswordRequest, db: Session = Depends(get_db)):
+    clean_usn = req.usn.strip().upper()
+    student = db.query(Student).filter(Student.usn == clean_usn).first()
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student record not found. Please contact your Admin."
+        )
+
+    if not student.otp_code or student.otp_code != req.otp.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired OTP code."
+        )
+
+    now = datetime.datetime.utcnow()
+    if student.otp_expires_at and now > student.otp_expires_at:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="OTP code has expired. Please request a new recovery code."
+        )
+
+    # Check phone number policy
+    if student.phone and student.phone.strip() and student.phone.strip() in req.new_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="For security, you cannot use your phone number as a password."
+        )
+
+    hashed_pw = get_password_hash(req.new_password)
+    student.password_hash = hashed_pw
+    student.otp_code = None
+    student.otp_expires_at = None
+
+    # Update associated User account if exists
+    user = db.query(User).filter(
+        or_(
+            User.usn_or_employee_id == student.usn,
+            User.username == student.usn.lower(),
+            User.email == student.gmail
+        )
+    ).first()
+    if user:
+        user.password_hash = hashed_pw
+        user.account_status = "Approved"
+        user.is_active = True
+
+    db.commit()
+
+    return {
+        "success": True,
+        "message": "Your password has been reset successfully. Please login with your new password.",
+        "usn": student.usn
+    }
 
 # 5. GET /api/auth/student/profile (Section 6: Full Student Dashboard Profile)
 @router.get("/profile", response_model=StudentDashboardProfile)

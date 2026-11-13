@@ -9,21 +9,23 @@ import {
   LogIn,
   Eye,
   EyeOff,
-  ShieldCheck,
   AlertCircle,
-  Clock,
-  UserPlus,
+  CheckCircle2,
+  GraduationCap,
+  ArrowRight,
+  ShieldCheck,
+  RefreshCw,
 } from "lucide-react";
 
 export default function Login() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { login, inactivityNotice, setInactivityNotice } = useAuth();
+  const { login } = useAuth();
   const { success, error: toastError } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,27 +36,24 @@ export default function Login() {
     e.preventDefault();
     setErrorMessage("");
 
-    if (!identifier.trim() || !password) {
-      setErrorMessage("Please enter your username/email/USN and password.");
-      toastError("Please enter your username/email/USN and password.");
+    const cleanId = identifier.trim();
+    if (!cleanId || !password) {
+      setErrorMessage("Please enter your USN / Username and password.");
       return;
     }
 
     setLoading(true);
     try {
+      // Backend automatically authenticates USN, username, or email and determines role from database
       const loggedUser = await login({
-        username_or_email: identifier.trim(),
+        username_or_email: cleanId,
         password: password,
         remember_me: rememberMe,
       });
 
-      if (inactivityNotice && setInactivityNotice) {
-        setInactivityNotice(false);
-      }
-
       success(`Welcome back, ${loggedUser.full_name || loggedUser.name || "User"}!`);
 
-      // Role-based redirection
+      // Automatic Role-Based Redirection based on database-verified role
       const userRole = (loggedUser.role || "").toLowerCase();
       if (userRole === "admin") {
         navigate("/dashboard", { replace: true });
@@ -70,19 +69,14 @@ export default function Login() {
     } catch (err) {
       const msg =
         err.response?.data?.detail ||
+        err.response?.data?.message ||
         err.message ||
-        "Invalid credentials. Please verify your details.";
+        "Invalid USN/Username or password. Please verify and try again.";
       setErrorMessage(msg);
       toastError(msg);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickLogin = (demoIdentifier, demoPass = "password123") => {
-    setIdentifier(demoIdentifier);
-    setPassword(demoPass);
-    setErrorMessage("");
   };
 
   return (
@@ -93,21 +87,22 @@ export default function Login() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%)",
-        padding: "1.5rem",
+        background: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #172554 100%)",
+        padding: "1.5rem 1rem",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
-      {/* Login Card */}
+      {/* Centered Login Card */}
       <div
         style={{
           width: "100%",
-          maxWidth: "480px",
+          maxWidth: "440px",
           background: "#ffffff",
-          borderRadius: "20px",
-          padding: "2.5rem 2.25rem 2.25rem",
-          boxShadow: "0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(0, 0, 0, 0.05)",
+          borderRadius: "16px",
+          padding: "2.25rem 2rem",
+          boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05)",
           border: "1px solid #e2e8f0",
+          boxSizing: "border-box",
         }}
       >
         {/* Brand Header */}
@@ -117,14 +112,13 @@ export default function Login() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginBottom: "1rem",
+              marginBottom: "0.85rem",
             }}
           >
             <CollegeLogo
               size="lg"
-              className="login-college-logo"
               style={{
-                height: "68px",
+                height: "64px",
                 width: "auto",
                 objectFit: "contain",
               }}
@@ -133,208 +127,87 @@ export default function Login() {
 
           <h1
             style={{
-              fontSize: "1.5rem",
+              fontSize: "1.35rem",
               fontWeight: 800,
               color: "#0f172a",
-              letterSpacing: "0.03em",
-              textTransform: "uppercase",
-              margin: 0,
-              lineHeight: 1.2,
+              margin: "0 0 0.35rem 0",
+              letterSpacing: "-0.02em",
             }}
           >
-            SMART DEPARTMENT
+            Smart Department System
           </h1>
-
-          <div
+          <p
             style={{
-              color: "#334155",
-              fontSize: "0.92rem",
-              fontWeight: 600,
-              marginTop: "0.3rem",
-            }}
-          >
-            Academic Management System
-          </div>
-
-          <div
-            style={{
+              fontSize: "0.82rem",
               color: "#64748b",
-              fontSize: "0.78rem",
-              marginTop: "0.2rem",
+              margin: 0,
               fontWeight: 500,
             }}
           >
-            Maharaja Institute of Technology Thandavapura
-          </div>
+            Department of Computer Science & Engineering
+          </p>
         </div>
 
-        {/* Inactivity Notice Alert */}
-        {inactivityNotice && (
-          <div
-            style={{
-              background: "#fffbeb",
-              border: "1px solid #fde68a",
-              borderRadius: "10px",
-              padding: "0.75rem 1rem",
-              marginBottom: "1.25rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.6rem",
-              color: "#b45309",
-              fontSize: "0.85rem",
-            }}
-          >
-            <Clock size={18} flexShrink={0} />
-            <span>You were logged out due to 30 minutes of inactivity. Please log in again.</span>
-          </div>
-        )}
-
-        {/* Error Feedback Alert */}
+        {/* Error Alert Box */}
         {errorMessage && (
           <div
             style={{
-              background: "#fef2f2",
-              border: "1px solid #fecaca",
-              borderRadius: "10px",
-              padding: "0.75rem 1rem",
-              marginBottom: "1.25rem",
               display: "flex",
               alignItems: "flex-start",
               gap: "0.6rem",
+              padding: "0.85rem 1rem",
+              background: "#fef2f2",
+              border: "1px solid #fecaca",
+              borderRadius: "10px",
               color: "#b91c1c",
-              fontSize: "0.85rem",
+              fontSize: "0.84rem",
+              lineHeight: 1.4,
+              marginBottom: "1.25rem",
             }}
           >
-            <AlertCircle size={18} style={{ marginTop: "2px", flexShrink: 0 }} />
-            <span>{errorMessage}</span>
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "1px" }} />
+            <div>{errorMessage}</div>
           </div>
         )}
 
-        {/* Demo 1-Click Accounts */}
-        <div
-          style={{
-            background: "#f8fafc",
-            border: "1px solid #e2e8f0",
-            borderRadius: "12px",
-            padding: "0.75rem",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "0.72rem",
-              color: "#475569",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-              marginBottom: "0.4rem",
-              textAlign: "center",
-            }}
-          >
-            1-Click Demo Logins:
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.35rem" }}>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("admin@campus.edu")}
-              style={{
-                background: "#ffffff",
-                border: "1px solid #cbd5e1",
-                color: "#1e3a8a",
-                padding: "0.4rem 0.2rem",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              Admin
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("hod.cse@campus.edu")}
-              style={{
-                background: "#ffffff",
-                border: "1px solid #cbd5e1",
-                color: "#7e22ce",
-                padding: "0.4rem 0.2rem",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              HOD
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("ananya.iyer@faculty.campus.edu")}
-              style={{
-                background: "#ffffff",
-                border: "1px solid #cbd5e1",
-                color: "#0e7490",
-                padding: "0.4rem 0.2rem",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              Teacher
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin("amulya.h.s@mitt.ac.in")}
-              style={{
-                background: "#ffffff",
-                border: "1px solid #cbd5e1",
-                color: "#047857",
-                padding: "0.4rem 0.2rem",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              Student
-            </button>
-          </div>
-        </div>
-
         {/* Login Form */}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-          <div>
+        <form onSubmit={handleSubmit}>
+          {/* USN / Username Input */}
+          <div style={{ marginBottom: "1.15rem" }}>
             <label
+              htmlFor="login-identifier"
               style={{
                 display: "block",
-                fontSize: "0.85rem",
+                fontSize: "0.82rem",
                 fontWeight: 600,
                 color: "#1e293b",
                 marginBottom: "0.4rem",
               }}
             >
-              Username, Email or USN / Employee ID
+              USN / Username *
             </label>
             <div style={{ position: "relative" }}>
               <User
                 size={18}
                 style={{
                   position: "absolute",
-                  left: "14px",
+                  left: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  color: "#94a3b8",
+                  color: "#64748b",
                 }}
               />
               <input
+                id="login-identifier"
                 type="text"
-                required
+                placeholder="e.g. 4MN23CS001 or admin"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder="e.g. admin@campus.edu or 4MH21CS001"
+                autoFocus
+                required
                 style={{
                   width: "100%",
-                  padding: "0.75rem 0.85rem 0.75rem 2.6rem",
+                  padding: "0.75rem 1rem 0.75rem 2.5rem",
                   background: "#f8fafc",
                   border: "1px solid #cbd5e1",
                   borderRadius: "10px",
@@ -342,12 +215,19 @@ export default function Login() {
                   fontSize: "0.92rem",
                   outline: "none",
                   boxSizing: "border-box",
+                  transition: "border-color 0.15s ease",
                 }}
+                onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                onBlur={(e) => (e.target.style.borderColor = "#cbd5e1")}
               />
             </div>
+            <p style={{ fontSize: "0.72rem", color: "#64748b", margin: "0.3rem 0 0 0" }}>
+              Students enter USN; Staff enter Username or Email.
+            </p>
           </div>
 
-          <div>
+          {/* Password Input */}
+          <div style={{ marginBottom: "1.15rem" }}>
             <div
               style={{
                 display: "flex",
@@ -357,18 +237,19 @@ export default function Login() {
               }}
             >
               <label
+                htmlFor="login-password"
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "0.82rem",
                   fontWeight: 600,
                   color: "#1e293b",
                 }}
               >
-                Password
+                Password *
               </label>
               <Link
                 to="/forgot-password"
                 style={{
-                  fontSize: "0.8rem",
+                  fontSize: "0.78rem",
                   color: "#2563eb",
                   textDecoration: "none",
                   fontWeight: 600,
@@ -382,21 +263,22 @@ export default function Login() {
                 size={18}
                 style={{
                   position: "absolute",
-                  left: "14px",
+                  left: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  color: "#94a3b8",
+                  color: "#64748b",
                 }}
               />
               <input
+                id="login-password"
                 type={showPassword ? "text" : "password"}
-                required
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                required
                 style={{
                   width: "100%",
-                  padding: "0.75rem 2.75rem 0.75rem 2.6rem",
+                  padding: "0.75rem 2.6rem 0.75rem 2.5rem",
                   background: "#f8fafc",
                   border: "1px solid #cbd5e1",
                   borderRadius: "10px",
@@ -404,7 +286,10 @@ export default function Login() {
                   fontSize: "0.92rem",
                   outline: "none",
                   boxSizing: "border-box",
+                  transition: "border-color 0.15s ease",
                 }}
+                onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+                onBlur={(e) => (e.target.style.borderColor = "#cbd5e1")}
               />
               <button
                 type="button"
@@ -414,16 +299,13 @@ export default function Login() {
                   right: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  background: "transparent",
+                  background: "none",
                   border: "none",
+                  color: "#64748b",
                   cursor: "pointer",
-                  color: "#94a3b8",
-                  padding: "4px",
-                  display: "flex",
-                  alignItems: "center",
+                  padding: 0,
                 }}
-                title={showPassword ? "Hide password" : "Show password"}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -431,67 +313,74 @@ export default function Login() {
           </div>
 
           {/* Remember Me Checkbox */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "1.35rem",
+              fontSize: "0.82rem",
+              color: "#475569",
+            }}
+          >
             <label
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0.5rem",
+                gap: "0.45rem",
                 cursor: "pointer",
-                fontSize: "0.85rem",
-                color: "#475569",
+                userSelect: "none",
               }}
             >
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                style={{
-                  accentColor: "#1e3a8a",
-                  cursor: "pointer",
-                  width: "15px",
-                  height: "15px",
-                }}
+                style={{ accentColor: "#1e3a8a", width: "15px", height: "15px", cursor: "pointer" }}
               />
               Remember me on this device
             </label>
           </div>
 
-          {/* Submit Button */}
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
             style={{
-              marginTop: "0.4rem",
-              padding: "0.85rem 1.25rem",
-              borderRadius: "10px",
-              background: "#1e3a8a",
-              color: "#ffffff",
+              width: "100%",
+              padding: "0.85rem",
+              background: loading
+                ? "#93c5fd"
+                : "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)",
               border: "none",
-              fontSize: "0.95rem",
+              borderRadius: "10px",
+              color: "#ffffff",
               fontWeight: 700,
-              letterSpacing: "0.03em",
-              cursor: loading ? "not-allowed" : "pointer",
+              fontSize: "0.95rem",
+              letterSpacing: "0.02em",
+              cursor: loading ? "wait" : "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "0.6rem",
-              boxShadow: "0 4px 14px rgba(30, 58, 138, 0.25)",
-              opacity: loading ? 0.7 : 1,
+              gap: "0.5rem",
+              boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+              transition: "all 0.2s ease",
             }}
           >
             {loading ? (
-              <span>Authenticating...</span>
+              <>
+                <RefreshCw size={18} style={{ animation: "spin 1s linear infinite" }} />
+                <span>Authenticating...</span>
+              </>
             ) : (
               <>
                 <LogIn size={18} />
-                <span>SIGN IN</span>
+                <span>LOGIN</span>
               </>
             )}
           </button>
         </form>
 
-        {/* Register Account Section */}
+        {/* Register as Student Link */}
         <div
           style={{
             marginTop: "1.5rem",
@@ -500,111 +389,58 @@ export default function Login() {
             textAlign: "center",
           }}
         >
-          <p style={{ fontSize: "0.85rem", color: "#64748b", margin: "0 0 0.75rem" }}>
-            Don't have an institutional account yet?
+          <p style={{ fontSize: "0.84rem", color: "#64748b", margin: "0 0 0.75rem 0" }}>
+            Are you a student in 5th Semester?
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <Link
-              to="/student-login"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.45rem",
-                width: "100%",
-                padding: "0.75rem 1rem",
-                borderRadius: "10px",
-                border: "1px solid #2563eb",
-                background: "#2563eb",
-                color: "#ffffff",
-                textDecoration: "none",
-                fontSize: "0.88rem",
-                fontWeight: 600,
-                boxSizing: "border-box",
-                boxShadow: "0 2px 8px rgba(37, 99, 235, 0.25)",
-              }}
-            >
-              <LogIn size={16} color="#ffffff" />
-              <span>Dedicated Student Login (USN & Password)</span>
-            </Link>
 
-            <Link
-              to="/student-register"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.45rem",
-                width: "100%",
-                padding: "0.75rem 1rem",
-                borderRadius: "10px",
-                border: "1px solid #4f46e5",
-                background: "linear-gradient(135deg, #4f46e5 0%, #3730a3 100%)",
-                color: "#ffffff",
-                textDecoration: "none",
-                fontSize: "0.88rem",
-                fontWeight: 600,
-                boxSizing: "border-box",
-                boxShadow: "0 2px 8px rgba(79, 70, 229, 0.25)",
-              }}
-            >
-              <UserPlus size={16} color="#ffffff" />
-              <span>Easy Student Registration (USN & Password)</span>
-            </Link>
-
-            <Link
-              to="/register"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.45rem",
-                width: "100%",
-                padding: "0.65rem 1rem",
-                borderRadius: "10px",
-                border: "1px solid #cbd5e1",
-                background: "#ffffff",
-                color: "#1e293b",
-                textDecoration: "none",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                boxSizing: "border-box",
-              }}
-            >
-              <span>Other Institutional Roles (Teacher / HOD)</span>
-            </Link>
-          </div>
+          <Link
+            to="/student-register"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.45rem",
+              width: "100%",
+              padding: "0.75rem 1rem",
+              borderRadius: "10px",
+              border: "1px solid #bfdbfe",
+              background: "#eff6ff",
+              color: "#1d4ed8",
+              textDecoration: "none",
+              fontSize: "0.88rem",
+              fontWeight: 600,
+              boxSizing: "border-box",
+              transition: "all 0.15s ease",
+            }}
+          >
+            <GraduationCap size={18} />
+            <span>Register as Student (with USN)</span>
+          </Link>
         </div>
 
-        {/* Footer Badge */}
+        {/* Roles footer indicator */}
         <div
           style={{
+            marginTop: "1.25rem",
             textAlign: "center",
-            marginTop: "1.5rem",
-            fontSize: "0.78rem",
-            color: "#64748b",
+            fontSize: "0.72rem",
+            color: "#94a3b8",
             display: "flex",
-            alignItems: "center",
             justifyContent: "center",
             gap: "0.4rem",
+            flexWrap: "wrap",
           }}
         >
-          <ShieldCheck size={16} color="#059669" />
-          <span>VTU Affiliated & AICTE Approved Institutional Portal</span>
+          <span>Roles:</span>
+          <span style={{ color: "#475569", fontWeight: 600 }}>Admin</span>
+          <span>•</span>
+          <span style={{ color: "#475569", fontWeight: 600 }}>HOD</span>
+          <span>•</span>
+          <span style={{ color: "#475569", fontWeight: 600 }}>Teacher</span>
+          <span>•</span>
+          <span style={{ color: "#475569", fontWeight: 600 }}>Student</span>
         </div>
       </div>
-
-      {/* College Footer */}
-      <footer
-        style={{
-          marginTop: "1.5rem",
-          textAlign: "center",
-          fontSize: "0.75rem",
-          color: "#64748b",
-        }}
-      >
-        Maharaja Institute of Technology Thandavapura • NH 766, Nanjangud Taluk, Mysuru
-      </footer>
     </div>
   );
 }

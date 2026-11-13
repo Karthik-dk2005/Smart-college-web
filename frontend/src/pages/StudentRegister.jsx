@@ -15,10 +15,8 @@ import {
   ShieldCheck,
   RefreshCw,
   GraduationCap,
-  Sparkles,
   Check,
-  Building2,
-  Calendar,
+  ArrowLeft,
 } from "lucide-react";
 
 export default function StudentRegister() {
@@ -28,12 +26,12 @@ export default function StudentRegister() {
   // Workflow steps: "form" | "otp" | "success"
   const [step, setStep] = useState("form");
 
-  // Form inputs (Only USN, Password, Confirm Password as specified)
+  // Form inputs (strictly USN, Password, Confirm Password)
   const [usn, setUsn] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Automatically fetched read-only information
+  // Automatically retrieved read-only information
   const [studentInfo, setStudentInfo] = useState(null);
   const [fetchingUsn, setFetchingUsn] = useState(false);
 
@@ -73,7 +71,7 @@ export default function StudentRegister() {
       if (data.is_registered) {
         setError("This account is already registered! Please proceed to Login.");
       } else {
-        setSuccessMsg(`Official record matched for ${data.name}.`);
+        setSuccessMsg(`Official record retrieved for ${data.name}.`);
       }
     } catch (err) {
       setStudentInfo(null);
@@ -91,7 +89,6 @@ export default function StudentRegister() {
     }
   };
 
-  // Debounced / onBlur USN auto-check
   const handleUsnChange = (e) => {
     const val = e.target.value.toUpperCase();
     setUsn(val);
@@ -99,13 +96,12 @@ export default function StudentRegister() {
     if (studentInfo && val !== studentInfo.usn) {
       setStudentInfo(null);
     }
-    // Auto-fetch if user types a standard VTU USN length (10 chars e.g. 4MN23CS001, 4MN25CS410)
     if (val.length === 10) {
       handleCheckUsn(val);
     }
   };
 
-  // Step 1: Submit Registration (USN + Password + Confirm Password)
+  // Submit Registration Form
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -135,7 +131,6 @@ export default function StudentRegister() {
     setLoading(true);
 
     try {
-      // First ensure details are fetched if not already
       let currentInfo = studentInfo;
       if (!currentInfo || currentInfo.usn !== cleanUsn) {
         currentInfo = await studentAuthApi.checkUsn(cleanUsn);
@@ -148,7 +143,7 @@ export default function StudentRegister() {
         return;
       }
 
-      // Call registration API - sends OTP to registered Gmail
+      // Sends OTP to the official registered Gmail address
       const res = await studentAuthApi.register({
         usn: cleanUsn,
         password,
@@ -157,7 +152,7 @@ export default function StudentRegister() {
 
       setSuccessMsg(
         res.message ||
-        `OTP sent successfully to registered Gmail: ${res.gmail || currentInfo.gmail}`
+        `Verification code sent to registered Gmail: ${res.gmail || currentInfo.gmail}`
       );
       setStep("otp");
       setResendCooldown(60);
@@ -176,7 +171,7 @@ export default function StudentRegister() {
     }
   };
 
-  // Step 2: Verify OTP
+  // Verify OTP & Activate Account
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setError("");
@@ -184,7 +179,7 @@ export default function StudentRegister() {
 
     const cleanOtp = otp.trim();
     if (!cleanOtp || cleanOtp.length !== 6) {
-      setError("Please enter the 6-digit OTP sent to your registered Gmail.");
+      setError("Please enter the 6-digit OTP code sent to your registered Gmail.");
       return;
     }
 
@@ -193,7 +188,6 @@ export default function StudentRegister() {
     try {
       const res = await studentAuthApi.verifyOtp(usn.trim().toUpperCase(), cleanOtp);
 
-      // Successfully activated!
       if (setSession && res.access_token && res.user) {
         setSession(res.access_token, res.user, "student");
       }
@@ -204,7 +198,7 @@ export default function StudentRegister() {
       setError(
         err.response?.data?.detail ||
         err.response?.data?.message ||
-        "Invalid or expired OTP. Please try again."
+        "Invalid or expired OTP. Please check your Gmail and try again."
       );
     } finally {
       setLoading(false);
@@ -219,7 +213,7 @@ export default function StudentRegister() {
 
     try {
       const res = await studentAuthApi.resendOtp(usn.trim().toUpperCase());
-      setSuccessMsg(res.message || "A fresh OTP has been sent to your registered Gmail.");
+      setSuccessMsg(res.message || "A new OTP code has been dispatched to your Gmail.");
       setResendCooldown(60);
     } catch (err) {
       setError(
@@ -240,94 +234,85 @@ export default function StudentRegister() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #090d16 100%)",
+        background: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #172554 100%)",
         padding: "1.5rem 1rem",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-        color: "#f8fafc",
       }}
     >
-      {/* College & Department Branding */}
-      <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-        <div style={{ display: "inline-block", marginBottom: "0.5rem" }}>
-          <CollegeLogo size="lg" showText={false} />
-        </div>
-        <h1
-          style={{
-            fontSize: "1.6rem",
-            fontWeight: 800,
-            letterSpacing: "-0.02em",
-            color: "#ffffff",
-            margin: "0.25rem 0",
-          }}
-        >
-          Smart Department Academic System
-        </h1>
-        <p style={{ fontSize: "0.88rem", color: "#94a3b8", margin: 0 }}>
-          Department of Computer Science & Engineering • Easy Student Portal
-        </p>
-      </div>
-
-      {/* Main Registration Card */}
+      {/* Centered Card in Blue & White Theme */}
       <div
         style={{
           width: "100%",
-          maxWidth: "540px",
-          background: "rgba(15, 23, 42, 0.85)",
-          backdropFilter: "blur(16px)",
-          border: "1px solid rgba(255, 255, 255, 0.12)",
-          borderRadius: "18px",
-          padding: "2rem",
-          boxShadow: "0 20px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.15)",
+          maxWidth: "480px",
+          background: "#ffffff",
+          borderRadius: "16px",
+          padding: "2.25rem 2rem",
+          boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05)",
+          border: "1px solid #e2e8f0",
+          boxSizing: "border-box",
         }}
       >
-        {/* Step Indicator Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem", borderBottom: "1px solid rgba(255, 255, 255, 0.08)", paddingBottom: "1rem" }}>
-          <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0, color: "#f8fafc", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <GraduationCap style={{ color: "#6366f1" }} size={22} />
-              {step === "form" && "Easy Student Registration"}
-              {step === "otp" && "Verify Gmail with OTP"}
-              {step === "success" && "Registration Completed!"}
-            </h2>
-            <p style={{ fontSize: "0.8rem", color: "#94a3b8", margin: "0.25rem 0 0 0" }}>
-              {step === "form" && "Enter your USN and password to activate your account"}
-              {step === "otp" && "Enter the 6-digit OTP code sent to your registered Gmail"}
-              {step === "success" && "Your student account is now active and ready"}
-            </p>
-          </div>
-          <span
+        {/* Brand Header */}
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <div
             style={{
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              padding: "4px 10px",
-              borderRadius: "20px",
-              background: step === "success" ? "rgba(16, 185, 129, 0.2)" : "rgba(99, 102, 241, 0.2)",
-              color: step === "success" ? "#34d399" : "#a5b4fc",
-              border: step === "success" ? "1px solid rgba(16, 185, 129, 0.4)" : "1px solid rgba(99, 102, 241, 0.4)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "0.85rem",
             }}
           >
-            {step === "form" ? "Step 1 of 2" : step === "otp" ? "Step 2 of 2" : "Completed"}
-          </span>
+            <CollegeLogo
+              size="lg"
+              style={{
+                height: "64px",
+                width: "auto",
+                objectFit: "contain",
+              }}
+            />
+          </div>
+
+          <h1
+            style={{
+              fontSize: "1.35rem",
+              fontWeight: 800,
+              color: "#0f172a",
+              margin: "0 0 0.35rem 0",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Student Registration
+          </h1>
+          <p
+            style={{
+              fontSize: "0.82rem",
+              color: "#64748b",
+              margin: 0,
+              fontWeight: 500,
+            }}
+          >
+            Smart Department Academic Management System
+          </p>
         </div>
 
-        {/* Global Notifications */}
+        {/* Status Alerts */}
         {error && (
           <div
             style={{
-              padding: "0.9rem 1rem",
-              background: "rgba(239, 68, 68, 0.12)",
-              border: "1px solid rgba(239, 68, 68, 0.35)",
-              borderRadius: "10px",
-              marginBottom: "1.25rem",
               display: "flex",
               alignItems: "flex-start",
               gap: "0.6rem",
-              color: "#fca5a5",
-              fontSize: "0.88rem",
+              padding: "0.85rem 1rem",
+              background: "#fef2f2",
+              border: "1px solid #fecaca",
+              borderRadius: "10px",
+              color: "#b91c1c",
+              fontSize: "0.84rem",
               lineHeight: 1.4,
+              marginBottom: "1.25rem",
             }}
           >
-            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "2px" }} />
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "1px" }} />
             <div>{error}</div>
           </div>
         )}
@@ -335,16 +320,16 @@ export default function StudentRegister() {
         {successMsg && (
           <div
             style={{
-              padding: "0.85rem 1rem",
-              background: "rgba(16, 185, 129, 0.12)",
-              border: "1px solid rgba(16, 185, 129, 0.35)",
-              borderRadius: "10px",
-              marginBottom: "1.25rem",
               display: "flex",
               alignItems: "center",
               gap: "0.6rem",
-              color: "#6ee7b7",
-              fontSize: "0.86rem",
+              padding: "0.85rem 1rem",
+              background: "#f0fdf4",
+              border: "1px solid #bbf7d0",
+              borderRadius: "10px",
+              color: "#16a34a",
+              fontSize: "0.84rem",
+              marginBottom: "1.25rem",
             }}
           >
             <CheckCircle size={18} style={{ flexShrink: 0 }} />
@@ -352,24 +337,22 @@ export default function StudentRegister() {
           </div>
         )}
 
-        {/* ================= STEP 1: REGISTRATION FORM ================= */}
+        {/* STEP 1: FORM */}
         {step === "form" && (
           <form onSubmit={handleRegisterSubmit}>
             {/* 1. USN Input */}
-            <div style={{ marginBottom: "1.25rem" }}>
+            <div style={{ marginBottom: "1.15rem" }}>
               <label
-                htmlFor="usn-input"
+                htmlFor="register-usn"
                 style={{
                   display: "block",
                   fontSize: "0.82rem",
                   fontWeight: 600,
-                  color: "#cbd5e1",
+                  color: "#1e293b",
                   marginBottom: "0.4rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.03em",
                 }}
               >
-                1. University Seat Number (USN) *
+                1. Student USN *
               </label>
               <div style={{ position: "relative" }}>
                 <IdCard
@@ -379,11 +362,11 @@ export default function StudentRegister() {
                     left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "#64748b",
                   }}
                 />
                 <input
-                  id="usn-input"
+                  id="register-usn"
                   type="text"
                   placeholder="e.g. 4MN23CS001 or 4MN25CS410"
                   value={usn}
@@ -393,21 +376,20 @@ export default function StudentRegister() {
                   required
                   style={{
                     width: "100%",
-                    padding: "0.75rem 2.6rem 0.75rem 2.6rem",
-                    background: "rgba(30, 41, 59, 0.7)",
+                    padding: "0.75rem 2.8rem 0.75rem 2.5rem",
+                    background: "#f8fafc",
                     border: studentInfo
-                      ? "1px solid #10b981"
+                      ? "1px solid #16a34a"
                       : error
                       ? "1px solid #ef4444"
-                      : "1px solid rgba(255, 255, 255, 0.15)",
+                      : "1px solid #cbd5e1",
                     borderRadius: "10px",
-                    color: "#ffffff",
-                    fontSize: "0.95rem",
+                    color: "#0f172a",
+                    fontSize: "0.92rem",
                     fontWeight: 600,
-                    letterSpacing: "0.05em",
                     fontFamily: "monospace",
-                    boxSizing: "border-box",
                     outline: "none",
+                    boxSizing: "border-box",
                   }}
                 />
                 {fetchingUsn ? (
@@ -418,7 +400,7 @@ export default function StudentRegister() {
                       right: "12px",
                       top: "50%",
                       transform: "translateY(-50%)",
-                      color: "#818cf8",
+                      color: "#2563eb",
                       animation: "spin 1s linear infinite",
                     }}
                   />
@@ -430,7 +412,7 @@ export default function StudentRegister() {
                       right: "12px",
                       top: "50%",
                       transform: "translateY(-50%)",
-                      color: "#10b981",
+                      color: "#16a34a",
                     }}
                   />
                 ) : (
@@ -442,9 +424,9 @@ export default function StudentRegister() {
                       right: "6px",
                       top: "50%",
                       transform: "translateY(-50%)",
-                      background: "rgba(99, 102, 241, 0.3)",
-                      border: "none",
-                      color: "#c7d2fe",
+                      background: "#eff6ff",
+                      border: "1px solid #bfdbfe",
+                      color: "#1d4ed8",
                       padding: "4px 8px",
                       borderRadius: "6px",
                       fontSize: "0.72rem",
@@ -456,34 +438,33 @@ export default function StudentRegister() {
                   </button>
                 )}
               </div>
-              <p style={{ fontSize: "0.74rem", color: "#64748b", margin: "0.3rem 0 0 0" }}>
-                Enter your official VTU USN. Your name and registered Gmail will be retrieved automatically.
+              <p style={{ fontSize: "0.72rem", color: "#64748b", margin: "0.3rem 0 0 0" }}>
+                Name and registered Gmail will be loaded automatically from official college records.
               </p>
             </div>
 
-            {/* Read-only Automatically Fetched Information Card */}
+            {/* Read-Only Automatically Displayed Information */}
             {studentInfo && (
               <div
                 style={{
-                  background: "rgba(30, 41, 59, 0.55)",
-                  border: "1px solid rgba(99, 102, 241, 0.35)",
+                  background: "#f8fafc",
+                  border: "1px solid #bfdbfe",
                   borderRadius: "12px",
                   padding: "1rem",
                   marginBottom: "1.25rem",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.6rem" }}>
-                  <span style={{ fontSize: "0.72rem", color: "#818cf8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "0.3rem" }}>
-                    <ShieldCheck size={14} /> Official Record Retrieved (Read-Only)
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6rem" }}>
+                  <span style={{ fontSize: "0.74rem", color: "#1d4ed8", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                    <ShieldCheck size={14} /> Official Record (Read-Only)
                   </span>
-                  <span style={{ fontSize: "0.7rem", background: "rgba(16, 185, 129, 0.15)", color: "#34d399", padding: "2px 8px", borderRadius: "10px", fontWeight: 700 }}>
+                  <span style={{ fontSize: "0.7rem", background: "#ecfdf5", color: "#059669", padding: "2px 8px", borderRadius: "10px", fontWeight: 700, border: "1px solid #a7f3d0" }}>
                     Section {studentInfo.section}
                   </span>
                 </div>
 
-                {/* Read-Only Student Name */}
                 <div style={{ marginBottom: "0.6rem" }}>
-                  <label style={{ display: "block", fontSize: "0.72rem", color: "#94a3b8", textTransform: "uppercase", fontWeight: 600 }}>
+                  <label style={{ display: "block", fontSize: "0.72rem", color: "#475569", fontWeight: 600, marginBottom: "0.2rem" }}>
                     Student Full Name
                   </label>
                   <input
@@ -493,11 +474,11 @@ export default function StudentRegister() {
                     style={{
                       width: "100%",
                       padding: "0.55rem 0.75rem",
-                      background: "rgba(15, 23, 42, 0.6)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      background: "#ffffff",
+                      border: "1px solid #e2e8f0",
                       borderRadius: "8px",
-                      color: "#f8fafc",
-                      fontSize: "0.92rem",
+                      color: "#0f172a",
+                      fontSize: "0.9rem",
                       fontWeight: 600,
                       cursor: "not-allowed",
                       boxSizing: "border-box",
@@ -505,9 +486,8 @@ export default function StudentRegister() {
                   />
                 </div>
 
-                {/* Read-Only Registered Gmail */}
                 <div>
-                  <label style={{ display: "block", fontSize: "0.72rem", color: "#94a3b8", textTransform: "uppercase", fontWeight: 600 }}>
+                  <label style={{ display: "block", fontSize: "0.72rem", color: "#475569", fontWeight: 600, marginBottom: "0.2rem" }}>
                     Registered Gmail Address (OTP Destination)
                   </label>
                   <input
@@ -517,11 +497,11 @@ export default function StudentRegister() {
                     style={{
                       width: "100%",
                       padding: "0.55rem 0.75rem",
-                      background: "rgba(15, 23, 42, 0.6)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      background: "#ffffff",
+                      border: "1px solid #e2e8f0",
                       borderRadius: "8px",
-                      color: "#38bdf8",
-                      fontSize: "0.92rem",
+                      color: "#2563eb",
+                      fontSize: "0.9rem",
                       fontWeight: 600,
                       fontFamily: "monospace",
                       cursor: "not-allowed",
@@ -533,20 +513,18 @@ export default function StudentRegister() {
             )}
 
             {/* 2. Password Input */}
-            <div style={{ marginBottom: "1.25rem" }}>
+            <div style={{ marginBottom: "1.15rem" }}>
               <label
-                htmlFor="password-input"
+                htmlFor="register-password"
                 style={{
                   display: "block",
                   fontSize: "0.82rem",
                   fontWeight: 600,
-                  color: "#cbd5e1",
+                  color: "#1e293b",
                   marginBottom: "0.4rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.03em",
                 }}
               >
-                2. Create Password *
+                2. Password *
               </label>
               <div style={{ position: "relative" }}>
                 <Lock
@@ -556,11 +534,11 @@ export default function StudentRegister() {
                     left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "#64748b",
                   }}
                 />
                 <input
-                  id="password-input"
+                  id="register-password"
                   type={showPassword ? "text" : "password"}
                   placeholder="At least 6 characters"
                   value={password}
@@ -568,14 +546,14 @@ export default function StudentRegister() {
                   required
                   style={{
                     width: "100%",
-                    padding: "0.75rem 2.6rem 0.75rem 2.6rem",
-                    background: "rgba(30, 41, 59, 0.7)",
-                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    padding: "0.75rem 2.6rem 0.75rem 2.5rem",
+                    background: "#f8fafc",
+                    border: "1px solid #cbd5e1",
                     borderRadius: "10px",
-                    color: "#ffffff",
-                    fontSize: "0.95rem",
-                    boxSizing: "border-box",
+                    color: "#0f172a",
+                    fontSize: "0.92rem",
                     outline: "none",
+                    boxSizing: "border-box",
                   }}
                 />
                 <button
@@ -588,7 +566,7 @@ export default function StudentRegister() {
                     transform: "translateY(-50%)",
                     background: "none",
                     border: "none",
-                    color: "#94a3b8",
+                    color: "#64748b",
                     cursor: "pointer",
                     padding: 0,
                   }}
@@ -599,17 +577,15 @@ export default function StudentRegister() {
             </div>
 
             {/* 3. Confirm Password Input */}
-            <div style={{ marginBottom: "1.5rem" }}>
+            <div style={{ marginBottom: "1.35rem" }}>
               <label
-                htmlFor="confirm-password-input"
+                htmlFor="register-confirm-password"
                 style={{
                   display: "block",
                   fontSize: "0.82rem",
                   fontWeight: 600,
-                  color: "#cbd5e1",
+                  color: "#1e293b",
                   marginBottom: "0.4rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.03em",
                 }}
               >
                 3. Confirm Password *
@@ -622,29 +598,29 @@ export default function StudentRegister() {
                     left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "#64748b",
                   }}
                 />
                 <input
-                  id="confirm-password-input"
+                  id="register-confirm-password"
                   type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Re-enter your password"
+                  placeholder="Re-enter password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   style={{
                     width: "100%",
-                    padding: "0.75rem 2.6rem 0.75rem 2.6rem",
-                    background: "rgba(30, 41, 59, 0.7)",
+                    padding: "0.75rem 2.6rem 0.75rem 2.5rem",
+                    background: "#f8fafc",
                     border:
                       confirmPassword && password !== confirmPassword
                         ? "1px solid #ef4444"
-                        : "1px solid rgba(255, 255, 255, 0.15)",
+                        : "1px solid #cbd5e1",
                     borderRadius: "10px",
-                    color: "#ffffff",
-                    fontSize: "0.95rem",
-                    boxSizing: "border-box",
+                    color: "#0f172a",
+                    fontSize: "0.92rem",
                     outline: "none",
+                    boxSizing: "border-box",
                   }}
                 />
                 <button
@@ -657,7 +633,7 @@ export default function StudentRegister() {
                     transform: "translateY(-50%)",
                     background: "none",
                     border: "none",
-                    color: "#94a3b8",
+                    color: "#64748b",
                     cursor: "pointer",
                     padding: 0,
                   }}
@@ -666,7 +642,7 @@ export default function StudentRegister() {
                 </button>
               </div>
               {confirmPassword && password !== confirmPassword && (
-                <p style={{ fontSize: "0.75rem", color: "#f87171", margin: "0.3rem 0 0 0" }}>
+                <p style={{ fontSize: "0.72rem", color: "#dc2626", margin: "0.3rem 0 0 0" }}>
                   Passwords do not match.
                 </p>
               )}
@@ -680,73 +656,75 @@ export default function StudentRegister() {
                 width: "100%",
                 padding: "0.85rem",
                 background: loading
-                  ? "rgba(99, 102, 241, 0.6)"
-                  : "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
+                  ? "#93c5fd"
+                  : "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)",
                 border: "none",
                 borderRadius: "10px",
                 color: "#ffffff",
                 fontWeight: 700,
-                fontSize: "1rem",
+                fontSize: "0.95rem",
                 cursor: loading ? "wait" : "pointer",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "0.5rem",
-                boxShadow: "0 4px 15px rgba(99, 102, 241, 0.4)",
+                boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
                 transition: "all 0.2s ease",
               }}
             >
               {loading ? (
                 <>
                   <RefreshCw size={18} style={{ animation: "spin 1s linear infinite" }} />
-                  Sending OTP to Gmail...
+                  <span>Sending OTP to Gmail...</span>
                 </>
               ) : (
                 <>
-                  Register & Send OTP <ArrowRight size={18} />
+                  <span>REGISTER & SEND OTP</span>
+                  <ArrowRight size={18} />
                 </>
               )}
             </button>
           </form>
         )}
 
-        {/* ================= STEP 2: OTP VERIFICATION ================= */}
+        {/* STEP 2: OTP VERIFICATION */}
         {step === "otp" && (
           <form onSubmit={handleVerifyOtp}>
             <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
               <div
                 style={{
-                  width: "56px",
-                  height: "56px",
+                  width: "52px",
+                  height: "52px",
                   borderRadius: "50%",
-                  background: "rgba(99, 102, 241, 0.15)",
-                  color: "#818cf8",
+                  background: "#eff6ff",
+                  color: "#2563eb",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  margin: "0 auto 1rem auto",
-                  border: "1px solid rgba(99, 102, 241, 0.3)",
+                  margin: "0 auto 0.85rem auto",
+                  border: "1px solid #bfdbfe",
                 }}
               >
-                <Mail size={28} />
+                <Mail size={24} />
               </div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 0.4rem 0", color: "#f8fafc" }}>
-                Enter 6-Digit OTP Code
-              </h3>
-              <p style={{ fontSize: "0.85rem", color: "#94a3b8", margin: 0, lineHeight: 1.4 }}>
-                We have sent an authentication code to your registered Gmail:
+              <h2 style={{ fontSize: "1.15rem", fontWeight: 700, margin: "0 0 0.35rem 0", color: "#0f172a" }}>
+                Verify Registered Gmail
+              </h2>
+              <p style={{ fontSize: "0.82rem", color: "#64748b", margin: 0, lineHeight: 1.4 }}>
+                Enter the 6-digit OTP code sent to:
               </p>
               <div
                 style={{
                   display: "inline-block",
-                  margin: "0.5rem 0",
-                  padding: "4px 12px",
-                  background: "rgba(56, 189, 248, 0.1)",
+                  margin: "0.4rem 0",
+                  padding: "4px 10px",
+                  background: "#eff6ff",
                   borderRadius: "6px",
-                  color: "#38bdf8",
+                  color: "#1d4ed8",
                   fontFamily: "monospace",
                   fontWeight: 600,
-                  fontSize: "0.92rem",
+                  fontSize: "0.88rem",
+                  border: "1px solid #bfdbfe",
                 }}
               >
                 {studentInfo?.gmail || "your registered Gmail"}
@@ -766,13 +744,13 @@ export default function StudentRegister() {
                 style={{
                   width: "100%",
                   padding: "0.85rem",
-                  background: "rgba(30, 41, 59, 0.7)",
-                  border: "2px solid rgba(99, 102, 241, 0.4)",
+                  background: "#f8fafc",
+                  border: "2px solid #2563eb",
                   borderRadius: "12px",
-                  color: "#ffffff",
+                  color: "#0f172a",
                   fontSize: "1.5rem",
                   fontWeight: 800,
-                  letterSpacing: "0.5em",
+                  letterSpacing: "0.45em",
                   textAlign: "center",
                   boxSizing: "border-box",
                   outline: "none",
@@ -789,35 +767,36 @@ export default function StudentRegister() {
                 padding: "0.85rem",
                 background:
                   otp.length === 6
-                    ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                    : "rgba(16, 185, 129, 0.4)",
+                    ? "linear-gradient(135deg, #15803d 0%, #16a34a 100%)"
+                    : "#cbd5e1",
                 border: "none",
                 borderRadius: "10px",
                 color: "#ffffff",
                 fontWeight: 700,
-                fontSize: "1rem",
+                fontSize: "0.95rem",
                 cursor: otp.length === 6 ? "pointer" : "not-allowed",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "0.5rem",
-                boxShadow: "0 4px 15px rgba(16, 185, 129, 0.3)",
+                boxShadow: "0 4px 14px rgba(22, 163, 74, 0.25)",
                 transition: "all 0.2s ease",
               }}
             >
               {loading ? (
                 <>
                   <RefreshCw size={18} style={{ animation: "spin 1s linear infinite" }} />
-                  Verifying OTP...
+                  <span>Verifying OTP...</span>
                 </>
               ) : (
                 <>
-                  <ShieldCheck size={18} /> Verify OTP & Complete Registration
+                  <ShieldCheck size={18} />
+                  <span>VERIFY OTP & ACTIVATE</span>
                 </>
               )}
             </button>
 
-            {/* Resend & Back buttons */}
+            {/* Resend and Back links */}
             <div
               style={{
                 display: "flex",
@@ -833,13 +812,16 @@ export default function StudentRegister() {
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#94a3b8",
+                  color: "#64748b",
                   cursor: "pointer",
                   padding: 0,
-                  textDecoration: "underline",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                  fontWeight: 500,
                 }}
               >
-                ← Back to Edit Details
+                <ArrowLeft size={14} /> Back
               </button>
 
               <button
@@ -849,7 +831,7 @@ export default function StudentRegister() {
                 style={{
                   background: "none",
                   border: "none",
-                  color: resendCooldown > 0 ? "#64748b" : "#818cf8",
+                  color: resendCooldown > 0 ? "#94a3b8" : "#2563eb",
                   cursor: resendCooldown > 0 ? "not-allowed" : "pointer",
                   fontWeight: 600,
                   padding: 0,
@@ -861,113 +843,101 @@ export default function StudentRegister() {
           </form>
         )}
 
-        {/* ================= STEP 3: SUCCESS COMPLETED ================= */}
+        {/* STEP 3: SUCCESS */}
         {step === "success" && (
-          <div style={{ textAlign: "center", padding: "1rem 0" }}>
+          <div style={{ textAlign: "center", padding: "0.5rem 0" }}>
             <div
               style={{
-                width: "64px",
-                height: "64px",
+                width: "60px",
+                height: "60px",
                 borderRadius: "50%",
-                background: "rgba(16, 185, 129, 0.2)",
-                color: "#10b981",
+                background: "#ecfdf5",
+                color: "#16a34a",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: "0 auto 1.25rem auto",
-                border: "2px solid #10b981",
+                margin: "0 auto 1.15rem auto",
+                border: "2px solid #16a34a",
               }}
             >
-              <CheckCircle size={36} />
+              <CheckCircle size={32} />
             </div>
 
-            <h3 style={{ fontSize: "1.3rem", fontWeight: 800, margin: "0 0 0.5rem 0", color: "#ffffff" }}>
-              Registration Successful!
-            </h3>
-            <p style={{ fontSize: "0.9rem", color: "#94a3b8", margin: "0 0 1.5rem 0", lineHeight: 1.5 }}>
-              Your student account has been registered and verified with your official department records.
-              You can now access your personal timetable, attendance, and IA marks.
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 800, margin: "0 0 0.5rem 0", color: "#0f172a" }}>
+              Account Activated!
+            </h2>
+            <p style={{ fontSize: "0.86rem", color: "#64748b", margin: "0 0 1.5rem 0", lineHeight: 1.5 }}>
+              Your student account has been verified with official department records. You can now access your timetable, attendance, and IA marks.
             </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               <button
                 type="button"
                 onClick={() => navigate("/dashboard")}
                 style={{
                   width: "100%",
                   padding: "0.85rem",
-                  background: "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)",
+                  background: "linear-gradient(135deg, #1e40af 0%, #2563eb 100%)",
                   border: "none",
                   borderRadius: "10px",
                   color: "#ffffff",
                   fontWeight: 700,
-                  fontSize: "1rem",
+                  fontSize: "0.95rem",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "0.5rem",
-                  boxShadow: "0 4px 15px rgba(99, 102, 241, 0.4)",
+                  boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
                 }}
               >
-                Go to Student Dashboard <ArrowRight size={18} />
+                <span>Go to Student Dashboard</span>
+                <ArrowRight size={18} />
               </button>
 
               <button
                 type="button"
-                onClick={() => navigate("/student-login")}
+                onClick={() => navigate("/login")}
                 style={{
                   width: "100%",
                   padding: "0.75rem",
-                  background: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  background: "#f8fafc",
+                  border: "1px solid #cbd5e1",
                   borderRadius: "10px",
-                  color: "#cbd5e1",
+                  color: "#334155",
                   fontWeight: 600,
-                  fontSize: "0.9rem",
+                  fontSize: "0.88rem",
                   cursor: "pointer",
                 }}
               >
-                Go to Student Login
+                Go to Login
               </button>
             </div>
           </div>
         )}
 
-        {/* Footer Links */}
+        {/* Footer Login Link */}
         <div
           style={{
-            marginTop: "1.75rem",
-            paddingTop: "1.25rem",
-            borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+            marginTop: "1.5rem",
+            paddingTop: "1.15rem",
+            borderTop: "1px solid #f1f5f9",
             textAlign: "center",
             fontSize: "0.84rem",
-            color: "#94a3b8",
+            color: "#64748b",
           }}
         >
-          Already registered?{" "}
+          Already have an account?{" "}
           <Link
-            to="/student-login"
+            to="/login"
             style={{
-              color: "#818cf8",
+              color: "#2563eb",
               fontWeight: 600,
               textDecoration: "none",
             }}
           >
-            Login with USN & Password
+            Login here →
           </Link>
-          <div style={{ marginTop: "0.5rem" }}>
-            <Link
-              to="/login"
-              style={{
-                color: "#64748b",
-                fontSize: "0.78rem",
-                textDecoration: "none",
-              }}
-            >
-              Faculty / Admin Portal Login →
-            </Link>
-          </div>
         </div>
       </div>
     </div>

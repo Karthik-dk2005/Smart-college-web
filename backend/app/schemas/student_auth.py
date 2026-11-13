@@ -137,3 +137,53 @@ class StudentDashboardProfile(BaseModel):
     events: List[Dict[str, Any]] = []
     activities: List[Dict[str, Any]] = []
     bus_route: Optional[Dict[str, Any]] = None
+
+class StudentForgotPasswordRequest(BaseModel):
+    usn: str
+
+    @validator('usn')
+    def validate_usn(cls, v):
+        v = v.strip().upper()
+        if not v:
+            raise ValueError('USN is required')
+        return v
+
+class StudentVerifyRecoveryOTPRequest(BaseModel):
+    usn: str
+    otp: str
+
+    @validator('usn')
+    def validate_usn(cls, v):
+        return v.strip().upper()
+
+    @validator('otp')
+    def validate_otp(cls, v):
+        v = v.strip()
+        if not v or len(v) != 6 or not v.isdigit():
+            raise ValueError('OTP must be a 6-digit number')
+        return v
+
+class StudentResetPasswordRequest(BaseModel):
+    usn: str
+    otp: str
+    new_password: str
+    confirm_password: str
+
+    @validator('usn')
+    def validate_usn(cls, v):
+        return v.strip().upper()
+
+    @validator('otp')
+    def validate_otp(cls, v):
+        v = v.strip()
+        if not v or len(v) != 6 or not v.isdigit():
+            raise ValueError('OTP must be a 6-digit number')
+        return v
+
+    @validator('confirm_password')
+    def passwords_match(cls, v, values):
+        if 'new_password' in values and values['new_password'] and v != values['new_password']:
+            raise ValueError('Passwords do not match')
+        if v and len(v) < 6:
+            raise ValueError('Password must be at least 6 characters long')
+        return v
