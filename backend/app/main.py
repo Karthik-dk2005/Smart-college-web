@@ -31,6 +31,7 @@ from app.routers import (
     marks_router,
     student_auth_router,
     admin_student_registration_router,
+    admin_approval_router,
 )
 
 
@@ -185,6 +186,7 @@ app.include_router(student_activities_router)
 app.include_router(marks_router)
 app.include_router(student_auth_router)
 app.include_router(admin_student_registration_router)
+app.include_router(admin_approval_router)
 
 # Direct aliases for /api/my-events and /api/my-registrations
 from app.routers.events import get_my_created_or_dept_events, get_my_registrations

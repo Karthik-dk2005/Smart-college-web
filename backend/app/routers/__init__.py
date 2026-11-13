@@ -21,6 +21,7 @@ from app.routers.student_activities import router as student_activities_router
 from app.routers.marks import router as marks_router
 from app.routers.student_auth import router as student_auth_router
 from app.routers.admin_student_registration import router as admin_student_registration_router
+from app.routers.admin_approval import router as admin_approval_router
 
 __all__ = [
     "auth_router",
@@ -46,4 +47,5 @@ __all__ = [
     "marks_router",
     "student_auth_router",
     "admin_student_registration_router",
+    "admin_approval_router",
 ]

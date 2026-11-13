@@ -58,13 +58,64 @@ class RefreshTokenRequest(BaseModel):
 
 
 class ForgotPasswordRequest(BaseModel):
-    email: EmailStr
+    email: Optional[str] = None
+    identifier: Optional[str] = None
+    usn: Optional[str] = None
+    registered_gmail: Optional[str] = None
+
+    @property
+    def target_identifier(self) -> str:
+        return (self.identifier or self.usn or self.email or self.registered_gmail or "").strip()
 
 
 class ResetPasswordRequest(BaseModel):
-    token: str
+    token: Optional[str] = None
+    otp: Optional[str] = None
+    identifier: Optional[str] = None
+    usn: Optional[str] = None
     new_password: str = Field(..., min_length=6)
     confirm_password: Optional[str] = None
+
+
+class SendOTPRequest(BaseModel):
+    email: EmailStr
+    purpose: Optional[str] = "Registration"
+
+
+class VerifyOTPRequest(BaseModel):
+    email: EmailStr
+    otp: str = Field(..., min_length=6, max_length=6)
+
+
+class StudentRoleRegister(BaseModel):
+    usn: str
+    name: Optional[str] = None
+    gmail: EmailStr
+    password: str = Field(..., min_length=6)
+    confirm_password: str = Field(..., min_length=6)
+    otp: str = Field(..., min_length=6, max_length=6)
+
+
+class TeacherRoleRegister(BaseModel):
+    employee_id: str
+    name: str
+    department_id: Optional[int] = 1
+    department: Optional[str] = "Computer Science and Engineering"
+    gmail: EmailStr
+    password: str = Field(..., min_length=6)
+    confirm_password: str = Field(..., min_length=6)
+    otp: str = Field(..., min_length=6, max_length=6)
+
+
+class HODRoleRegister(BaseModel):
+    employee_id: str
+    name: str
+    department_id: Optional[int] = 1
+    department: Optional[str] = "Computer Science and Engineering"
+    gmail: EmailStr
+    password: str = Field(..., min_length=6)
+    confirm_password: str = Field(..., min_length=6)
+    otp: str = Field(..., min_length=6, max_length=6)
 
 
 class UserApproveRequest(BaseModel):

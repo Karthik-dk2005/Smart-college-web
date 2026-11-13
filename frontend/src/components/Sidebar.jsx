@@ -25,6 +25,8 @@ import {
   Trophy,
   Award,
   Upload,
+  UserCheck,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -43,6 +45,7 @@ export default function Sidebar({ isOpen, onClose }) {
     if (currentRole === "admin") {
       return [
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={19} /> },
+        { to: "/admin/registration-requests", label: "Registration Requests", icon: <ShieldCheck size={19} /> },
         { to: "/admin/student-registration", label: "Student Registration", icon: <UserCheck size={19} /> },
         { to: "/admin/users", label: "User Accounts", icon: <Users size={19} /> },
         { to: "/students", label: "Students", icon: <GraduationCap size={19} /> },
@@ -69,6 +72,7 @@ export default function Sidebar({ isOpen, onClose }) {
     if (currentRole === "hod") {
       return [
         { to: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={19} /> },
+        { to: "/admin/registration-requests", label: "Registration Requests", icon: <ShieldCheck size={19} /> },
         { to: "/admin/student-registration", label: "Student Registration", icon: <UserCheck size={19} /> },
         { to: "/admin/users", label: "User Accounts", icon: <Users size={19} /> },
         { to: "/students", label: "Students", icon: <GraduationCap size={19} /> },

@@ -31,16 +31,59 @@ export const authApi = {
     return api.get("/api/auth/me");
   },
 
-  forgotPassword: async (email) => {
-    return api.post("/api/auth/forgot-password", { email });
+  forgotPassword: async (identifierOrEmail) => {
+    const payload = typeof identifierOrEmail === "object"
+      ? identifierOrEmail
+      : { identifier: identifierOrEmail, email: identifierOrEmail };
+    return api.post("/api/auth/forgot-password", payload);
   },
 
-  resetPassword: async ({ token, new_password, confirm_password }) => {
-    return api.post("/api/auth/reset-password", {
-      token,
-      new_password,
-      confirm_password,
-    });
+  resetPassword: async (payload) => {
+    return api.post("/api/auth/reset-password", payload);
+  },
+
+  sendOtp: async (email, purpose = "Registration") => {
+    return api.post("/api/auth/send-otp", { email, purpose });
+  },
+
+  verifyOtp: async (email, otp) => {
+    return api.post("/api/auth/verify-otp", { email, otp });
+  },
+
+  registerStudent: async (data) => {
+    return api.post("/api/auth/register/student", data);
+  },
+
+  registerTeacher: async (data) => {
+    return api.post("/api/auth/register/teacher", data);
+  },
+
+  registerHod: async (data) => {
+    return api.post("/api/auth/register/hod", data);
+  },
+
+  getRegistrationRequests: async (params = {}) => {
+    return api.get("/api/admin/registration-requests", { params });
+  },
+
+  approveRegistration: async (userId) => {
+    return api.put(`/api/admin/approve-registration/${userId}`);
+  },
+
+  rejectRegistration: async (userId) => {
+    return api.put(`/api/admin/reject-registration/${userId}`);
+  },
+
+  createAdmin: async (data) => {
+    return api.post("/api/admin/create-admin", data);
+  },
+
+  toggleUserStatus: async (userId) => {
+    return api.put(`/api/admin/toggle-user-status/${userId}`);
+  },
+
+  adminResetPassword: async (userId, new_password) => {
+    return api.post(`/api/admin/reset-password/${userId}`, { new_password });
   },
 
   logout: async () => {

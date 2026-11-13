@@ -23,6 +23,7 @@ from app.models.notification import Notification
 from app.models.student_activity import StudentActivity, StudentActivityFile, StudentActivityVerification
 from app.models.mark import Mark
 from app.models.unmatched_student import UnmatchedStudentRecord
+from app.models.email_otp import EmailOTP
 
 __all__ = [
     "Department",
@@ -53,4 +54,5 @@ __all__ = [
     "StudentActivityVerification",
     "Mark",
     "UnmatchedStudentRecord",
+    "EmailOTP",
 ]

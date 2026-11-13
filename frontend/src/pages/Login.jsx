@@ -380,19 +380,18 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Register as Student Link */}
+        {/* Register Links */}
         <div
           style={{
             marginTop: "1.5rem",
             paddingTop: "1.25rem",
             borderTop: "1px solid #f1f5f9",
             textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.6rem",
           }}
         >
-          <p style={{ fontSize: "0.84rem", color: "#64748b", margin: "0 0 0.75rem 0" }}>
-            Are you a student in 5th Semester?
-          </p>
-
           <Link
             to="/student-register"
             style={{
@@ -415,6 +414,23 @@ export default function Login() {
           >
             <GraduationCap size={18} />
             <span>Register as Student (with USN)</span>
+          </Link>
+
+          <Link
+            to="/register"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.45rem",
+              fontSize: "0.84rem",
+              color: "#475569",
+              textDecoration: "none",
+              fontWeight: 500,
+              padding: "0.35rem",
+            }}
+          >
+            <span>Don't have an account? <strong style={{ color: "#2563eb" }}>Create New Account</strong></span>
           </Link>
         </div>
 

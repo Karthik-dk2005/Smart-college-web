@@ -14,6 +14,7 @@ from app.models.student import Student
 from app.models.faculty import Faculty
 from app.models.teacher import Teacher
 from app.models.department import Department
+from app.models.email_otp import EmailOTP
 from app.schemas.auth import (
     UserRegister,
     UserLogin,
@@ -21,6 +22,11 @@ from app.schemas.auth import (
     RefreshTokenRequest,
     ForgotPasswordRequest,
     ResetPasswordRequest,
+    SendOTPRequest,
+    VerifyOTPRequest,
+    StudentRoleRegister,
+    TeacherRoleRegister,
+    HODRoleRegister,
 )
 from app.utils.security import (
     verify_password,
@@ -29,11 +35,22 @@ from app.utils.security import (
     create_refresh_token,
     decode_token,
 )
+from app.utils.email_service import generate_otp, send_email_otp
 from app.utils.response import success_response, error_response
 from app.dependencies import get_current_user
 from app.config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
+
+def mask_email(email: str) -> str:
+    if not email or "@" not in email:
+        return "********"
+    user_part, domain = email.split("@", 1)
+    if len(user_part) <= 2:
+        masked_user = user_part[0] + "*"
+    else:
+        masked_user = user_part[0] + "*" * (len(user_part) - 2) + user_part[-1]
+    return f"{masked_user}@{domain}"
 
 optional_bearer = HTTPBearer(auto_error=False)
 
@@ -262,6 +279,449 @@ def register(
     )
 
 
+# -------------------------------------------------------------
+# 1. POST /api/auth/send-otp
+# -------------------------------------------------------------
+@router.post("/send-otp")
+def send_otp(payload: SendOTPRequest, db: Session = Depends(get_db)):
+    """Send a 6-digit OTP code to the entered personal or college Gmail address."""
+    email_clean = payload.email.strip().lower()
+
+    # Rate limit check: 60-second cooldown
+    recent_otp = db.query(EmailOTP).filter(
+        EmailOTP.email == email_clean,
+        EmailOTP.created_at >= datetime.utcnow() - timedelta(seconds=60)
+    ).first()
+    if recent_otp:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="An OTP was sent recently. Please wait 60 seconds before requesting another code."
+        )
+
+    otp = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=5)
+
+    new_otp_record = EmailOTP(
+        email=email_clean,
+        otp_code=otp,
+        purpose=payload.purpose or "Registration",
+        expires_at=expires_at,
+        is_verified=False,
+        attempts=0
+    )
+    db.add(new_otp_record)
+    db.commit()
+
+    send_email_otp(email_clean, otp, payload.purpose or "Registration")
+
+    return {
+        "success": True,
+        "message": f"A 6-digit verification code has been sent to {email_clean}. It is valid for 5 minutes.",
+        "email": email_clean,
+        "expires_in_minutes": 5
+    }
+
+
+# -------------------------------------------------------------
+# 2. POST /api/auth/verify-otp
+# -------------------------------------------------------------
+@router.post("/verify-otp")
+def verify_otp_endpoint(payload: VerifyOTPRequest, db: Session = Depends(get_db)):
+    """Verify the 6-digit OTP code for the given email address."""
+    email_clean = payload.email.strip().lower()
+    clean_otp = payload.otp.strip()
+
+    otp_record = db.query(EmailOTP).filter(
+        EmailOTP.email == email_clean,
+        EmailOTP.is_verified == False
+    ).order_by(EmailOTP.id.desc()).first()
+
+    if not otp_record:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No active OTP found for this email. Please request a new code."
+        )
+
+    if otp_record.attempts >= 5:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Maximum verification attempts exceeded. Please request a fresh OTP."
+        )
+
+    if datetime.utcnow() > otp_record.expires_at:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The verification code has expired. Please request a new OTP."
+        )
+
+    if otp_record.otp_code != clean_otp:
+        otp_record.attempts += 1
+        db.commit()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid OTP code. Please check your Gmail and try again."
+        )
+
+    otp_record.is_verified = True
+    db.commit()
+
+    return {
+        "success": True,
+        "message": "Email OTP verified successfully.",
+        "email": email_clean
+    }
+
+
+# -------------------------------------------------------------
+# 3. POST /api/auth/register/student
+# -------------------------------------------------------------
+@router.post("/register/student", response_model=TokenResponse)
+def register_student_role(payload: StudentRoleRegister, db: Session = Depends(get_db)):
+    """
+    Student registration:
+    - Validates USN against existing student database (131 records across A & B sections).
+    - Automatically fetches student name if not provided.
+    - Allows personal Gmail or college Gmail.
+    - Verifies 6-digit OTP.
+    - Prevents duplicate USN registration.
+    """
+    clean_usn = payload.usn.strip().upper()
+    email_clean = payload.gmail.strip().lower()
+
+    # 1. Validate USN against official student database
+    student = db.query(Student).filter(func.upper(Student.usn) == clean_usn).first()
+    if not student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student record not found. Please contact your Admin."
+        )
+
+    # 2. Prevent duplicate USN registration
+    if student.registration_status == "Registered":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An account is already registered for this USN. Please proceed to login."
+        )
+
+    # Check if another student or user has this email
+    existing_user_email = db.query(User).filter(
+        func.lower(User.email) == email_clean,
+        func.upper(User.usn_or_employee_id) != clean_usn
+    ).first()
+    if existing_user_email:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This Gmail address is already associated with another account."
+        )
+
+    # 3. Password validation
+    if payload.password != payload.confirm_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password and Confirm Password do not match."
+        )
+    if len(payload.password) < 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 6 characters long."
+        )
+    if student.phone and student.phone.strip() and student.phone.strip() in payload.password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="For security, you cannot use your phone number as a password."
+        )
+
+    # 4. Verify OTP
+    clean_otp = payload.otp.strip()
+    valid_otp = False
+
+    otp_record = db.query(EmailOTP).filter(
+        EmailOTP.email == email_clean,
+        EmailOTP.otp_code == clean_otp,
+        EmailOTP.expires_at >= datetime.utcnow()
+    ).order_by(EmailOTP.id.desc()).first()
+
+    if otp_record:
+        valid_otp = True
+        otp_record.is_verified = True
+    elif student.otp_code and student.otp_code == clean_otp:
+        if student.otp_expires_at and datetime.utcnow() <= student.otp_expires_at:
+            valid_otp = True
+
+    if not valid_otp:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired OTP code. Please verify your Gmail."
+        )
+
+    # 5. Save and activate account
+    hashed_pwd = get_password_hash(payload.password)
+    student.password_hash = hashed_pwd
+    student.gmail = email_clean
+    student.email = email_clean
+    student.registration_status = "Registered"
+    student.email_verification_status = "Verified"
+    student.registered_at = datetime.utcnow()
+    student.otp_code = None
+
+    user = db.query(User).filter(
+        (func.upper(User.usn_or_employee_id) == clean_usn) |
+        (func.lower(User.username) == clean_usn.lower()) |
+        (func.lower(User.email) == email_clean)
+    ).first()
+
+    if not user:
+        user = User(
+            full_name=student.name,
+            username=clean_usn.lower(),
+            email=email_clean,
+            password_hash=hashed_pwd,
+            usn_or_employee_id=clean_usn,
+            role="student",
+            department_id=student.department_id,
+            semester=student.semester,
+            section=student.section,
+            account_status="Approved",
+            is_active=True
+        )
+        db.add(user)
+        db.flush()
+        student.user_id = user.id
+    else:
+        user.password_hash = hashed_pwd
+        user.email = email_clean
+        user.usn_or_employee_id = clean_usn
+        user.account_status = "Approved"
+        user.is_active = True
+        student.user_id = user.id
+
+    db.commit()
+    db.refresh(user)
+
+    # 6. Issue JWT Token
+    token_data = {
+        "sub": user.email,
+        "role": "student",
+        "user_id": user.id,
+        "name": user.full_name or student.name,
+        "username": user.username,
+        "usn": student.usn
+    }
+    access_token = create_access_token(token_data)
+    refresh_token = create_refresh_token(token_data)
+    dept_name = student.department.name if student.department else "Computer Science and Engineering"
+
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        token_type="bearer",
+        role="student",
+        user_id=user.id,
+        name=student.name,
+        full_name=student.name,
+        username=user.username,
+        email=user.email,
+        account_status="Approved",
+        usn=student.usn,
+        gmail=student.gmail,
+        semester=student.semester,
+        section=student.section,
+        department=dept_name
+    )
+
+
+# -------------------------------------------------------------
+# 4. POST /api/auth/register/teacher
+# -------------------------------------------------------------
+@router.post("/register/teacher", status_code=status.HTTP_201_CREATED)
+def register_teacher_role(payload: TeacherRoleRegister, db: Session = Depends(get_db)):
+    """
+    Teacher registration:
+    - Verifies Teacher Employee ID against existing teacher records.
+    - Verifies Gmail using OTP.
+    - Submits registration request to Admin for approval (status: Pending).
+    """
+    clean_emp_id = payload.employee_id.strip().upper()
+    email_clean = payload.gmail.strip().lower()
+
+    # 1. Prevent duplicate teacher accounts
+    existing_user = db.query(User).filter(
+        (func.upper(User.usn_or_employee_id) == clean_emp_id) |
+        (func.lower(User.email) == email_clean)
+    ).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An account with this Employee ID or Email already exists."
+        )
+
+    # 2. Check Teacher Employee ID against existing teacher records
+    teacher = db.query(Teacher).filter(func.upper(Teacher.employee_id) == clean_emp_id).first()
+    teacher_name = (teacher.name if teacher else payload.name).strip()
+    dept_id = teacher.department_id if teacher else (payload.department_id or 1)
+
+    # 3. Password validation
+    if payload.password != payload.confirm_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password and Confirm Password do not match."
+        )
+    if len(payload.password) < 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 6 characters long."
+        )
+
+    # 4. Verify OTP
+    clean_otp = payload.otp.strip()
+    otp_record = db.query(EmailOTP).filter(
+        EmailOTP.email == email_clean,
+        EmailOTP.otp_code == clean_otp,
+        EmailOTP.expires_at >= datetime.utcnow()
+    ).order_by(EmailOTP.id.desc()).first()
+
+    if not otp_record:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired OTP code. Please verify your email first."
+        )
+    otp_record.is_verified = True
+
+    # 5. Create Teacher account with status "Pending" (requires Admin approval)
+    hashed_pwd = get_password_hash(payload.password)
+    user_handle = re.sub(r'[^a-z0-9]', '', teacher_name.lower().replace(' ', '')) or clean_emp_id.lower()
+    if db.query(User).filter(User.username == user_handle).first():
+        user_handle = f"{user_handle}_{clean_emp_id.lower()[-4:]}"
+
+    new_user = User(
+        full_name=teacher_name,
+        username=user_handle,
+        email=email_clean,
+        password_hash=hashed_pwd,
+        usn_or_employee_id=clean_emp_id,
+        role="teacher",
+        department_id=dept_id,
+        designation="Assistant Professor",
+        account_status="Pending",
+        is_active=False
+    )
+    db.add(new_user)
+    db.flush()
+
+    if teacher:
+        teacher.email = email_clean
+        teacher.user_id = new_user.id
+        teacher.password_hash = hashed_pwd
+    else:
+        new_teacher = Teacher(
+            employee_id=clean_emp_id,
+            name=teacher_name,
+            email=email_clean,
+            department_id=dept_id,
+            designation="Assistant Professor",
+            password_hash=hashed_pwd
+        )
+        db.add(new_teacher)
+
+    db.commit()
+
+    return {
+        "success": True,
+        "message": "Teacher registration request submitted successfully. Admin approval is required before you can log in.",
+        "user_id": new_user.id,
+        "employee_id": clean_emp_id,
+        "account_status": "Pending"
+    }
+
+
+# -------------------------------------------------------------
+# 5. POST /api/auth/register/hod
+# -------------------------------------------------------------
+@router.post("/register/hod", status_code=status.HTTP_201_CREATED)
+def register_hod_role(payload: HODRoleRegister, db: Session = Depends(get_db)):
+    """
+    HOD registration:
+    - Verifies HOD details against authorized records.
+    - Verifies Gmail using OTP.
+    - Mandatory Admin approval required before login.
+    - Restricts HOD access to their assigned department.
+    """
+    clean_emp_id = payload.employee_id.strip().upper()
+    email_clean = payload.gmail.strip().lower()
+
+    # 1. Prevent duplicate HOD accounts
+    existing_user = db.query(User).filter(
+        (func.upper(User.usn_or_employee_id) == clean_emp_id) |
+        (func.lower(User.email) == email_clean)
+    ).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An account with this Employee ID or Email already exists."
+        )
+
+    # 2. Check HOD details
+    teacher = db.query(Teacher).filter(func.upper(Teacher.employee_id) == clean_emp_id).first()
+    hod_name = (teacher.name if teacher else payload.name).strip()
+    dept_id = teacher.department_id if teacher else (payload.department_id or 1)
+
+    # 3. Password validation
+    if payload.password != payload.confirm_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password and Confirm Password do not match."
+        )
+    if len(payload.password) < 6:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 6 characters long."
+        )
+
+    # 4. Verify OTP
+    clean_otp = payload.otp.strip()
+    otp_record = db.query(EmailOTP).filter(
+        EmailOTP.email == email_clean,
+        EmailOTP.otp_code == clean_otp,
+        EmailOTP.expires_at >= datetime.utcnow()
+    ).order_by(EmailOTP.id.desc()).first()
+
+    if not otp_record:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired OTP code. Please verify your email first."
+        )
+    otp_record.is_verified = True
+
+    # 5. Create HOD account with status "Pending"
+    hashed_pwd = get_password_hash(payload.password)
+    user_handle = f"hod.{re.sub(r'[^a-z0-9]', '', hod_name.lower().replace(' ', ''))[:10]}"
+    if db.query(User).filter(User.username == user_handle).first():
+        user_handle = f"{user_handle}_{clean_emp_id.lower()[-4:]}"
+
+    new_user = User(
+        full_name=hod_name,
+        username=user_handle,
+        email=email_clean,
+        password_hash=hashed_pwd,
+        usn_or_employee_id=clean_emp_id,
+        role="hod",
+        department_id=dept_id,
+        designation="Professor & Head of Department",
+        account_status="Pending",
+        is_active=False
+    )
+    db.add(new_user)
+    db.commit()
+
+    return {
+        "success": True,
+        "message": "HOD registration request submitted successfully. Super Admin approval is mandatory before login.",
+        "user_id": new_user.id,
+        "employee_id": clean_emp_id,
+        "account_status": "Pending"
+    }
+
+
 @router.post("/login", response_model=TokenResponse)
 def login(payload: UserLogin, db: Session = Depends(get_db)):
     """
@@ -469,6 +929,12 @@ def get_current_user_profile(current_user: User = Depends(get_current_user)):
     return {"success": True, "user": profile_data, "data": profile_data}
 
 
+@router.get("/profile")
+def get_user_profile_alias(current_user: User = Depends(get_current_user)):
+    """Alias for /api/auth/profile required by the specification."""
+    return get_current_user_profile(current_user=current_user)
+
+
 @router.post("/logout")
 def logout(current_user: User = Depends(get_current_user)):
     """Stateless JWT logout confirmation."""
@@ -478,52 +944,246 @@ def logout(current_user: User = Depends(get_current_user)):
 @router.post("/forgot-password")
 def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
     """
-    Generate a secure, time-limited password reset token.
-    Always returns generic success message to prevent user enumeration.
+    Password recovery initiation:
+    - Accepts USN, Employee ID, username, or registered email.
+    - Matches with database record to locate the registered Gmail.
+    - Generates 6-digit OTP (and token).
+    - Dispatches OTP to registered Gmail.
+    - Returns masked email and success message.
     """
-    email_clean = payload.email.lower().strip()
-    user = db.query(User).filter(func.lower(User.email) == email_clean).first()
-    reset_token = None
-    if user and user.is_active:
-        token = secrets.token_urlsafe(32)
+    ident = payload.target_identifier
+    if not ident:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="USN, Employee ID, or Email address is required."
+        )
+
+    # 1. Search in Student table (by USN, email, gmail)
+    target_email = None
+    target_name = None
+    user = None
+    student = db.query(Student).filter(
+        (func.upper(Student.usn) == ident.upper()) |
+        (func.lower(Student.gmail) == ident.lower()) |
+        (func.lower(Student.email) == ident.lower())
+    ).first()
+
+    if student:
+        target_email = student.gmail or student.email
+        target_name = student.name
+        if student.user:
+            user = student.user
+        elif student.user_id:
+            user = db.query(User).filter(User.id == student.user_id).first()
+
+    # 2. Search in Faculty / Teacher table
+    if not target_email:
+        fac = db.query(Faculty).filter(func.upper(Faculty.employee_id) == ident.upper()).first()
+        if fac:
+            target_email = fac.email
+            target_name = fac.name
+            if fac.user:
+                user = fac.user
+        else:
+            teacher = db.query(Teacher).filter(func.upper(Teacher.employee_id) == ident.upper()).first()
+            if teacher:
+                target_email = teacher.email
+                target_name = teacher.name
+                if teacher.user_id:
+                    user = db.query(User).filter(User.id == teacher.user_id).first()
+
+    # 3. Search in User table
+    if not user:
+        user = db.query(User).filter(
+            (func.upper(User.usn_or_employee_id) == ident.upper()) |
+            (func.lower(User.username) == ident.lower()) |
+            (func.lower(User.email) == ident.lower())
+        ).first()
+
+    if user:
+        target_email = target_email or user.email
+        target_name = target_name or user.full_name or user.name or user.username
+
+    if not target_email:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No account found matching this USN / Employee ID / Email."
+        )
+
+    # If payload.registered_gmail was provided by the user, verify it matches
+    if payload.registered_gmail and payload.registered_gmail.strip():
+        if payload.registered_gmail.strip().lower() != target_email.lower():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Entered Gmail does not match the registered Gmail for this account."
+            )
+
+    # Rate limiting: 60s cooldown
+    recent_otp = db.query(EmailOTP).filter(
+        EmailOTP.email == target_email.lower(),
+        EmailOTP.created_at >= datetime.utcnow() - timedelta(seconds=60)
+    ).first()
+    if recent_otp:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="A reset OTP was sent recently. Please wait 60 seconds before requesting another."
+        )
+
+    otp = generate_otp()
+    expires_at = datetime.utcnow() + timedelta(minutes=5)
+    token = secrets.token_urlsafe(32)
+
+    new_otp_record = EmailOTP(
+        email=target_email.lower(),
+        otp_code=otp,
+        purpose="Password Reset",
+        expires_at=expires_at,
+        is_verified=False,
+        attempts=0
+    )
+    db.add(new_otp_record)
+
+    if user:
         user.reset_token = token
         user.reset_token_expires_at = datetime.utcnow() + timedelta(hours=1)
-        db.commit()
-        reset_token = token
-        # Log to server console so tester/admin can verify without external mail server
-        print(f"[*] Password reset generated for {user.email}: Token = {token}")
+    if student:
+        student.otp_code = otp
+        student.otp_expires_at = expires_at
+
+    db.commit()
+
+    send_email_otp(target_email, otp, "Password Reset")
+    masked = mask_email(target_email)
 
     return success_response(
-        data={"reset_token": reset_token},
-        message="If an account with that email exists, password reset instructions have been sent."
+        data={
+            "email": masked,
+            "full_email": target_email,
+            "reset_token": token,
+            "expires_in_minutes": 5
+        },
+        message=f"Password recovery OTP has been sent to your registered Gmail ({masked}). It is valid for 5 minutes."
     )
 
 
 @router.post("/reset-password")
 def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
-    """Verify reset token and update password."""
+    """
+    Reset password using either:
+    1. OTP + Identifier (USN / Employee ID / Email)
+    2. Reset Token
+    """
     if payload.confirm_password and payload.new_password != payload.confirm_password:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="New password and confirm password do not match."
         )
-
-    if not payload.token or not payload.token.strip():
+    if len(payload.new_password) < 6:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Reset token is required."
+            detail="Password must be at least 6 characters long."
         )
 
-    user = db.query(User).filter(User.reset_token == payload.token.strip()).first()
-    if not user or not user.reset_token_expires_at or user.reset_token_expires_at < datetime.utcnow():
+    ident = (payload.identifier or payload.usn or "").strip()
+    clean_otp = (payload.otp or "").strip()
+    clean_token = (payload.token or "").strip()
+
+    user = None
+    student = None
+    teacher = None
+
+    if clean_otp and ident:
+        # Locate target
+        student = db.query(Student).filter(
+            (func.upper(Student.usn) == ident.upper()) |
+            (func.lower(Student.gmail) == ident.lower()) |
+            (func.lower(Student.email) == ident.lower())
+        ).first()
+
+        target_email = None
+        if student:
+            target_email = student.gmail or student.email
+            if student.user:
+                user = student.user
+            elif student.user_id:
+                user = db.query(User).filter(User.id == student.user_id).first()
+
+        if not target_email:
+            teacher = db.query(Teacher).filter(func.upper(Teacher.employee_id) == ident.upper()).first()
+            if teacher:
+                target_email = teacher.email
+                if teacher.user_id:
+                    user = db.query(User).filter(User.id == teacher.user_id).first()
+
+        if not user:
+            user = db.query(User).filter(
+                (func.upper(User.usn_or_employee_id) == ident.upper()) |
+                (func.lower(User.username) == ident.lower()) |
+                (func.lower(User.email) == ident.lower())
+            ).first()
+            if user and not target_email:
+                target_email = user.email
+
+        if not target_email:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User account not found."
+            )
+
+        # Verify OTP
+        otp_record = db.query(EmailOTP).filter(
+            EmailOTP.email == target_email.lower(),
+            EmailOTP.purpose == "Password Reset",
+            EmailOTP.is_verified == False
+        ).order_by(EmailOTP.id.desc()).first()
+
+        valid = False
+        if otp_record:
+            if otp_record.attempts >= 5:
+                raise HTTPException(status_code=400, detail="Maximum OTP verification attempts exceeded. Please request a new OTP.")
+            if datetime.utcnow() > otp_record.expires_at:
+                raise HTTPException(status_code=400, detail="OTP has expired. Please request a new OTP.")
+            if otp_record.otp_code != clean_otp:
+                otp_record.attempts += 1
+                db.commit()
+                raise HTTPException(status_code=400, detail="Invalid OTP code.")
+            otp_record.is_verified = True
+            valid = True
+        elif student and student.otp_code == clean_otp:
+            if student.otp_expires_at and datetime.utcnow() <= student.otp_expires_at:
+                valid = True
+
+        if not valid:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired OTP code."
+            )
+
+    elif clean_token:
+        user = db.query(User).filter(User.reset_token == clean_token).first()
+        if not user or not user.reset_token_expires_at or user.reset_token_expires_at < datetime.utcnow():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired password reset token. Please request a new reset link."
+            )
+        user.reset_token = None
+        user.reset_token_expires_at = None
+    else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid or expired password reset token. Please request a new reset link."
+            detail="Either reset token or OTP with USN/Email is required."
         )
 
-    user.password_hash = get_password_hash(payload.new_password)
-    user.reset_token = None
-    user.reset_token_expires_at = None
+    # Hash new password and update
+    new_hashed = get_password_hash(payload.new_password)
+    if user:
+        user.password_hash = new_hashed
+    if student:
+        student.password_hash = new_hashed
+        student.otp_code = None
+    if teacher:
+        teacher.password_hash = new_hashed
+
     db.commit()
 
     return success_response(

@@ -32,8 +32,8 @@ class User(Base):
     # Relationships
     department = relationship("Department")
     teacher = relationship("Teacher")
-    student_profile = relationship("Student", back_populates="user", uselist=False, cascade="all, delete-orphan")
-    faculty_profile = relationship("Faculty", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    student_profile = relationship("Student", back_populates="user", uselist=False)
+    faculty_profile = relationship("Faculty", back_populates="user", uselist=False)
     locations = relationship("Location", back_populates="user", cascade="all, delete-orphan")
     notices_created = relationship("Notice", back_populates="creator")
 
