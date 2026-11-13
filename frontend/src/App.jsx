@@ -3,16 +3,24 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./components/Toast";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RoleBasedRoute from "./components/RoleBasedRoute";
 import MainLayout from "./layouts/MainLayout";
 
 // All Application Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import UserManagement from "./pages/UserManagement";
 import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Students";
 import Teachers from "./pages/Teachers";
 import Departments from "./pages/Departments";
 import Subjects from "./pages/Subjects";
+import Marks from "./pages/Marks";
+import IAMarks from "./pages/IAMarks";
+import UploadIAMarks from "./pages/UploadIAMarks";
+import MyIAMarks from "./pages/MyIAMarks";
 import Rooms from "./pages/Rooms";
 import Attendance from "./pages/Attendance";
 import StudentAttendance from "./pages/StudentAttendance";
@@ -36,6 +44,30 @@ import BusRouteDetails from "./pages/BusRouteDetails";
 import BusStops from "./pages/BusStops";
 import StudentBus from "./pages/StudentBus";
 
+// Events & Announcements Module Pages
+import Events from "./pages/Events";
+import EventDetails from "./pages/EventDetails";
+import AddEvent from "./pages/AddEvent";
+import EditEvent from "./pages/EditEvent";
+import EventParticipants from "./pages/EventParticipants";
+import EventCalendarPage from "./pages/EventCalendar";
+import Announcements from "./pages/Announcements";
+import AddAnnouncement from "./pages/AddAnnouncement";
+import EditAnnouncement from "./pages/EditAnnouncement";
+import MyEvents from "./pages/MyEvents";
+
+// Student Activities & Achievements Module Pages
+import StudentActivities from "./pages/StudentActivities";
+import AddStudentActivity from "./pages/AddStudentActivity";
+import EditStudentActivity from "./pages/EditStudentActivity";
+import StudentActivityDetails from "./pages/StudentActivityDetails";
+import AdminStudentActivities from "./pages/AdminStudentActivities";
+import HODStudentActivities from "./pages/HODStudentActivities";
+import StudentPortfolio from "./pages/StudentPortfolio";
+import AchievementReport from "./pages/AchievementReport";
+import StudentRegister from "./pages/StudentRegister";
+import AdminStudentRegistration from "./pages/AdminStudentRegistration";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -45,6 +77,9 @@ export default function App() {
             {/* Public Authentication Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/student-register" element={<StudentRegister />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Authenticated Dashboard Shell Layout */}
             <Route
@@ -60,6 +95,34 @@ export default function App() {
 
               {/* 1. Dashboard (All roles) */}
               <Route path="dashboard" element={<Dashboard />} />
+
+              {/* 1.1 Student Registration Management (Admin & HOD) */}
+              <Route
+                path="admin/student-registration"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <AdminStudentRegistration />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="hod/student-registration"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <AdminStudentRegistration />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* 1.2 User Accounts & Approval Management (Admin & HOD) */}
+              <Route
+                path="admin/users"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <UserManagement />
+                  </ProtectedRoute>
+                }
+              />
 
               {/* 2. Student Management Routes (Admin & HOD only) */}
               <Route
@@ -189,6 +252,24 @@ export default function App() {
                 }
               />
 
+              {/* 5.1 Internal Assessment Marks & Gradebook (All roles) */}
+              <Route path="marks" element={<Marks />} />
+              <Route path="my-marks" element={<Marks />} />
+              <Route path="student/marks" element={<Marks />} />
+              <Route path="admin/marks" element={<Marks />} />
+              <Route path="hod/marks" element={<Marks />} />
+              <Route path="teacher/marks" element={<Marks />} />
+              <Route path="ia-marks" element={<IAMarks />} />
+              <Route path="admin/ia-marks" element={<IAMarks />} />
+              <Route path="hod/ia-marks" element={<IAMarks />} />
+              <Route path="teacher/ia-marks" element={<IAMarks />} />
+              <Route path="upload-ia-marks" element={<UploadIAMarks />} />
+              <Route path="marks/upload" element={<UploadIAMarks />} />
+              <Route path="admin/marks/upload" element={<UploadIAMarks />} />
+              <Route path="hod/marks/upload" element={<UploadIAMarks />} />
+              <Route path="my-ia-marks" element={<MyIAMarks />} />
+              <Route path="student/my-ia-marks" element={<MyIAMarks />} />
+
               {/* 5.1 Rooms Management (Admin, HOD) */}
               <Route
                 path="rooms"
@@ -303,6 +384,111 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* ---------------------------------------------------- */}
+              {/* Events & Announcements Module Routes                  */}
+              {/* ---------------------------------------------------- */}
+              {/* Events Browsing (All roles) */}
+              <Route path="events" element={<Events />} />
+              <Route path="events/:eventId" element={<EventDetails />} />
+              <Route path="events/calendar" element={<EventCalendarPage />} />
+              <Route path="calendar" element={<EventCalendarPage />} />
+              <Route path="my-events" element={<MyEvents />} />
+
+              {/* Admin & HOD Event Management Routes */}
+              <Route
+                path="admin/events"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <Events />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/events/add"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <AddEvent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="admin/events/:eventId" element={<EventDetails />} />
+              <Route
+                path="admin/events/:eventId/edit"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <EditEvent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/events/:eventId/participants"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <EventParticipants />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Announcements Routes */}
+              <Route path="announcements" element={<Announcements />} />
+              <Route
+                path="admin/announcements/add"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <AddAnnouncement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/announcements/:id/edit"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <EditAnnouncement />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* ---------------------------------------------------- */}
+              {/* Student Activities & Achievements Module Routes      */}
+              {/* ---------------------------------------------------- */}
+              {/* Student Routes */}
+              <Route path="student/activities" element={<StudentActivities />} />
+              <Route path="student/activities/add" element={<AddStudentActivity />} />
+              <Route path="student/activities/:activityId" element={<StudentActivityDetails />} />
+              <Route path="student/activities/:activityId/edit" element={<EditStudentActivity />} />
+              <Route path="student/portfolio" element={<StudentPortfolio />} />
+
+              {/* Admin & HOD Verification Management */}
+              <Route
+                path="admin/student-activities"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AdminStudentActivities />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="hod/student-activities"
+                element={
+                  <ProtectedRoute allowedRoles={["hod"]}>
+                    <HODStudentActivities />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="admin/reports/student-achievements"
+                element={
+                  <ProtectedRoute allowedRoles={["admin", "hod"]}>
+                    <AchievementReport />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Convenience direct aliases */}
+              <Route path="activities" element={<StudentActivities />} />
+              <Route path="my-activities" element={<StudentActivities />} />
+              <Route path="portfolio" element={<StudentPortfolio />} />
             </Route>
 
             {/* Catch-all Wildcard Route */}

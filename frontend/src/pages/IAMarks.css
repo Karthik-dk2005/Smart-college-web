@@ -1,0 +1,182 @@
+/* IAMarks.css - Professional Clean Academic Table Styling */
+
+.ia-container {
+  padding: 1.5rem;
+  background: var(--bg-card, #111827);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  color: #fff;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.ia-container h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.ia-container > p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.ia-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.ia-filters input[type="text"] {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  min-width: 260px;
+  flex: 1;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ia-filters input[type="text"]:focus {
+  border-color: #6366f1;
+}
+
+.ia-filters select {
+  background: #1f2937;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.ia-filters button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.ia-filters button:hover {
+  background: #4338ca;
+}
+
+.ia-filters button:active {
+  transform: scale(0.98);
+}
+
+.ia-subjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.ia-subjects button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ia-subjects button:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.ia-subjects button.active {
+  background: #4f46e5;
+  color: #fff;
+  border-color: #4f46e5;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
+}
+
+.ia-table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.ia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.ia-table thead th {
+  background: rgba(15, 23, 42, 0.85);
+  color: #cbd5e1;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.ia-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.15s;
+}
+
+.ia-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ia-table tbody td {
+  padding: 10px 14px;
+  color: #e2e8f0;
+  white-space: nowrap;
+}
+
+.ia-table tbody td:nth-child(2) {
+  font-weight: 600;
+  color: #fff;
+}
+
+.ia-table tbody td:nth-child(3) {
+  font-family: monospace;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.ia-table span.absent {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.ia-note {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 1rem;
+  font-style: italic;
+}
+

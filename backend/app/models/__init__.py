@@ -17,6 +17,12 @@ from app.models.student_biometric import StudentBiometric
 from app.models.bus_route import BusRoute
 from app.models.bus_stop import BusStop
 from app.models.student_bus_assignment import StudentBusAssignment
+from app.models.event import Event, EventRegistration
+from app.models.announcement import Announcement
+from app.models.notification import Notification
+from app.models.student_activity import StudentActivity, StudentActivityFile, StudentActivityVerification
+from app.models.mark import Mark
+from app.models.unmatched_student import UnmatchedStudentRecord
 
 __all__ = [
     "Department",
@@ -38,4 +44,13 @@ __all__ = [
     "BusRoute",
     "BusStop",
     "StudentBusAssignment",
+    "Event",
+    "EventRegistration",
+    "Announcement",
+    "Notification",
+    "StudentActivity",
+    "StudentActivityFile",
+    "StudentActivityVerification",
+    "Mark",
+    "UnmatchedStudentRecord",
 ]

@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
 import TableSkeleton from "../components/TableSkeleton";
 import Modal from "../components/Modal";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   BookOpen,
   Clock,
@@ -92,19 +93,24 @@ export default function StudentAttendance() {
       {/* Page Title */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">
-                Official Attendance Record
-              </span>
+          <div className="flex items-center gap-4">
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100 flex-shrink-0">
+              <CollegeLogo size="sm" style={{ height: "48px", width: "auto" }} />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <GraduationCap className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
-              My Attendance Summary
-            </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Comprehensive 30-minute interval breakdown and overall percentage calculations.
-            </p>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">
+                  Official Attendance Record
+                </span>
+                <span className="text-xs text-gray-500">MIT Thandavapura</span>
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                My Attendance Summary
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Maharaja Institute of Technology Thandavapura • CSE Department
+              </p>
+            </div>
           </div>
 
           {attendanceData && (

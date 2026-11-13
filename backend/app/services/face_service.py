@@ -2,8 +2,17 @@ import io
 import json
 import base64
 import math
-import numpy as np
-from PIL import Image, ImageOps, ImageFilter
+try:
+    import numpy as np
+except ImportError:
+    np = None
+
+try:
+    from PIL import Image, ImageOps, ImageFilter
+except ImportError:
+    Image = None
+    ImageOps = None
+    ImageFilter = None
 from typing import List, Dict, Any, Optional, Tuple
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
@@ -17,8 +26,13 @@ class FaceService:
     EMBEDDING_DIM = 128
 
     @staticmethod
-    def decode_image_bytes(image_data: str) -> Image.Image:
+    def decode_image_bytes(image_data: str):
         """Decodes base64 data-URL or raw base64 string into PIL Image."""
+        if Image is None:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Pillow imaging library is not installed."
+            )
         try:
             if "," in image_data:
                 image_data = image_data.split(",", 1)[1]
@@ -32,11 +46,13 @@ class FaceService:
             )
 
     @classmethod
-    def check_liveness_and_quality(cls, img: Image.Image) -> Tuple[bool, str]:
+    def check_liveness_and_quality(cls, img) -> Tuple[bool, str]:
         """
         Validates face presence, lighting, contrast, and basic liveness properties.
         Returns (is_valid, error_message).
         """
+        if np is None or Image is None:
+            return False, "Face verification service unavailable (numpy/Pillow missing)."
         width, height = img.size
         if width < 80 or height < 80:
             return False, "Image resolution too low. Please look at the camera and try again."
@@ -69,7 +85,7 @@ class FaceService:
         return True, "Quality verified"
 
     @classmethod
-    def generate_face_embedding(cls, img: Image.Image) -> List[float]:
+    def generate_face_embedding(cls, img) -> List[float]:
         """
         Detects facial region and generates a normalized 128-dimensional representation vector.
         """

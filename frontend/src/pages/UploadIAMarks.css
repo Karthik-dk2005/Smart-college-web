@@ -1,0 +1,314 @@
+/* UploadIAMarks.css - Professional Modern Dark UI */
+
+.ia-upload-page {
+  padding: 1.5rem 0 3rem 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.ia-upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ia-upload-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.ia-upload-header p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.ia-badge {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ia-upload-card {
+  background: var(--bg-card, #111827);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.ia-upload-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1.25rem 0;
+}
+
+.ia-form-grid {
+  display: grid;
+  grid-templateColumns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.ia-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ia-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.ia-field input,
+.ia-field select {
+  background: #1f2937;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ia-field input:focus,
+.ia-field select:focus {
+  border-color: #6366f1;
+}
+
+.ia-field input:disabled {
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.ia-file-area {
+  border: 2px dashed rgba(99, 102, 241, 0.35);
+  border-radius: 14px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: rgba(99, 102, 241, 0.04);
+  margin-bottom: 1.5rem;
+  position: relative;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ia-file-area:hover {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.upload-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.ia-file-area h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px 0;
+}
+
+.ia-file-area p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+}
+
+.ia-file-area input[type="file"] {
+  display: block;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+.selected-file {
+  margin-top: 1rem !important;
+  color: #38bdf8 !important;
+  font-weight: 700;
+  font-size: 0.9rem !important;
+}
+
+.ia-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.ia-success {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.ia-upload-button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.ia-upload-button:hover:not(:disabled) {
+  background: #4338ca;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+}
+
+.ia-upload-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Subject Badges Card */
+.ia-subject-card {
+  background: var(--bg-card, #111827);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ia-subject-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.ia-subject-grid {
+  display: grid;
+  grid-templateColumns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.ia-subject {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.ia-subject strong {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.ia-subject span {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #818cf8;
+  font-weight: 700;
+}
+
+.ia-subject-card small {
+  display: block;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+/* Results Table Card */
+.ia-results-card {
+  background: var(--bg-card, #111827);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.ia-results-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.ia-results-card p {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0 0 1.25rem 0;
+}
+
+.ia-table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.ia-table thead th {
+  background: rgba(15, 23, 42, 0.85);
+  color: #cbd5e1;
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.ia-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ia-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ia-table tbody td {
+  padding: 10px 14px;
+  color: #e2e8f0;
+  white-space: nowrap;
+}
+
+.ia-table tbody td:nth-child(2) {
+  font-weight: 600;
+  color: #fff;
+}
+
+.ia-table tbody td:nth-child(3) {
+  font-family: monospace;
+  font-weight: 700;
+  color: #38bdf8;
+}
+

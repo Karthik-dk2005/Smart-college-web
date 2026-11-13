@@ -1,4 +1,4 @@
-export { default as api } from "./axios";
+export { default as api, baseURL } from "./axios";
 export { default as authApi } from "./auth";
 export { default as studentsApi } from "./students";
 export { default as facultyApi } from "./faculty";
@@ -16,5 +16,8 @@ export { default as faceApi } from "./face";
 export { default as biometricApi } from "./biometric";
 export { default as busesApi } from "./buses";
 export { default as busApi } from "./buses";
-
-
+export { default as eventsApi } from "./events";
+export { default as announcementsApi } from "./announcements";
+export { default as notificationsApi } from "./notifications";
+export { default as studentActivitiesApi } from "./studentActivities";
+export { default as marksApi } from "./marks";

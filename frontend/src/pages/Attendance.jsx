@@ -8,6 +8,7 @@ import Modal from "../components/Modal";
 import AttendanceMethodSelector from "../components/AttendanceMethodSelector";
 import FaceScanner from "../components/FaceScanner";
 import BiometricScanner from "../components/BiometricScanner";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   CalendarCheck,
   CheckCircle2,
@@ -368,26 +369,39 @@ export default function Attendance() {
             boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.4)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-            <span
-              style={{
-                background: "rgba(99, 102, 241, 0.25)",
-                color: "#c7d2fe",
-                padding: "0.2rem 0.6rem",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-              }}
-            >
-              Timetable Session #{sessionData.timetable_id}
-            </span>
-            <span style={{ color: "#94a3b8", fontSize: "0.85rem" }}>• {sessionData.day}</span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <span
+                  style={{
+                    background: "rgba(99, 102, 241, 0.25)",
+                    color: "#c7d2fe",
+                    padding: "0.2rem 0.6rem",
+                    borderRadius: "6px",
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Timetable Session #{sessionData.timetable_id}
+                </span>
+                <span style={{ color: "#94a3b8", fontSize: "0.85rem" }}>• {sessionData.day}</span>
+              </div>
+              <h1 style={{ fontSize: "1.8rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
+                TAKE ATTENDANCE
+              </h1>
+              <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "0.25rem" }}>
+                Maharaja Institute of Technology Thandavapura • CSE Department
+              </p>
+            </div>
+            <div style={{ background: "#ffffff", padding: "6px 12px", borderRadius: "12px", display: "flex", alignItems: "center", gap: "0.6rem", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}>
+              <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
+              <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1e3a8a", lineHeight: 1.2 }}>
+                MIT THANDAVAPURA<br />
+                <span style={{ fontSize: "0.68rem", color: "#64748b", fontWeight: 500 }}>Official Session Register</span>
+              </div>
+            </div>
           </div>
-
-          <h1 style={{ fontSize: "1.8rem", fontWeight: 800, color: "#f8fafc", margin: "0 0 1.25rem 0" }}>
-            TAKE ATTENDANCE
-          </h1>
 
           {/* Read-only timetable values */}
           <div
@@ -941,28 +955,36 @@ export default function Attendance() {
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
       {/* View Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
-        <div>
-          <span
-            style={{
-              background: "rgba(99, 102, 241, 0.2)",
-              color: "#818cf8",
-              padding: "0.2rem 0.6rem",
-              borderRadius: "20px",
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-            }}
-          >
-            {isTeacher ? "Teacher Portal" : isStudent ? "Student Summary" : isHod ? "HOD Attendance Control" : "Admin Master View"}
-          </span>
-          <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#f8fafc", margin: "0.35rem 0 0" }}>
-            {isStudent ? "My Attendance Record" : "Timetable Attendance Sessions"}
-          </h1>
-          <p style={{ color: "#94a3b8", fontSize: "0.9rem", margin: "0.2rem 0 0" }}>
-            {isStudent
-              ? "Your attendance is calculated strictly from conducted timetable sessions."
-              : "Every attendance session originates strictly from an active timetable entry."}
-          </p>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ background: "#ffffff", padding: "5px 10px", borderRadius: "12px", display: "flex", alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
+          </div>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span
+                style={{
+                  background: "rgba(99, 102, 241, 0.2)",
+                  color: "#818cf8",
+                  padding: "0.2rem 0.6rem",
+                  borderRadius: "20px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                }}
+              >
+                {isTeacher ? "Teacher Portal" : isStudent ? "Student Summary" : isHod ? "HOD Attendance Control" : "Admin Master View"}
+              </span>
+              <span style={{ fontSize: "0.75rem", color: "#64748b" }}>MIT Thandavapura</span>
+            </div>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#f8fafc", margin: "0.35rem 0 0" }}>
+              {isStudent ? "My Attendance Record" : "Timetable Attendance Sessions"}
+            </h1>
+            <p style={{ color: "#94a3b8", fontSize: "0.9rem", margin: "0.2rem 0 0" }}>
+              {isStudent
+                ? "Your attendance is calculated strictly from conducted timetable sessions."
+                : "Every attendance session originates strictly from an active timetable entry."}
+            </p>
+          </div>
         </div>
 
         <button

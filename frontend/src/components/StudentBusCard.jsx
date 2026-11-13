@@ -1,4 +1,5 @@
 import React from "react";
+import CollegeLogo from "./CollegeLogo";
 import { Bus, MapPin, Clock, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 
 export default function StudentBusCard({ assignment, loading = false }) {
@@ -32,30 +33,19 @@ export default function StudentBusCard({ assignment, loading = false }) {
           margin: "0 auto",
         }}
       >
-        <div
-          style={{
-            width: "56px",
-            height: "56px",
-            borderRadius: "14px",
-            background: "rgba(99, 102, 241, 0.1)",
-            border: "1px solid rgba(99, 102, 241, 0.2)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#818cf8",
-            margin: "0 auto 1.25rem",
-          }}
-        >
-          <Bus size={28} />
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+          <div style={{ background: "#ffffff", padding: "6px 12px", borderRadius: "12px", display: "inline-flex", boxShadow: "0 4px 14px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "48px", width: "auto" }} />
+          </div>
         </div>
         <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#f8fafc", margin: "0 0 0.5rem" }}>
-          MY BUS
+          STUDENT BUS COMMUTE
         </h3>
         <p style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.5, margin: 0 }}>
           No bus route has been assigned to you.
         </p>
         <p style={{ color: "#64748b", fontSize: "0.82rem", marginTop: "0.5rem" }}>
-          Contact your department transport coordinator or administration to register for college transit.
+          Contact Maharaja Institute of Technology Thandavapura transport coordinator or department administration to register for college transit.
         </p>
       </div>
     );
@@ -75,28 +65,19 @@ export default function StudentBusCard({ assignment, loading = false }) {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <div
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "12px",
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%)",
-              border: "1px solid rgba(99, 102, 241, 0.4)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#818cf8",
-            }}
-          >
-            <Bus size={26} />
+        <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+          <div style={{ background: "#ffffff", padding: "5px 10px", borderRadius: "12px", display: "flex", alignItems: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
           </div>
           <div>
-            <span style={{ fontSize: "0.75rem", color: "#818cf8", fontWeight: 700, textTransform: "uppercase" }}>
-              Allocated Transit
-            </span>
-            <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
-              MY BUS
+            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <span style={{ fontSize: "0.72rem", color: "#818cf8", fontWeight: 700, textTransform: "uppercase" }}>
+                MIT Thandavapura
+              </span>
+              <span style={{ fontSize: "0.72rem", color: "#64748b" }}>• Transport Pass</span>
+            </div>
+            <h2 style={{ fontSize: "1.35rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
+              STUDENT BUS PASS
             </h2>
           </div>
         </div>

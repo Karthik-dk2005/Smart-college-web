@@ -20,6 +20,19 @@ class Student(Base):
     username = Column(String(100), nullable=True)
     password_hash = Column(String(255), nullable=True)
     status = Column(String(50), nullable=False, default="active")  # active, inactive
+    
+    # Official Gmail & Registration tracking
+    gmail = Column(String(255), nullable=True, index=True)
+    registration_status = Column(String(50), nullable=False, default="Unregistered")  # Unregistered, Pending, Registered, Rejected
+    email_verification_status = Column(String(50), nullable=False, default="Unverified")  # Unverified, Verified
+    is_flagged_for_admin = Column(Integer, default=0)
+    admin_flag_reason = Column(String(255), nullable=True)
+    otp_code = Column(String(10), nullable=True)
+    otp_expires_at = Column(DateTime, nullable=True)
+    otp_resend_count = Column(Integer, default=0)
+    otp_last_sent_at = Column(DateTime, nullable=True)
+    registered_at = Column(DateTime, nullable=True)
+    
     user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)

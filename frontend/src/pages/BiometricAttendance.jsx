@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import BiometricScanner from "../components/BiometricScanner";
 import AttendanceTable from "../components/AttendanceTable";
+import CollegeLogo from "../components/CollegeLogo";
 import { attendanceApi } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
@@ -72,22 +73,26 @@ export default function BiometricAttendance() {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <button
-            type="button"
-            onClick={() => navigate("/attendance")}
-            className="text-xs text-purple-600 hover:text-purple-700 font-semibold flex items-center gap-1 mb-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Attendance Dashboard
-          </button>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <Fingerprint className="w-7 h-7 text-purple-600 dark:text-purple-400" />
-            Biometric Hardware Attendance
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Physical fingerprint scanner verification and live minutiae authentication.
-          </p>
+        <div className="flex items-center gap-4">
+          <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100 flex-shrink-0">
+            <CollegeLogo size="sm" style={{ height: "48px", width: "auto" }} />
+          </div>
+          <div>
+            <button
+              type="button"
+              onClick={() => navigate("/attendance")}
+              className="text-xs text-purple-600 hover:text-purple-700 font-semibold flex items-center gap-1 mb-1"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Attendance Dashboard
+            </button>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              Biometric Hardware Attendance
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              Maharaja Institute of Technology Thandavapura • Physical fingerprint scanner verification & minutiae authentication.
+            </p>
+          </div>
         </div>
 
         {/* Timetable Session Switcher */}

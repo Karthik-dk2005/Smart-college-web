@@ -5,6 +5,7 @@ import studentsApi from "../api/students";
 import subjectsApi from "../api/subjects";
 import attendanceApi from "../api/attendance";
 import TableSkeleton from "../components/TableSkeleton";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   FileText,
   Download,
@@ -151,6 +152,25 @@ export default function Reports() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Printable / PDF Institutional Header with MIT Logo */}
+      <div className="print-only-header">
+        <CollegeLogo size="xl" style={{ height: "76px", width: "auto" }} />
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "1.35rem", fontWeight: 800, letterSpacing: "0.03em", color: "#0f172a" }}>
+            MAHARAJA INSTITUTE OF TECHNOLOGY THANDAVAPURA
+          </div>
+          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#334155" }}>
+            Affiliated to Visvesvaraya Technological University (VTU), Belagavi • Approved by AICTE, New Delhi
+          </div>
+          <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#1e3a8a", marginTop: "4px" }}>
+            DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+          </div>
+          <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#0f172a", marginTop: "2px" }}>
+            OFFICIAL ATTENDANCE REPORT — 5TH SEMESTER (ODD SEM 2026–2027)
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <div
         style={{
@@ -161,32 +181,37 @@ export default function Reports() {
           gap: "1rem",
         }}
       >
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.25rem" }}>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-main)" }}>
-              Academic & Attendance Reports
-            </h1>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.35rem",
-                padding: "0.25rem 0.65rem",
-                borderRadius: "9999px",
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                background: "rgba(59, 130, 246, 0.15)",
-                color: "#60a5fa",
-                border: "1px solid rgba(59, 130, 246, 0.3)",
-              }}
-            >
-              <BarChart3 size={13} />
-              5th Semester (ODD 2026–27)
-            </span>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ background: "#ffffff", padding: "6px 12px", borderRadius: "12px", display: "flex", alignItems: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
           </div>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-            VTU compliance monitoring, attendance shortage alerts (&lt;75%), and departmental analytics.
-          </p>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.25rem" }}>
+              <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--text-main)", margin: 0 }}>
+                Academic & Attendance Reports
+              </h1>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                  padding: "0.25rem 0.65rem",
+                  borderRadius: "9999px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  background: "rgba(59, 130, 246, 0.15)",
+                  color: "#60a5fa",
+                  border: "1px solid rgba(59, 130, 246, 0.3)",
+                }}
+              >
+                <BarChart3 size={13} />
+                5th Semester (ODD 2026–27)
+              </span>
+            </div>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: 0 }}>
+              Maharaja Institute of Technology Thandavapura • VTU compliance & attendance shortage alerts (&lt;75%).
+            </p>
+          </div>
         </div>
 
         {/* Export / Print Buttons */}
@@ -511,6 +536,22 @@ export default function Reports() {
             </table>
           </div>
         )}
+      </div>
+
+      {/* Official Signatures Block (Visible on Print) */}
+      <div className="print-signatures-footer">
+        <div className="print-sig-col">
+          <div>Prepared By</div>
+          <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "2px" }}>Class Coordinator</div>
+        </div>
+        <div className="print-sig-col">
+          <div>Verified By</div>
+          <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "2px" }}>Head of Department (CSE)</div>
+        </div>
+        <div className="print-sig-col">
+          <div>Approved By</div>
+          <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "2px" }}>Principal, MIT Thandavapura</div>
+        </div>
       </div>
     </div>
   );

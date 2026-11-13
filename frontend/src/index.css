@@ -709,3 +709,103 @@ body {
     margin-left: 0;
   }
 }
+
+/* ==============================================================
+   OFFICIAL COLLEGE LOGO — MAHARAJA INSTITUTE OF TECHNOLOGY THANDAVAPURA
+   ============================================================== */
+.college-logo-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  aspect-ratio: 145 / 142;
+  flex-shrink: 0;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Desktop Defaults (55–75px) */
+.college-logo-sm { height: 44px; }
+.college-logo-md { height: 64px; }
+.college-logo-lg { height: 72px; }
+.college-logo-xl { height: 84px; }
+
+/* Tablet (50–65px) */
+@media (max-width: 1024px) {
+  .college-logo-sm { height: 40px; }
+  .college-logo-md { height: 56px; }
+  .college-logo-lg { height: 64px; }
+  .college-logo-xl { height: 72px; }
+}
+
+/* Mobile (40–55px) */
+@media (max-width: 640px) {
+  .college-logo-sm { height: 38px; }
+  .college-logo-md { height: 46px; }
+  .college-logo-lg { height: 50px; }
+  .college-logo-xl { height: 56px; }
+}
+
+/* Printable Report & PDF Official College Header */
+.print-only-header {
+  display: none;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .sidebar,
+  .sidebar-container,
+  header,
+  .no-print,
+  button,
+  .mobile-backdrop {
+    display: none !important;
+  }
+
+  .main-wrapper,
+  .main-content,
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .print-only-header {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.25rem 0 1.5rem;
+    border-bottom: 2px solid #0f172a;
+    margin-bottom: 1.5rem;
+    page-break-inside: avoid;
+  }
+
+  .print-only-header img {
+    height: 75px !important;
+    width: auto !important;
+    object-fit: contain !important;
+  }
+
+  .print-signatures-footer {
+    display: flex !important;
+    justify-content: space-between;
+    margin-top: 4rem;
+    padding-top: 1rem;
+    page-break-inside: avoid;
+  }
+
+  .print-sig-col {
+    text-align: center;
+    min-width: 180px;
+    border-top: 1px dashed #64748b;
+    padding-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+}
+

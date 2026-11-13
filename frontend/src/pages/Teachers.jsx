@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
 import Modal from "../components/Modal";
 import TableSkeleton from "../components/TableSkeleton";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   GraduationCap,
   Search,
@@ -913,6 +914,44 @@ export default function Teachers() {
       <Modal isOpen={isViewOpen} onClose={() => setIsViewOpen(false)} title="Teacher Profile Overview">
         {selectedTeacher && (
           <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            {/* Official MIT Thandavapura Faculty Header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "0.6rem 0.85rem",
+                background: "#ffffff",
+                borderRadius: "12px",
+                border: "1px solid #e2e8f0",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
+                <div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: "#1e3a8a", letterSpacing: "0.02em" }}>
+                    MAHARAJA INSTITUTE OF TECHNOLOGY THANDAVAPURA
+                  </div>
+                  <div style={{ fontSize: "0.7rem", color: "#64748b", fontWeight: 600 }}>
+                    Official Faculty Credentials • Department of CSE
+                  </div>
+                </div>
+              </div>
+              <span
+                style={{
+                  background: "#dcfce7",
+                  color: "#15803d",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "6px",
+                  textTransform: "uppercase",
+                }}
+              >
+                {selectedTeacher.status || "ACTIVE"}
+              </span>
+            </div>
+
             <div
               style={{
                 background: "rgba(99, 102, 241, 0.1)",

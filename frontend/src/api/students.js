@@ -5,20 +5,36 @@ export const studentsApi = {
     return api.get("/api/students", { params });
   },
 
-  getById: async (id) => {
-    return api.get(`/api/students/${id}`);
+  getById: async (idOrUsn) => {
+    return api.get(`/api/students/${encodeURIComponent(idOrUsn)}`);
+  },
+
+  getByUsn: async (usn) => {
+    return api.get(`/api/students/${encodeURIComponent(usn)}`);
+  },
+
+  search: async (query) => {
+    return api.get("/api/students/search", { params: { query } });
   },
 
   create: async (data) => {
     return api.post("/api/students", data);
   },
 
-  update: async (id, data) => {
-    return api.put(`/api/students/${id}`, data);
+  update: async (idOrUsn, data) => {
+    return api.put(`/api/students/${encodeURIComponent(idOrUsn)}`, data);
   },
 
-  delete: async (id) => {
-    return api.delete(`/api/students/${id}`);
+  delete: async (idOrUsn) => {
+    return api.delete(`/api/students/${encodeURIComponent(idOrUsn)}`);
+  },
+
+  bulkImport: async (data) => {
+    return api.post("/api/students/bulk-import", data);
+  },
+
+  importFromPdf: async () => {
+    return api.post("/api/students/import-from-pdf");
   },
 };
 

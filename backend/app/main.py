@@ -24,6 +24,13 @@ from app.routers import (
     face_router,
     biometric_router,
     buses_router,
+    events_router,
+    announcements_router,
+    notifications_router,
+    student_activities_router,
+    marks_router,
+    student_auth_router,
+    admin_student_registration_router,
 )
 
 
@@ -36,6 +43,7 @@ async def lifespan(app: FastAPI):
     try:
         from app.database import SessionLocal
         from app.models.department import Department
+        from app.models.mark import Mark
         with SessionLocal() as db:
             if not db.query(Department).first():
                 try:
@@ -43,6 +51,13 @@ async def lifespan(app: FastAPI):
                     seed_database()
                 except Exception as seed_err:
                     print(f"Auto-seed notice: {seed_err}")
+            # Ensure 5th Semester IA marks are populated
+            if db.query(Mark).count() < 786:
+                try:
+                    from app.services.marks_importer import import_5th_sem_marks
+                    import_5th_sem_marks(db, force_reload=False)
+                except Exception as marks_err:
+                    print(f"Auto-load marks notice: {marks_err}")
     except Exception as e:
         print(f"Database startup check: {e}")
     yield
@@ -76,6 +91,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list,
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:\d+|http://127\.0\.0\.1:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -132,6 +148,7 @@ async def generic_exception_handler(request: Request, exc: Exception):
 # Health Check Endpoint (Required format)
 # ---------------------------------------------------------
 @app.get("/health", tags=["Health"])
+@app.get("/api/health", tags=["Health"])
 def health_check():
     """Health check endpoint returning system status."""
     return {
@@ -161,6 +178,72 @@ app.include_router(dashboard_router)
 app.include_router(face_router)
 app.include_router(biometric_router)
 app.include_router(buses_router)
+app.include_router(events_router)
+app.include_router(announcements_router)
+app.include_router(notifications_router)
+app.include_router(student_activities_router)
+app.include_router(marks_router)
+app.include_router(student_auth_router)
+app.include_router(admin_student_registration_router)
+
+# Direct aliases for /api/my-events and /api/my-registrations
+from app.routers.events import get_my_created_or_dept_events, get_my_registrations
+from app.database import get_db
+from sqlalchemy.orm import Session
+from fastapi import Depends
+
+app.add_api_route("/api/my-events", get_my_created_or_dept_events, methods=["GET"], tags=["Events"])
+app.add_api_route("/api/my-registrations", get_my_registrations, methods=["GET"], tags=["Events"])
+
+@app.get("/api/ia-marks", tags=["Internal Marks & Gradebook"])
+def get_direct_ia_marks(db: Session = Depends(get_db)):
+    """Direct alias endpoint for /api/ia-marks delivering full student-grouped component marks."""
+    from app.models.mark import Mark
+    records = db.query(Mark).filter(Mark.semester == 5, Mark.ia_number == "IA-1").order_by(Mark.section.asc(), Mark.sl_no.asc()).all()
+    students_map = {}
+    for r in records:
+        if r.usn not in students_map:
+            students_map[r.usn] = {
+                "sl_no": r.sl_no,
+                "student_name": r.student_name,
+                "usn": r.usn,
+                "section": r.section,
+                "marks": []
+            }
+        
+        c1 = "AB" if r.is_absent or r.obtained_marks is None else (int(r.obtained_marks) if float(r.obtained_marks).is_integer() else float(r.obtained_marks))
+        c2 = "AB" if r.is_absent or r.scaled_marks is None else (int(r.scaled_marks) if float(r.scaled_marks).is_integer() else float(r.scaled_marks))
+        
+        m1 = int(r.maximum_marks) if r.maximum_marks is not None and float(r.maximum_marks).is_integer() else r.maximum_marks
+        m2 = int(r.scaled_max_marks) if r.scaled_max_marks is not None and float(r.scaled_max_marks).is_integer() else r.scaled_max_marks
+
+        students_map[r.usn]["marks"].append({
+            "subject_name": r.short_name or r.subject_code,
+            "subject_code": r.subject_code,
+            "component1": c1,
+            "max1": m1,
+            "component2": c2,
+            "max2": m2
+        })
+    return list(students_map.values())
+
+
+# ---------------------------------------------------------
+# Static Uploads Directory Mounting
+# ---------------------------------------------------------
+import os
+from fastapi.staticfiles import StaticFiles
+
+if os.environ.get("VERCEL"):
+    UPLOADS_DIR = "/tmp/uploads"
+else:
+    UPLOADS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "uploads"))
+
+try:
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
+except Exception as e:
+    print(f"Notice: /uploads mount skipped: {e}")
 
 
 # ---------------------------------------------------------
@@ -192,5 +275,8 @@ if os.path.exists(FRONTEND_DIST):
         # Fallback to index.html for React Router client-side routing
         index_file = os.path.join(FRONTEND_DIST, "index.html")
         if os.path.exists(index_file):
-            return FileResponse(index_file)
+            return FileResponse(
+                index_file,
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"}
+            )
         return JSONResponse({"status": "Frontend build not found"}, status_code=404)

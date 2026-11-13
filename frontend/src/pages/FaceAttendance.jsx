@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import FaceScanner from "../components/FaceScanner";
 import AttendanceTable from "../components/AttendanceTable";
+import CollegeLogo from "../components/CollegeLogo";
 import { attendanceApi, timetableApi } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
@@ -73,22 +74,26 @@ export default function FaceAttendance() {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <button
-            type="button"
-            onClick={() => navigate("/attendance")}
-            className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 mb-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Attendance Dashboard
-          </button>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <ScanFace className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
-            Face Recognition Live Attendance
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Real-time optical face detection, cosine similarity match, and instant attendance logging.
-          </p>
+        <div className="flex items-center gap-4">
+          <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100 flex-shrink-0">
+            <CollegeLogo size="sm" style={{ height: "48px", width: "auto" }} />
+          </div>
+          <div>
+            <button
+              type="button"
+              onClick={() => navigate("/attendance")}
+              className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1 mb-1"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Attendance Dashboard
+            </button>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              Face Recognition Live Attendance
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              Maharaja Institute of Technology Thandavapura • Real-time optical face detection & instant session logging.
+            </p>
+          </div>
         </div>
 
         {/* Timetable Session Switcher */}

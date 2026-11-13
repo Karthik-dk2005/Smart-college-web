@@ -6,6 +6,7 @@ import { useToast } from "../components/Toast";
 import BusStopTable from "../components/BusStopTable";
 import BusStopForm from "../components/BusStopForm";
 import Modal from "../components/Modal";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   Bus,
   ArrowLeft,
@@ -268,25 +269,31 @@ export default function BusRouteDetails() {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ background: "#ffffff", padding: "5px 10px", borderRadius: "14px", display: "flex", alignItems: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.15)" }}>
+              <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
+            </div>
             <div
               style={{
-                width: "56px",
-                height: "56px",
-                borderRadius: "14px",
+                width: "50px",
+                height: "50px",
+                borderRadius: "12px",
                 background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#fff",
                 fontWeight: 800,
-                fontSize: "1.35rem",
+                fontSize: "1.2rem",
                 boxShadow: "0 6px 20px rgba(99, 102, 241, 0.4)",
               }}
             >
               #{route.route_number}
             </div>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 600 }}>
+                MAHARAJA INSTITUTE OF TECHNOLOGY THANDAVAPURA
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "2px" }}>
                 <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
                   {route.route_name || `Route ${route.route_number}`}
                 </h1>

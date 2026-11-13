@@ -19,7 +19,10 @@ def get_user_notifications(
     current_user: User = Depends(get_current_user),
 ):
     """Retrieve all notifications for the authenticated user."""
-    query = db.query(Notification).filter(Notification.user_id == current_user.id)
+    from sqlalchemy import or_
+    query = db.query(Notification).filter(
+        or_(Notification.user_id == current_user.id, Notification.user_id == None)
+    )
     if unread_only:
         query = query.filter(Notification.read == False)
     if category is not None:
@@ -87,7 +90,7 @@ def mark_notification_as_read(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Notification with ID {id} not found",
         )
-    if notif.user_id != current_user.id and current_user.role != "admin":
+    if notif.user_id is not None and notif.user_id != current_user.id and current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Cannot mark other users' notifications as read",

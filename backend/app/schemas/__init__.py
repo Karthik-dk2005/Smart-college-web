@@ -1,5 +1,13 @@
 import importlib.util
 import os
+from pydantic import BaseModel
+from typing import Optional, Any
+
+class ApiResponse(BaseModel):
+    success: bool = True
+    message: str = "Success"
+    data: Optional[Any] = None
+    error: Optional[str] = None
 
 # 1. First import legacy submodules if they exist so existing endpoints continue to function
 try:
@@ -23,7 +31,29 @@ try:
         BusRouteBase, BusRouteCreate, BusRouteUpdate, BusRouteOut, BusRouteDetailOut,
         StudentBusAssignCreate, StudentBusAssignmentOut
     )
-except Exception:
+    from app.schemas.event import (
+        EventBase, EventCreate, EventUpdate, EventOut, EventRegistrationOut,
+        EventAttendanceItem, EventAttendanceUpdate
+    )
+    from app.schemas.announcement import (
+        AnnouncementBase, AnnouncementCreate, AnnouncementUpdate, AnnouncementOut
+    )
+    from app.schemas.notification import (
+        NotificationCreate, NotificationOut
+    )
+    from app.schemas.student_activity import (
+        StudentActivityBase, StudentActivityCreate, StudentActivityUpdate,
+        StudentActivityOut, StudentActivityFileOut, StudentActivityVerificationOut,
+        VerifyActivityRequest, RejectActivityRequest, ActivityStatsOut
+    )
+    from app.schemas.mark import (
+        MarkBase, MarkCreate, MarkUpdate, MarkItemOut, SubjectDashboardCard, StudentMarksProfile
+    )
+    from app.schemas.student_auth import (
+        VerifyUSNResponse, StudentRegisterRequest, StudentVerifyEmailRequest,
+        StudentResendOTPRequest, StudentLoginRequest, StudentProfileOut, StudentAuthResponse
+    )
+except Exception as e:
     pass
 
 # 2. Load schemas defined in app/schemas.py (authoritative schemas for Timetable, Teacher, Subject, Room, etc.)

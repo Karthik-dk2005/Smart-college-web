@@ -6,6 +6,7 @@ import { useToast } from "../components/Toast";
 import BusRouteCard from "../components/BusRouteCard";
 import BusRouteTable from "../components/BusRouteTable";
 import Modal from "../components/Modal";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   Bus,
   Search,
@@ -101,29 +102,34 @@ export default function BusDashboard() {
           gap: "1rem",
         }}
       >
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-            <span
-              style={{
-                background: "rgba(99, 102, 241, 0.25)",
-                color: "#c7d2fe",
-                padding: "0.2rem 0.6rem",
-                borderRadius: "20px",
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-              }}
-            >
-              Transit Fleet
-            </span>
-            <span style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Campus Bus Routes 1–28</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+          <div style={{ background: "#ffffff", padding: "6px 12px", borderRadius: "12px", display: "flex", alignItems: "center", boxShadow: "0 4px 15px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "48px", width: "auto" }} />
           </div>
-          <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
-            Bus Routes & Fleet Management
-          </h1>
-          <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginTop: "0.35rem" }}>
-            Real-time schedules, stops allocation, and student bus transit tracking.
-          </p>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+              <span
+                style={{
+                  background: "rgba(99, 102, 241, 0.25)",
+                  color: "#c7d2fe",
+                  padding: "0.2rem 0.6rem",
+                  borderRadius: "20px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                }}
+              >
+                Transit Fleet
+              </span>
+              <span style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Maharaja Institute of Technology Thandavapura</span>
+            </div>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
+              Bus Routes & Fleet Management
+            </h1>
+            <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginTop: "0.35rem" }}>
+              Real-time schedules, stops allocation, and student bus transit tracking.
+            </p>
+          </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>

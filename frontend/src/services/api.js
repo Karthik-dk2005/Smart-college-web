@@ -1,7 +1,13 @@
 import axios from "axios";
 
+const envUrl = import.meta.env.VITE_API_URL || "";
+const isRemoteHost = typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1";
+const baseURL = (import.meta.env.PROD || isRemoteHost)
+  ? (envUrl.includes("localhost") || envUrl.includes("127.0.0.1") ? "/api" : `${envUrl}/api`)
+  : (envUrl ? `${envUrl}/api` : "http://localhost:8000/api");
+
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },

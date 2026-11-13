@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
+import CollegeLogo from "../components/CollegeLogo";
 import { User, Mail, Shield, Building, Award, Calendar } from "lucide-react";
 
 export default function ProfileView() {
@@ -9,14 +10,20 @@ export default function ProfileView() {
 
   return (
     <div>
-      <div className="card-header" style={{ marginBottom: "1.5rem" }}>
+      <div className="card-header" style={{ marginBottom: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
         <div>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#fff" }}>
             Academic Profile & Identity
           </h1>
           <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>
-            Authenticated Role-Based Identity & Department Credentials
+            Maharaja Institute of Technology Thandavapura • Institutional Dossier
           </p>
+        </div>
+        <div style={{ background: "#ffffff", padding: "4px 10px", borderRadius: "10px", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <CollegeLogo size="sm" style={{ height: "42px", width: "auto" }} />
+          <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1e3a8a" }}>
+            MIT THANDAVAPURA
+          </div>
         </div>
       </div>
 

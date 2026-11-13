@@ -3,6 +3,7 @@ import { busApi } from "../services/busApi";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/Toast";
 import StudentBusCard from "../components/StudentBusCard";
+import CollegeLogo from "../components/CollegeLogo";
 import { Bus, RefreshCw, AlertCircle, Shield } from "lucide-react";
 
 export default function StudentBus() {
@@ -60,26 +61,30 @@ export default function StudentBus() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "12px",
-              background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              boxShadow: "0 4px 20px rgba(99, 102, 241, 0.4)",
-            }}
-          >
-            <Bus size={26} />
+          <div style={{ background: "#ffffff", padding: "5px 10px", borderRadius: "12px", display: "flex", alignItems: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
           </div>
           <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem" }}>
+              <span
+                style={{
+                  background: "rgba(99, 102, 241, 0.25)",
+                  color: "#c7d2fe",
+                  padding: "0.15rem 0.5rem",
+                  borderRadius: "10px",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                }}
+              >
+                Student Transit Pass
+              </span>
+              <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>MIT Thandavapura</span>
+            </div>
             <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#f8fafc", margin: 0, letterSpacing: "-0.02em" }}>
               My Bus Transit
             </h1>
-            <p style={{ margin: "0.25rem 0 0 0", color: "#94a3b8", fontSize: "0.85rem" }}>
+            <p style={{ margin: "0.25rem 0 0 0", color: "#cbd5e1", fontSize: "0.85rem" }}>
               Allocated college commute route, boarding point, and schedule
             </p>
           </div>

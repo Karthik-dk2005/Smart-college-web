@@ -14,6 +14,13 @@ from app.routers.dashboard import router as dashboard_router
 from app.routers.face import router as face_router
 from app.routers.biometric import router as biometric_router
 from app.routers.buses import router as buses_router
+from app.routers.events import router as events_router
+from app.routers.announcements import router as announcements_router
+from app.routers.notifications import router as notifications_router
+from app.routers.student_activities import router as student_activities_router
+from app.routers.marks import router as marks_router
+from app.routers.student_auth import router as student_auth_router
+from app.routers.admin_student_registration import router as admin_student_registration_router
 
 __all__ = [
     "auth_router",
@@ -32,5 +39,11 @@ __all__ = [
     "face_router",
     "biometric_router",
     "buses_router",
+    "events_router",
+    "announcements_router",
+    "notifications_router",
+    "student_activities_router",
+    "marks_router",
+    "student_auth_router",
+    "admin_student_registration_router",
 ]
-

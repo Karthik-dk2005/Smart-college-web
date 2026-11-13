@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import CollegeLogo from "./CollegeLogo";
+import NotificationBell from "./NotificationBell";
 import {
   Menu,
   Bell,
@@ -76,11 +78,12 @@ export default function Navbar({ onMenuToggle }) {
         padding: "0 1.5rem",
       }}
     >
-      {/* Left: Mobile Menu & Breadcrumb */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      {/* Left: Mobile Menu + [ MIT LOGO ] SMART DEPARTMENT */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
         <button
           onClick={onMenuToggle}
           className="mobile-menu-btn"
+          aria-label="Toggle navigation menu"
           style={{
             background: "rgba(255, 255, 255, 0.05)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -95,14 +98,49 @@ export default function Navbar({ onMenuToggle }) {
           <Menu size={20} />
         </button>
 
-        <div>
-          <div style={{ fontSize: "1rem", fontWeight: 700, color: "#f8fafc" }}>
-            Dept of Computer Science & Engineering
+        <Link
+          to="/dashboard"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <CollegeLogo
+            size="sm"
+            style={{
+              height: "44px",
+              width: "auto",
+              objectFit: "contain",
+            }}
+          />
+          <div>
+            <div
+              style={{
+                fontSize: "1.05rem",
+                fontWeight: 800,
+                color: "#f8fafc",
+                letterSpacing: "0.03em",
+                textTransform: "uppercase",
+                lineHeight: 1.2,
+              }}
+            >
+              Smart Department
+            </div>
+            <div
+              style={{
+                fontSize: "0.72rem",
+                color: "var(--text-muted, #94a3b8)",
+                whiteSpace: "nowrap",
+                letterSpacing: "0.01em",
+              }}
+            >
+              MIT Thandavapura • CSE Dept
+            </div>
           </div>
-          <div style={{ fontSize: "0.75rem", color: "var(--text-muted, #64748b)" }}>
-            Academic Year 2026–2027 • 5th Semester ODD SEM
-          </div>
-        </div>
+        </Link>
       </div>
 
       {/* Right Controls */}
@@ -154,6 +192,9 @@ export default function Navbar({ onMenuToggle }) {
             {formattedDate}, {formattedTime}
           </span>
         </div>
+
+        {/* Notifications Bell */}
+        <NotificationBell />
 
         {/* Profile Avatar Pill */}
         <Link

@@ -41,10 +41,16 @@ def get_current_user(
     user = db.query(User).filter(User.email == email).first()
     if not user:
         raise credentials_exception
-    if not user.is_active:
+    account_status = getattr(user, "account_status", "Approved")
+    if account_status == "Pending":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User account is inactive"
+            detail="Your account registration is pending approval by the Admin or Department HOD."
+        )
+    if account_status in ("Rejected", "Suspended") or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"User account is {account_status.lower() if account_status else 'inactive'}. Please contact administration."
         )
     return user
 
@@ -107,3 +113,12 @@ def require_admin_or_hod(current_user: User = Depends(get_current_user)) -> User
             detail="You do not have permission to perform this action."
         )
     return current_user
+
+
+def get_client_ip(request: Request) -> str:
+    """Extract client IP address safely from Request."""
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "127.0.0.1"
+

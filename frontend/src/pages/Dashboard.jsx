@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { dashboardApi } from "../api";
+import CollegeLogo from "../components/CollegeLogo";
 import {
   Users,
   GraduationCap,
@@ -15,9 +16,16 @@ import {
   TrendingUp,
   BarChart3,
   PieChart,
-  RefreshCw,
   CheckCircle2,
+  CalendarDays,
+  Megaphone,
+  ArrowRight,
+  UserCheck,
+  Trophy,
+  Award,
+  RefreshCw,
 } from "lucide-react";
+import { eventsApi, announcementsApi, studentActivitiesApi } from "../api";
 
 export default function Dashboard() {
   const { user, role } = useAuth();
@@ -25,12 +33,48 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [latestAnnouncements, setLatestAnnouncements] = useState([]);
+  const [myRegistrations, setMyRegistrations] = useState([]);
+  const [todaysEvents, setTodaysEvents] = useState([]);
+  const [activityStats, setActivityStats] = useState(null);
+
   const fetchStats = async () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await dashboardApi.getStats();
-      setData(res.data || res);
+      const [statsRes, eventsRes, annRes, myRegsRes, actStatsRes] = await Promise.allSettled([
+        dashboardApi.getStats(),
+        eventsApi.getAll({ upcoming_only: true }),
+        announcementsApi.getAll({ active_only: true }),
+        eventsApi.getMyRegistrations(),
+        studentActivitiesApi.getStatsSummary(),
+      ]);
+
+      if (statsRes.status === "fulfilled") {
+        setData(statsRes.value.data || statsRes.value);
+      }
+
+      if (actStatsRes.status === "fulfilled") {
+        setActivityStats(actStatsRes.value.data || null);
+      }
+
+      if (eventsRes.status === "fulfilled") {
+        const evList = Array.isArray(eventsRes.value) ? eventsRes.value : eventsRes.value.data || [];
+        setUpcomingEvents(evList);
+        const todayStr = new Date().toISOString().substring(0, 10);
+        setTodaysEvents(evList.filter((e) => e.event_date === todayStr || e.computed_status === "Ongoing"));
+      }
+
+      if (annRes.status === "fulfilled") {
+        const annList = Array.isArray(annRes.value) ? annRes.value : annRes.value.data || [];
+        setLatestAnnouncements(annList);
+      }
+
+      if (myRegsRes.status === "fulfilled") {
+        const myRegsList = Array.isArray(myRegsRes.value) ? myRegsRes.value : myRegsRes.value.data || [];
+        setMyRegistrations(myRegsList);
+      }
     } catch (err) {
       console.error("Dashboard error:", err);
       setError(err.message || "Failed to load dashboard metrics");
@@ -74,29 +118,43 @@ export default function Dashboard() {
           gap: "1rem",
         }}
       >
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-            <span
-              style={{
-                background: "rgba(99, 102, 241, 0.3)",
-                color: "#c7d2fe",
-                padding: "0.2rem 0.6rem",
-                borderRadius: "20px",
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-              }}
-            >
-              {role || "STUDENT"}
-            </span>
-            <span style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Semester 5 (ODD)</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+          <CollegeLogo
+            size="lg"
+            style={{
+              height: "68px",
+              width: "auto",
+              objectFit: "contain",
+              background: "#ffffff",
+              padding: "5px",
+              borderRadius: "14px",
+              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.25)",
+            }}
+          />
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+              <span
+                style={{
+                  background: "rgba(99, 102, 241, 0.3)",
+                  color: "#c7d2fe",
+                  padding: "0.2rem 0.6rem",
+                  borderRadius: "20px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                }}
+              >
+                {role || "STUDENT"}
+              </span>
+              <span style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Semester 5 (ODD)</span>
+            </div>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
+              Welcome back, {user?.name || "Scholar"}!
+            </h1>
+            <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginTop: "0.35rem" }}>
+              Maharaja Institute of Technology Thandavapura • Dept of Computer Science & Engineering
+            </p>
           </div>
-          <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#f8fafc", margin: 0 }}>
-            Welcome back, {user?.name || "Scholar"}!
-          </h1>
-          <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginTop: "0.35rem" }}>
-            Department of Computer Science & Engineering • Academic Year 2026–2027
-          </p>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
@@ -141,6 +199,58 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Student Academic Identification Card (Requirement 5) */}
+      {(role || user?.role || "").toLowerCase() === "student" && (
+        <div
+          style={{
+            background: "linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%)",
+            border: "1px solid rgba(99, 102, 241, 0.3)",
+            borderRadius: "14px",
+            padding: "1.25rem 1.5rem",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "1.25rem",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.25)",
+          }}
+        >
+          <div>
+            <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Student Name
+            </div>
+            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", marginTop: "0.25rem" }}>
+              {user?.full_name || user?.name || "Student"}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              University Seat Number (USN)
+            </div>
+            <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#818cf8", fontFamily: "monospace", marginTop: "0.25rem" }}>
+              {user?.usn || user?.usn_or_employee_id || "N/A"}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Registered Gmail
+            </div>
+            <div style={{ fontSize: "0.92rem", fontWeight: 600, color: "#38bdf8", fontFamily: "monospace", marginTop: "0.25rem" }}>
+              {user?.gmail || user?.email || "Registered"}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Academic Class
+            </div>
+            <div style={{ fontSize: "1rem", fontWeight: 700, color: "#34d399", marginTop: "0.25rem" }}>
+              Semester {user?.semester || 5} • Section {user?.section || "A"}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Student Personal Attendance Progress (Shown if logged in as student) */}
       {studentOverview && (
@@ -191,10 +301,142 @@ export default function Dashboard() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
           gap: "1rem",
         }}
       >
+        {/* STUDENT ACHIEVEMENTS Card for Student (Section 22) */}
+        {(role || user?.role || "").toLowerCase() === "student" && (
+          <div
+            style={{
+              background: "linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%)",
+              border: "1px solid rgba(245, 158, 11, 0.35)",
+              borderRadius: "12px",
+              padding: "1.25rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: "0 4px 15px rgba(245, 158, 11, 0.08)",
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.82rem", color: "#fbbf24", fontWeight: 800, textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                  <Trophy size={16} /> STUDENT ACHIEVEMENTS
+                </span>
+                <span style={{ fontSize: "0.7rem", color: "#fbbf24", background: "rgba(245, 158, 11, 0.15)", padding: "2px 8px", borderRadius: "10px" }}>
+                  Active
+                </span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.4rem", textAlign: "center", margin: "0.75rem 0" }}>
+                <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "0.5rem 0.25rem", borderRadius: "6px" }}>
+                  <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>🏆 Verified</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#fbbf24", marginTop: "2px" }}>
+                    {activityStats?.verified_achievements || 0}
+                  </div>
+                </div>
+                <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "0.5rem 0.25rem", borderRadius: "6px" }}>
+                  <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>📜 Certs</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#38bdf8", marginTop: "2px" }}>
+                    {activityStats?.certificates_count || 0}
+                  </div>
+                </div>
+                <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "0.5rem 0.25rem", borderRadius: "6px" }}>
+                  <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>⏳ Pending</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#fbbf24", marginTop: "2px" }}>
+                    {activityStats?.pending_verification || 0}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Link
+              to="/student/activities"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.35rem",
+                background: "rgba(245, 158, 11, 0.15)",
+                border: "1px solid rgba(245, 158, 11, 0.3)",
+                borderRadius: "6px",
+                padding: "0.45rem",
+                color: "#fbbf24",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              View Activities <ArrowRight size={13} />
+            </Link>
+          </div>
+        )}
+
+        {/* STUDENT ACTIVITY VERIFICATION Card for Admin / HOD (Section 22) */}
+        {["admin", "hod"].includes((role || user?.role || "").toLowerCase()) && (
+          <div
+            style={{
+              background: "linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%)",
+              border: "1px solid rgba(99, 102, 241, 0.35)",
+              borderRadius: "12px",
+              padding: "1.25rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: "0 4px 15px rgba(99, 102, 241, 0.08)",
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.82rem", color: "#818cf8", fontWeight: 800, textTransform: "uppercase", display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                  <Trophy size={16} /> ACTIVITY VERIFICATION
+                </span>
+                <span style={{ fontSize: "0.7rem", color: "#fbbf24", background: "rgba(251, 191, 36, 0.12)", padding: "2px 8px", borderRadius: "10px", fontWeight: 700 }}>
+                  Queue
+                </span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.4rem", textAlign: "center", margin: "0.75rem 0" }}>
+                <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "0.5rem 0.25rem", borderRadius: "6px", border: "1px solid rgba(251, 191, 36, 0.2)" }}>
+                  <div style={{ fontSize: "0.68rem", color: "#fbbf24" }}>Pending</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#fbbf24", marginTop: "2px" }}>
+                    {activityStats?.pending_verification || 0}
+                  </div>
+                </div>
+                <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "0.5rem 0.25rem", borderRadius: "6px", border: "1px solid rgba(52, 211, 153, 0.2)" }}>
+                  <div style={{ fontSize: "0.68rem", color: "#34d399" }}>Verified</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#34d399", marginTop: "2px" }}>
+                    {activityStats?.verified_achievements || 0}
+                  </div>
+                </div>
+                <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "0.5rem 0.25rem", borderRadius: "6px", border: "1px solid rgba(244, 63, 94, 0.2)" }}>
+                  <div style={{ fontSize: "0.68rem", color: "#fb7185" }}>Rejected</div>
+                  <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#fb7185", marginTop: "2px" }}>
+                    {activityStats?.rejected || 0}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Link
+              to={((role || user?.role || "").toLowerCase() === "hod") ? "/hod/student-activities" : "/admin/student-activities"}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.35rem",
+                background: "rgba(99, 102, 241, 0.2)",
+                border: "1px solid rgba(99, 102, 241, 0.4)",
+                borderRadius: "6px",
+                padding: "0.45rem",
+                color: "#818cf8",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              Review Activities <ArrowRight size={13} />
+            </Link>
+          </div>
+        )}
+
         {/* Total Students */}
         <div
           style={{
@@ -586,6 +828,354 @@ export default function Dashboard() {
                   <p style={{ fontSize: "0.8rem", color: "#94a3b8", marginTop: "0.35rem", lineHeight: 1.4 }}>
                     {n.description}
                   </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ========================================================== */}
+      {/* EVENTS & ANNOUNCEMENTS MODULE SECTIONS                     */}
+      {/* ========================================================== */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "1.5rem" }}>
+        {/* UPCOMING EVENTS */}
+        <div
+          style={{
+            background: "rgba(17, 24, 39, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "14px",
+            padding: "1.5rem",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <CalendarDays size={18} color="#818cf8" />
+              <div>
+                <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                  Upcoming Events
+                </h3>
+                <span style={{ fontSize: "0.78rem", color: "#818cf8", fontWeight: 600 }}>
+                  {upcomingEvents.length} Upcoming Event{upcomingEvents.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+            </div>
+            <Link to="/events" style={{ color: "#818cf8", fontSize: "0.82rem", fontWeight: 600, textDecoration: "none" }}>
+              View All →
+            </Link>
+          </div>
+
+          {upcomingEvents.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "2rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+              No upcoming events scheduled.
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {upcomingEvents.slice(0, 4).map((ev) => {
+                const d = new Date(ev.event_date + "T00:00:00");
+                const dayMonth = isNaN(d.getTime())
+                  ? ev.event_date
+                  : d.toLocaleDateString("en-US", { day: "numeric", month: "short" });
+
+                return (
+                  <Link
+                    key={ev.id}
+                    to={`/events/${ev.id}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "0.85rem 1rem",
+                      background: "rgba(255, 255, 255, 0.03)",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      borderRadius: "10px",
+                      textDecoration: "none",
+                      transition: "transform 0.15s ease, background 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(99, 102, 241, 0.08)";
+                      e.currentTarget.style.transform = "translateX(3px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)";
+                      e.currentTarget.style.transform = "translateX(0)";
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 600, color: "#f8fafc", fontSize: "0.9rem" }}>
+                        {ev.title}
+                      </div>
+                      <div style={{ fontSize: "0.78rem", color: "#94a3b8", marginTop: "0.15rem" }}>
+                        {ev.category} • {ev.venue}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: "right", flexShrink: 0 }}>
+                      <span
+                        style={{
+                          background: "rgba(99, 102, 241, 0.15)",
+                          color: "#c7d2fe",
+                          padding: "0.25rem 0.6rem",
+                          borderRadius: "6px",
+                          fontSize: "0.78rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {dayMonth}
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* LATEST ANNOUNCEMENTS */}
+        <div
+          style={{
+            background: "rgba(17, 24, 39, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "14px",
+            padding: "1.5rem",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Megaphone size={18} color="#f59e0b" />
+              <div>
+                <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                  Latest Announcements
+                </h3>
+                <span style={{ fontSize: "0.78rem", color: "#f59e0b", fontWeight: 600 }}>
+                  Official Notices & Circulars
+                </span>
+              </div>
+            </div>
+            <Link to="/announcements" style={{ color: "#818cf8", fontSize: "0.82rem", fontWeight: 600, textDecoration: "none" }}>
+              View All →
+            </Link>
+          </div>
+
+          {latestAnnouncements.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "2rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+              No announcements published.
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {latestAnnouncements.slice(0, 4).map((a) => {
+                const priority = (a.priority || "Normal").toLowerCase();
+                const badgeColor =
+                  priority === "urgent" ? "#ef4444" : priority === "important" ? "#f59e0b" : "#60a5fa";
+                const badgeBg =
+                  priority === "urgent"
+                    ? "rgba(239, 68, 68, 0.15)"
+                    : priority === "important"
+                    ? "rgba(245, 158, 11, 0.15)"
+                    : "rgba(96, 165, 250, 0.15)";
+
+                return (
+                  <Link
+                    key={a.id}
+                    to="/announcements"
+                    style={{
+                      padding: "0.85rem 1rem",
+                      background: "rgba(255, 255, 255, 0.03)",
+                      border: "1px solid rgba(255, 255, 255, 0.06)",
+                      borderRadius: "10px",
+                      textDecoration: "none",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.35rem",
+                      transition: "transform 0.15s ease, background 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+                      e.currentTarget.style.transform = "translateX(3px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)";
+                      e.currentTarget.style.transform = "translateX(0)";
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span
+                        style={{
+                          fontSize: "0.7rem",
+                          fontWeight: 800,
+                          padding: "0.15rem 0.5rem",
+                          borderRadius: "4px",
+                          background: badgeBg,
+                          color: badgeColor,
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {a.priority || "Normal"}
+                      </span>
+                      <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
+                        {a.publish_date}
+                      </span>
+                    </div>
+                    <div style={{ fontWeight: 600, color: "#f8fafc", fontSize: "0.88rem" }}>
+                      {a.title}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.78rem",
+                        color: "#94a3b8",
+                        lineHeight: 1.35,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {a.content}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* TODAY'S EVENTS */}
+        <div
+          style={{
+            background: "rgba(17, 24, 39, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "14px",
+            padding: "1.5rem",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Clock size={18} color="#34d399" />
+              <div>
+                <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                  Today's Events
+                </h3>
+                <span style={{ fontSize: "0.78rem", color: "#34d399", fontWeight: 600 }}>
+                  Active on Campus Today
+                </span>
+              </div>
+            </div>
+            <Link to="/events" style={{ color: "#818cf8", fontSize: "0.82rem", fontWeight: 600, textDecoration: "none" }}>
+              Calendar →
+            </Link>
+          </div>
+
+          {todaysEvents.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "2rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+              No campus events scheduled for today. Check upcoming events calendar.
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {todaysEvents.map((ev) => (
+                <div
+                  key={ev.id}
+                  style={{
+                    padding: "0.85rem 1rem",
+                    background: "rgba(16, 185, 129, 0.06)",
+                    border: "1px solid rgba(16, 185, 129, 0.2)",
+                    borderRadius: "10px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 600, color: "#f8fafc", fontSize: "0.9rem" }}>
+                      {ev.title}
+                    </div>
+                    <div style={{ fontSize: "0.78rem", color: "#94a3b8", marginTop: "0.15rem" }}>
+                      {ev.start_time} - {ev.end_time} • {ev.venue}
+                    </div>
+                  </div>
+                  <Link
+                    to={`/events/${ev.id}`}
+                    style={{
+                      background: "rgba(16, 185, 129, 0.2)",
+                      color: "#6ee7b7",
+                      padding: "0.3rem 0.65rem",
+                      borderRadius: "6px",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      textDecoration: "none",
+                    }}
+                  >
+                    View
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* MY REGISTERED EVENTS */}
+        <div
+          style={{
+            background: "rgba(17, 24, 39, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "14px",
+            padding: "1.5rem",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <UserCheck size={18} color="#c084fc" />
+              <div>
+                <h3 style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", margin: 0 }}>
+                  My Registered Events
+                </h3>
+                <span style={{ fontSize: "0.78rem", color: "#c084fc", fontWeight: 600 }}>
+                  {myRegistrations.length} Confirmed Registration{myRegistrations.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+            </div>
+            <Link to="/my-events" style={{ color: "#818cf8", fontSize: "0.82rem", fontWeight: 600, textDecoration: "none" }}>
+              Manage →
+            </Link>
+          </div>
+
+          {myRegistrations.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "2rem", color: "#94a3b8", fontSize: "0.9rem" }}>
+              You haven't registered for any events yet. Browse upcoming events to register.
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {myRegistrations.slice(0, 4).map((ev) => (
+                <div
+                  key={ev.id}
+                  style={{
+                    padding: "0.85rem 1rem",
+                    background: "rgba(255, 255, 255, 0.03)",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                    borderRadius: "10px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 600, color: "#f8fafc", fontSize: "0.9rem" }}>
+                      {ev.title}
+                    </div>
+                    <div style={{ fontSize: "0.78rem", color: "#94a3b8", marginTop: "0.15rem" }}>
+                      {ev.event_date} • {ev.venue}
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      background: "rgba(16, 185, 129, 0.15)",
+                      color: "#34d399",
+                      padding: "0.25rem 0.55rem",
+                      borderRadius: "6px",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Confirmed
+                  </span>
                 </div>
               ))}
             </div>

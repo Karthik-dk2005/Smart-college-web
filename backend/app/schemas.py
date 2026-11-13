@@ -422,3 +422,179 @@ class StudentBusAssignmentOut(BaseModel):
     class Config:
         from_attributes = True
 
+
+# ==========================================================
+# 11. GENERIC API RESPONSE & NOTIFICATIONS
+# ==========================================================
+class ApiResponse(BaseModel):
+    success: bool = True
+    message: str = "Success"
+    data: Optional[Any] = None
+    error: Optional[str] = None
+
+
+class NotificationCreate(BaseModel):
+    user_id: Optional[int] = None
+    title: str
+    message: str
+    category: Optional[str] = "general"
+    link: Optional[str] = None
+
+
+class NotificationOut(BaseModel):
+    id: int
+    user_id: Optional[int] = None
+    title: str
+    message: str
+    category: str
+    link: Optional[str] = None
+    read: bool
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+# ==========================================================
+# 12. EVENTS & REGISTRATIONS
+# ==========================================================
+from datetime import date
+
+class EventBase(BaseModel):
+    title: str
+    description: str = ""
+    category: str
+    event_date: date
+    start_time: str
+    end_time: str
+    venue: str
+    organizer: str
+    department_id: Optional[int] = None
+    target_audience: Optional[str] = "All Students"
+    target_semester: Optional[int] = None
+    target_section: Optional[str] = None
+    registration_required: Optional[bool] = True
+    registration_deadline: Optional[datetime] = None
+    max_participants: Optional[int] = 100
+    status: Optional[str] = "Upcoming"
+    is_published: Optional[bool] = True
+    image_url: Optional[str] = None
+
+
+class EventCreate(EventBase):
+    pass
+
+
+class EventUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    category: Optional[str] = None
+    event_date: Optional[date] = None
+    start_time: Optional[str] = None
+    end_time: Optional[str] = None
+    venue: Optional[str] = None
+    organizer: Optional[str] = None
+    department_id: Optional[int] = None
+    target_audience: Optional[str] = None
+    target_semester: Optional[int] = None
+    target_section: Optional[str] = None
+    registration_required: Optional[bool] = None
+    registration_deadline: Optional[datetime] = None
+    max_participants: Optional[int] = None
+    status: Optional[str] = None
+    is_published: Optional[bool] = None
+    image_url: Optional[str] = None
+
+
+class EventOut(EventBase):
+    id: int
+    created_by: int
+    creator_name: Optional[str] = None
+    department_name: Optional[str] = None
+    current_participants: int = 0
+    is_registered: bool = False
+    user_registration_status: Optional[str] = None
+    user_attendance_status: Optional[str] = None
+    computed_status: str = "Upcoming"
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class EventRegistrationOut(BaseModel):
+    id: int
+    event_id: int
+    user_id: int
+    student_id: Optional[int] = None
+    registration_date: Optional[datetime] = None
+    registration_status: str = "Registered"
+    attendance_status: str = "Not Marked"
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
+    user_role: Optional[str] = None
+    student_usn: Optional[str] = None
+    department_name: Optional[str] = None
+    semester: Optional[int] = None
+    section: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class EventAttendanceItem(BaseModel):
+    registration_id: Optional[int] = None
+    user_id: Optional[int] = None
+    attendance_status: str
+
+
+class EventAttendanceUpdate(BaseModel):
+    attendance: Optional[List[EventAttendanceItem]] = None
+    user_id: Optional[int] = None
+    attendance_status: Optional[str] = None
+
+
+# ==========================================================
+# 13. ANNOUNCEMENTS
+# ==========================================================
+class AnnouncementBase(BaseModel):
+    title: str
+    content: str
+    category: Optional[str] = "General"
+    priority: Optional[str] = "Normal"
+    target_audience: Optional[str] = "All Users"
+    department_id: Optional[int] = None
+    publish_date: Optional[date] = None
+    expiry_date: Optional[date] = None
+    status: Optional[str] = "Active"
+
+
+class AnnouncementCreate(AnnouncementBase):
+    pass
+
+
+class AnnouncementUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    category: Optional[str] = None
+    priority: Optional[str] = None
+    target_audience: Optional[str] = None
+    department_id: Optional[int] = None
+    publish_date: Optional[date] = None
+    expiry_date: Optional[date] = None
+    status: Optional[str] = None
+
+
+class AnnouncementOut(AnnouncementBase):
+    id: int
+    created_by: int
+    creator_name: Optional[str] = None
+    department_name: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+

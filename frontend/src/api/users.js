@@ -20,6 +20,11 @@ export const usersApi = {
   delete: async (id) => {
     return api.delete(`/api/users/${id}`);
   },
+
+  approve: async (id, statusData) => {
+    // statusData: { status: 'Approved' | 'Rejected' | 'Suspended', reason?: string }
+    return api.put(`/api/users/${id}/approve`, statusData);
+  },
 };
 
 export default usersApi;

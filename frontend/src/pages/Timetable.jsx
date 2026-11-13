@@ -17,7 +17,9 @@ import {
   RefreshCw,
   BookOpen,
   CalendarCheck,
+  Printer,
 } from "lucide-react";
+import CollegeLogo from "../components/CollegeLogo";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -174,16 +176,75 @@ export default function Timetable() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Printable College Header for Timetable */}
+      <div className="print-only-header">
+        <CollegeLogo size="lg" style={{ height: "72px", width: "auto" }} />
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "1.25rem", fontWeight: 800, letterSpacing: "0.03em" }}>
+            MAHARAJA INSTITUTE OF TECHNOLOGY THANDAVAPURA
+          </div>
+          <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "#334155" }}>
+            DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+          </div>
+          <div style={{ fontSize: "0.8rem", color: "#475569" }}>
+            Official Academic Timetable • Semester {selectedSemester} (Section {selectedSection}) • Academic Year 2026–2027
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
-        <div>
-          <h1 style={{ fontSize: "1.65rem", fontWeight: 800, color: "#f8fafc" }}>Academic Timetable</h1>
-          <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "0.2rem" }}>
-            Academic Year 2026–2027 • 5th Semester ODD SEM (Sections A & B)
-          </p>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ background: "#ffffff", padding: "6px 12px", borderRadius: "12px", display: "flex", alignItems: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.15)" }}>
+            <CollegeLogo size="sm" style={{ height: "46px", width: "auto" }} />
+          </div>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span
+                style={{
+                  background: "rgba(99, 102, 241, 0.2)",
+                  color: "#818cf8",
+                  padding: "0.15rem 0.55rem",
+                  borderRadius: "12px",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                }}
+              >
+                MIT Thandavapura
+              </span>
+              <span style={{ fontSize: "0.75rem", color: "#64748b" }}>Academic Schedule</span>
+            </div>
+            <h1 style={{ fontSize: "1.65rem", fontWeight: 800, color: "#f8fafc", margin: "0.2rem 0 0" }}>
+              Academic Timetable
+            </h1>
+            <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "0.15rem" }}>
+              Department of Computer Science & Engineering • 5th Semester ODD SEM
+            </p>
+          </div>
         </div>
 
-        <div style={{ display: "flex", gap: "0.75rem" }}>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+          <button
+            onClick={() => window.print()}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              background: "rgba(255, 255, 255, 0.05)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              borderRadius: "8px",
+              padding: "0.6rem 0.95rem",
+              color: "#f8fafc",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            <Printer size={15} />
+            <span>Print Timetable</span>
+          </button>
+
           <button
             onClick={fetchData}
             disabled={loading}
@@ -734,3 +795,6 @@ export default function Timetable() {
     </div>
   );
 }
+
+
+

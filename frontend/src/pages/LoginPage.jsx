@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import CollegeLogo from "../components/CollegeLogo";
 import { LogIn, ShieldCheck, UserCheck, AlertCircle, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
@@ -33,10 +34,12 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <div className="login-logo">🎓</div>
-          <h1 className="login-title">Smart Department ERP</h1>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+            <CollegeLogo size="lg" style={{ height: "70px", width: "auto" }} />
+          </div>
+          <h1 className="login-title">SMART DEPARTMENT</h1>
           <p className="login-subtitle">
-            Department of Computer Science & Engineering
+            Academic Management System • MIT Thandavapura
           </p>
         </div>
 
