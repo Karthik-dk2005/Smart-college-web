@@ -505,6 +505,30 @@ export default function Login() {
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <Link
+              to="/student-login"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.45rem",
+                width: "100%",
+                padding: "0.75rem 1rem",
+                borderRadius: "10px",
+                border: "1px solid #2563eb",
+                background: "#2563eb",
+                color: "#ffffff",
+                textDecoration: "none",
+                fontSize: "0.88rem",
+                fontWeight: 600,
+                boxSizing: "border-box",
+                boxShadow: "0 2px 8px rgba(37, 99, 235, 0.25)",
+              }}
+            >
+              <LogIn size={16} color="#ffffff" />
+              <span>Dedicated Student Login (USN & Password)</span>
+            </Link>
+
+            <Link
               to="/student-register"
               style={{
                 display: "inline-flex",
@@ -525,7 +549,7 @@ export default function Login() {
               }}
             >
               <UserPlus size={16} color="#ffffff" />
-              <span>Student Registration (with USN & Gmail)</span>
+              <span>Easy Student Registration (USN & Password)</span>
             </Link>
 
             <Link

@@ -66,6 +66,8 @@ import HODStudentActivities from "./pages/HODStudentActivities";
 import StudentPortfolio from "./pages/StudentPortfolio";
 import AchievementReport from "./pages/AchievementReport";
 import StudentRegister from "./pages/StudentRegister";
+import StudentLogin from "./pages/StudentLogin";
+import StudentDashboard from "./pages/StudentDashboard";
 import AdminStudentRegistration from "./pages/AdminStudentRegistration";
 
 export default function App() {
@@ -76,6 +78,7 @@ export default function App() {
           <Routes>
             {/* Public Authentication Routes */}
             <Route path="/login" element={<Login />} />
+            <Route path="/student-login" element={<StudentLogin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/student-register" element={<StudentRegister />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -95,6 +98,7 @@ export default function App() {
 
               {/* 1. Dashboard (All roles) */}
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="student-dashboard" element={<StudentDashboard />} />
 
               {/* 1.1 Student Registration Management (Admin & HOD) */}
               <Route

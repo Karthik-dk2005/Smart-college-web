@@ -230,6 +230,34 @@ def reject_student_registration(
     db.commit()
     return {"success": True, "message": f"Student {clean_usn} registration status reset to Unregistered."}
 
+class ResetPasswordAdminRequest(BaseModel):
+    new_password: str
+
+@router.post("/students/{usn}/reset-password")
+def admin_reset_student_password(
+    usn: str,
+    req: ResetPasswordAdminRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_or_hod)
+):
+    from app.utils.security import get_password_hash
+    clean_usn = usn.strip().upper()
+    student = db.query(Student).filter(Student.usn == clean_usn).first()
+    if not student:
+        raise HTTPException(status_code=404, detail=f"Student {clean_usn} not found.")
+
+    if len(req.new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters.")
+
+    hashed = get_password_hash(req.new_password)
+    student.password_hash = hashed
+
+    if student.user:
+        student.user.password_hash = hashed
+
+    db.commit()
+    return {"success": True, "message": f"Password for student {clean_usn} successfully reset."}
+
 @router.get("/unmatched")
 def list_unmatched_records(
     db: Session = Depends(get_db),

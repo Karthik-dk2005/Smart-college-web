@@ -26,9 +26,15 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { eventsApi, announcementsApi, studentActivitiesApi } from "../api";
+import StudentDashboard from "./StudentDashboard";
 
 export default function Dashboard() {
   const { user, role } = useAuth();
+  const isStudent = (role || user?.role || "").toLowerCase() === "student";
+
+  if (isStudent) {
+    return <StudentDashboard />;
+  }
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

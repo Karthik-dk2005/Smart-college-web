@@ -34,11 +34,18 @@ def get_current_user(
             detail="Invalid token type: access token required",
         )
 
-    email: str = payload.get("sub")
-    if not email:
+    sub_val: str = payload.get("sub")
+    if not sub_val:
         raise credentials_exception
 
-    user = db.query(User).filter(User.email == email).first()
+    from sqlalchemy import or_
+    user = db.query(User).filter(
+        or_(
+            User.email == sub_val,
+            User.username == sub_val,
+            User.usn_or_employee_id == sub_val
+        )
+    ).first()
     if not user:
         raise credentials_exception
     account_status = getattr(user, "account_status", "Approved")

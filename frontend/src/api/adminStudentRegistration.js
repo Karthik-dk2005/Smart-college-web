@@ -46,6 +46,13 @@ export const adminStudentRegistrationApi = {
     return res.data;
   },
 
+  resetPassword: async (usn, new_password) => {
+    const res = await api.post(`/api/admin/student-registration/students/${encodeURIComponent(usn)}/reset-password`, {
+      new_password,
+    });
+    return res.data;
+  },
+
   getExportUrl: () => {
     const baseURL = api.defaults.baseURL || "";
     return `${baseURL}/api/admin/student-registration/export`;

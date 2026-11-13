@@ -230,6 +230,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const setSession = (accessToken, userData, userRole = "student") => {
+    const roleNormalized = (userRole || userData?.role || "student").toLowerCase();
+    localStorage.setItem("token", accessToken);
+    localStorage.setItem("auth_token", accessToken);
+    localStorage.setItem("role", roleNormalized);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setToken(accessToken);
+    setRole(roleNormalized);
+    setUser(userData);
+    setInactivityNotice(false);
+    lastActivityRef.current = Date.now();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -246,6 +259,7 @@ export function AuthProvider({ children }) {
         resetPassword,
         logout,
         refreshUser,
+        setSession,
       }}
     >
       {children}

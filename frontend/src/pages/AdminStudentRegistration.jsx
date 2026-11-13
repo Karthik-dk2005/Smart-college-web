@@ -16,7 +16,8 @@ import {
   RefreshCw, 
   X, 
   Filter,
-  GraduationCap
+  GraduationCap,
+  Key
 } from "lucide-react";
 
 export default function AdminStudentRegistration() {
@@ -34,6 +35,11 @@ export default function AdminStudentRegistration() {
   const [editModalStudent, setEditModalStudent] = useState(null);
   const [newGmail, setNewGmail] = useState("");
   const [modalLoading, setModalLoading] = useState(false);
+
+  // Reset Password Modal
+  const [resetModalStudent, setResetModalStudent] = useState(null);
+  const [newResetPassword, setNewResetPassword] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
 
   // Toast Notification
   const [toast, setToast] = useState(null);
@@ -105,6 +111,32 @@ export default function AdminStudentRegistration() {
       showToast(err.response?.data?.detail || "Failed to update Gmail.", "error");
     } finally {
       setModalLoading(false);
+    }
+  };
+
+  // Reset Student Password
+  const handleOpenReset = (student) => {
+    setResetModalStudent(student);
+    setNewResetPassword("");
+  };
+
+  const handleSaveResetPassword = async (e) => {
+    e.preventDefault();
+    if (!newResetPassword || newResetPassword.length < 6) {
+      showToast("Password must be at least 6 characters.", "error");
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      await adminStudentRegistrationApi.resetPassword(resetModalStudent.usn, newResetPassword);
+      showToast(`Password for ${resetModalStudent.usn} reset successfully.`);
+      setResetModalStudent(null);
+      loadData();
+    } catch (err) {
+      showToast(err.response?.data?.detail || "Failed to reset password.", "error");
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -523,6 +555,14 @@ export default function AdminStudentRegistration() {
                             <Edit3 className="w-3.5 h-3.5" />
                           </button>
 
+                          <button
+                            onClick={() => handleOpenReset(s)}
+                            className="p-1.5 hover:bg-slate-700 text-slate-400 hover:text-amber-400 rounded-lg transition cursor-pointer"
+                            title="Reset Student Password"
+                          >
+                            <Key className="w-3.5 h-3.5" />
+                          </button>
+
                           {s.registration_status !== "Registered" ? (
                             <button
                               onClick={() => handleApprove(s.usn)}
@@ -608,6 +648,64 @@ export default function AdminStudentRegistration() {
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl transition cursor-pointer disabled:opacity-50"
                 >
                   {modalLoading ? "Saving..." : "Save Gmail"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Reset Student Password Modal */}
+      {resetModalStudent && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl relative">
+            <button
+              onClick={() => setResetModalStudent(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h3 className="text-lg font-bold text-white mb-1">Reset Student Password</h3>
+            <p className="text-xs text-slate-400 mb-4">
+              Set a secure new password for this student account.
+            </p>
+
+            <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs space-y-1 mb-4">
+              <div><span className="text-slate-500">Student:</span> <strong className="text-white">{resetModalStudent.name}</strong></div>
+              <div><span className="text-slate-500">USN:</span> <span className="font-mono text-indigo-400">{resetModalStudent.usn}</span></div>
+              <div><span className="text-slate-500">Gmail:</span> <span className="text-sky-400 font-mono">{resetModalStudent.gmail || "Not set"}</span></div>
+            </div>
+
+            <form onSubmit={handleSaveResetPassword} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  New Password (Minimum 6 characters)
+                </label>
+                <input
+                  type="password"
+                  value={newResetPassword}
+                  onChange={(e) => setNewResetPassword(e.target.value)}
+                  required
+                  placeholder="Enter new password"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="flex gap-2 justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setResetModalStudent(null)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={resetLoading || !newResetPassword || newResetPassword.length < 6}
+                  className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold rounded-xl transition cursor-pointer disabled:opacity-50"
+                >
+                  {resetLoading ? "Resetting..." : "Reset Password"}
                 </button>
               </div>
             </form>
