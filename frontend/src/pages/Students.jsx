@@ -1435,12 +1435,20 @@ export default function Students() {
                 </span>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.75rem", borderRadius: "8px" }}>
-                <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Email</span>
-                <span style={{ color: "#f8fafc" }}>{selectedStudent.email}</span>
+                <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Official Gmail</span>
+                <span style={{ color: "#f8fafc" }}>{selectedStudent.gmail || selectedStudent.email}</span>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.75rem", borderRadius: "8px" }}>
-                <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Phone</span>
+                <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Student Phone</span>
                 <span style={{ color: "#f8fafc" }}>{selectedStudent.phone || "Not specified"}</span>
+              </div>
+              <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.75rem", borderRadius: "8px" }}>
+                <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Father's Phone</span>
+                <span style={{ color: "#f8fafc" }}>{selectedStudent.father_phone || "Not specified"}</span>
+              </div>
+              <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.75rem", borderRadius: "8px" }}>
+                <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Mother's Phone</span>
+                <span style={{ color: "#f8fafc" }}>{selectedStudent.mother_phone || "Not specified"}</span>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", padding: "0.75rem", borderRadius: "8px" }}>
                 <span style={{ color: "#94a3b8", display: "block", fontSize: "0.75rem" }}>Admission Year</span>

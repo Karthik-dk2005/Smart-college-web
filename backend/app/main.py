@@ -52,13 +52,6 @@ async def lifespan(app: FastAPI):
                     seed_database()
                 except Exception as seed_err:
                     print(f"Auto-seed notice: {seed_err}")
-            # Ensure 5th Semester IA marks are populated
-            if db.query(Mark).count() < 786:
-                try:
-                    from app.services.marks_importer import import_5th_sem_marks
-                    import_5th_sem_marks(db, force_reload=False)
-                except Exception as marks_err:
-                    print(f"Auto-load marks notice: {marks_err}")
     except Exception as e:
         print(f"Database startup check: {e}")
     yield

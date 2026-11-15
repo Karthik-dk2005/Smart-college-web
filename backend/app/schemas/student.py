@@ -19,7 +19,10 @@ class StudentCreate(BaseModel):
     usn: str
     student_id: Optional[str] = None
     email: Optional[str] = None
+    gmail: Optional[str] = None
     phone: Optional[str] = None
+    father_phone: Optional[str] = None
+    mother_phone: Optional[str] = None
     department_id: Optional[int] = 1
     semester: int = 5
     section: str = "A"
@@ -81,7 +84,10 @@ class StudentOut(BaseModel):
     usn: str
     name: str
     email: str
+    gmail: Optional[str] = None
     phone: Optional[str] = None
+    father_phone: Optional[str] = None
+    mother_phone: Optional[str] = None
     semester: int
     section: str
     department_id: int
@@ -89,6 +95,7 @@ class StudentOut(BaseModel):
     admission_year: Optional[int] = 2024
     username: Optional[str] = None
     status: Optional[str] = "active"
+    registration_status: Optional[str] = "Unregistered"
     user_id: Optional[int] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

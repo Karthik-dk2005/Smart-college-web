@@ -13,6 +13,8 @@ class Student(Base):
     name = Column(String(255), nullable=False)
     email = Column(String(255), unique=True, index=True, nullable=False)
     phone = Column(String(50), nullable=True)
+    father_phone = Column(String(50), nullable=True)
+    mother_phone = Column(String(50), nullable=True)
     semester = Column(Integer, nullable=False, default=5)
     section = Column(String(10), nullable=False, default="A")
     department_id = Column(Integer, ForeignKey("departments.id"), nullable=False)

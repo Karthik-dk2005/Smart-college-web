@@ -1,97 +1,119 @@
-import sqlite3
+import sys
 import os
+import sqlite3
 
-DB_PATHS = [
-    os.path.abspath("backend/smart_department.db"),
-    os.path.abspath("smart_department.db")
-]
-
-def remove_student_data(db_path):
+def clean_database(db_path):
+    print(f"\n==================================================")
+    print(f"Cleaning student data from: {db_path}")
+    print(f"==================================================")
+    
     if not os.path.exists(db_path):
-        print(f"File not found: {db_path}")
+        print(f"[!] Database file does not exist: {db_path}")
         return
-
-    print(f"\n========================================================")
-    print(f"Processing Database: {db_path}")
-    print(f"========================================================")
 
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 
+    # Pre-clean counts
+    def get_count(table, where=""):
+        try:
+            query = f"SELECT count(*) FROM {table} {where}"
+            return cur.execute(query).fetchone()[0]
+        except Exception:
+            return 0
+
+    print("--- COUNTS BEFORE REMOVAL ---")
+    print(f"Students: {get_count('students')}")
+    print(f"Users with role='student': {get_count('users', \"WHERE role='student'\")}")
+    print(f"Total Users: {get_count('users')}")
+    print(f"Teachers/Admin/HOD Users: {get_count('users', \"WHERE role!='student'\")}")
+    print(f"Marks: {get_count('marks')}")
+    print(f"Student Activity Files: {get_count('student_activity_files')}")
+    print(f"Student Activity Verifications: {get_count('student_activity_verifications')}")
+    print(f"Student Activities: {get_count('student_activities')}")
+    print(f"Event Registrations: {get_count('event_registrations')}")
+    print(f"Unmatched Student Records: {get_count('unmatched_student_records')}")
+    print(f"Email OTPs: {get_count('email_otps')}")
+
+    # Foreign key checks disable temporarily for clean cascade deletion
+    cur.execute("PRAGMA foreign_keys = OFF;")
+
+    # 1. Clear marks
+    cur.execute("DELETE FROM marks;")
+
+    # 2. Clear student activities & related
+    cur.execute("DELETE FROM student_activity_files;")
+    cur.execute("DELETE FROM student_activity_verifications;")
+    cur.execute("DELETE FROM student_activities;")
+
+    # 3. Clear student biometric/face/bus assignments
+    cur.execute("DELETE FROM student_faces;")
+    cur.execute("DELETE FROM student_biometrics;")
+    cur.execute("DELETE FROM student_bus_assignments;")
+
+    # 4. Clear student attendance
+    cur.execute("DELETE FROM student_attendance;")
+    cur.execute("DELETE FROM attendances;")
     try:
-        cur.execute("PRAGMA foreign_keys = OFF;")
+        cur.execute("DELETE FROM attendance;")
+    except Exception:
+        pass
 
-        # Gather before counts
-        tables_to_clear = [
-            ("marks", "DELETE FROM marks;"),
-            ("student_activities", "DELETE FROM student_activities;"),
-            ("student_attendance", "DELETE FROM student_attendance;"),
-            ("attendance", "DELETE FROM attendance;"),
-            ("attendances", "DELETE FROM attendances;"),
-            ("student_faces", "DELETE FROM student_faces;"),
-            ("student_biometrics", "DELETE FROM student_biometrics;"),
-            ("student_bus_assignments", "DELETE FROM student_bus_assignments;"),
-            ("event_registrations (students)", "DELETE FROM event_registrations WHERE student_id IS NOT NULL OR user_id IN (SELECT id FROM users WHERE role='student');"),
-            ("students", "DELETE FROM students;"),
-            ("users (role='student')", "DELETE FROM users WHERE role='student';"),
-        ]
+    # 5. Clear event registrations for students
+    cur.execute("DELETE FROM event_registrations;")
 
-        print("[BEFORE COUNTS]")
-        for label, _ in tables_to_clear:
-            if "event_registrations" in label:
-                cur.execute("SELECT count(*) FROM event_registrations WHERE student_id IS NOT NULL OR user_id IN (SELECT id FROM users WHERE role='student');")
-            elif "users" in label:
-                cur.execute("SELECT count(*) FROM users WHERE role='student';")
-            else:
-                tbl = label.split()[0]
-                cur.execute(f"SELECT count(*) FROM {tbl};")
-            print(f" - {label}: {cur.fetchone()[0]}")
+    # 6. Clear notifications for students
+    cur.execute("DELETE FROM notifications WHERE user_id IN (SELECT id FROM users WHERE role='student');")
 
-        # Perform deletions
-        for label, sql in tables_to_clear:
-            cur.execute(sql)
-            print(f"  ✓ Cleared {label}")
+    # 7. Clear student locations
+    cur.execute("DELETE FROM locations WHERE user_id IN (SELECT id FROM users WHERE role='student');")
 
-        conn.commit()
+    # 8. Clear unmatched student records
+    cur.execute("DELETE FROM unmatched_student_records;")
 
-        # Vacuum database to reclaim space
-        cur.execute("VACUUM;")
-        conn.commit()
+    # 9. Clear student email OTPs
+    cur.execute("DELETE FROM email_otps WHERE email NOT IN (SELECT email FROM users WHERE role!='student');")
 
-        print("\n[AFTER COUNTS]")
-        for label, _ in tables_to_clear:
-            if "event_registrations" in label:
-                cur.execute("SELECT count(*) FROM event_registrations WHERE student_id IS NOT NULL OR user_id IN (SELECT id FROM users WHERE role='student');")
-            elif "users" in label:
-                cur.execute("SELECT count(*) FROM users WHERE role='student';")
-            else:
-                tbl = label.split()[0]
-                cur.execute(f"SELECT count(*) FROM {tbl};")
-            print(f" - {label}: {cur.fetchone()[0]}")
+    # 10. Delete all students
+    cur.execute("DELETE FROM students;")
 
-        # Non-student user counts preserved
-        cur.execute("SELECT count(*) FROM users;")
-        total_remaining_users = cur.fetchone()[0]
-        cur.execute("SELECT role, count(*) FROM users GROUP BY role;")
-        role_counts = cur.fetchall()
-        print(f"\nRemaining User Accounts ({total_remaining_users} total):")
-        for r, cnt in role_counts:
-            print(f" - Role '{r}': {cnt}")
+    # 11. Delete all users where role = 'student'
+    cur.execute("DELETE FROM users WHERE role = 'student';")
 
-        cur.execute("SELECT count(*) FROM departments;")
-        print(f"Departments preserved: {cur.fetchone()[0]}")
+    conn.commit()
+    cur.execute("PRAGMA foreign_keys = ON;")
+    cur.execute("VACUUM;")
+    conn.commit()
 
-        cur.execute("SELECT count(*) FROM teachers;")
-        print(f"Teachers preserved: {cur.fetchone()[0]}")
+    print("\n--- COUNTS AFTER REMOVAL ---")
+    print(f"Students: {get_count('students')}")
+    print(f"Users with role='student': {get_count('users', \"WHERE role='student'\")}")
+    print(f"Total Users: {get_count('users')}")
+    print(f"Teachers/Admin/HOD Users: {get_count('users', \"WHERE role!='student'\")}")
+    print(f"Marks: {get_count('marks')}")
+    print(f"Student Activity Files: {get_count('student_activity_files')}")
+    print(f"Student Activities: {get_count('student_activities')}")
+    print(f"Event Registrations: {get_count('event_registrations')}")
+    print(f"Unmatched Student Records: {get_count('unmatched_student_records')}")
+    print(f"Email OTPs: {get_count('email_otps')}")
+    print(f"Teachers: {get_count('teachers')}")
+    print(f"Departments: {get_count('departments')}")
+    print(f"Subjects: {get_count('subjects')}")
+    print(f"Timetables: {get_count('timetables')}")
+    print(f"Bus Routes: {get_count('bus_routes')}")
 
-        cur.execute("SELECT count(*) FROM subjects;")
-        print(f"Subjects preserved: {cur.fetchone()[0]}")
+    # Print remaining non-student users
+    remaining = cur.execute("SELECT id, username, email, role, full_name FROM users").fetchall()
+    print("\nRemaining Institutional Accounts:")
+    for r in remaining:
+        print(f" - [{r[3].upper()}] {r[4] or r[1]} ({r[2]})")
 
-    finally:
-        conn.close()
+    conn.close()
 
 if __name__ == "__main__":
-    for p in DB_PATHS:
-        remove_student_data(p)
-    print("\n✓ ALL STUDENT DATA REMOVED SUCCESSFULLY ACROSS ALL DATABASES.")
-
+    root_db = os.path.abspath("smart_department.db")
+    backend_db = os.path.abspath("backend/smart_department.db")
+    
+    clean_database(root_db)
+    clean_database(backend_db)
+    print("\n[SUCCESS] Student data completely removed from both databases.")

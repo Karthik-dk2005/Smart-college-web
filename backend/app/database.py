@@ -122,6 +122,17 @@ def create_dev_tables():
                 pass
 
             try:
+                conn.execute(text("ALTER TABLE students ADD COLUMN father_phone VARCHAR(50)"))
+                conn.commit()
+            except Exception:
+                pass
+            try:
+                conn.execute(text("ALTER TABLE students ADD COLUMN mother_phone VARCHAR(50)"))
+                conn.commit()
+            except Exception:
+                pass
+
+            try:
                 conn.execute(text("ALTER TABLE student_attendance ADD COLUMN attendance_method VARCHAR(50) DEFAULT 'MANUAL'"))
                 conn.commit()
             except Exception:
