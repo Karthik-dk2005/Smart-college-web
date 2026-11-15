@@ -373,9 +373,10 @@ def verify_otp_endpoint(payload: VerifyOTPRequest, db: Session = Depends(get_db)
 
 
 # -------------------------------------------------------------
-# 3. POST /api/auth/register/student
+# 3. POST /api/auth/register/student & POST /api/auth/register-student
 # -------------------------------------------------------------
 @router.post("/register/student", response_model=TokenResponse)
+@router.post("/register-student", response_model=TokenResponse)
 def register_student_role(payload: StudentRoleRegister, db: Session = Depends(get_db)):
     """
     Student registration:
@@ -725,50 +726,147 @@ def register_hod_role(payload: HODRoleRegister, db: Session = Depends(get_db)):
 @router.post("/login", response_model=TokenResponse)
 def login(payload: UserLogin, db: Session = Depends(get_db)):
     """
-    Authenticate using username, email, or USN/Employee ID with password.
-    Enforces account status check (blocks Pending, Rejected, Suspended accounts).
+    Common login endpoint with automatic role detection:
+    - Admin, HOD, Teacher: Log in using registered Gmail + Password.
+    - Student: Log in using registered Student USN + Password.
+    - Students attempting to log in via Gmail are rejected with an explicit instruction to use their USN.
+    - Enforces account status checks (blocks Pending, Rejected, Suspended, or Inactive accounts).
     """
-    ident = payload.identifier
+    ident = payload.get_identifier()
     if not ident:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username, email, or USN is required."
+            detail="Username, Gmail, or Student USN is required."
         )
 
-    user = db.query(User).filter(
-        (func.lower(User.email) == ident.lower()) |
-        (func.lower(User.username) == ident.lower()) |
-        (func.upper(User.usn_or_employee_id) == ident.upper())
-    ).first()
-
-    # Direct fallback: check Student table for USN or registered Gmail
+    user = None
     student_profile = None
-    if not user:
-        student_profile = db.query(Student).filter(
-            (func.upper(Student.usn) == ident.upper()) |
-            (func.lower(Student.gmail) == ident.lower()) |
-            (func.lower(Student.email) == ident.lower())
+
+    # 1. Automatic Account Type & Role Detection
+    if "@" in ident:
+        # User entered a Gmail / Email address
+        clean_email = ident.lower().strip()
+
+        # Check if this email belongs to a student
+        student_match = db.query(Student).filter(
+            (func.lower(Student.gmail) == clean_email) |
+            (func.lower(Student.email) == clean_email)
         ).first()
-        if student_profile and student_profile.user:
+
+        # Check if an Admin / HOD / Teacher account exists with this email
+        staff_user = db.query(User).filter(
+            func.lower(User.email) == clean_email,
+            User.role.in_(["admin", "hod", "teacher", "faculty"])
+        ).first()
+
+        if student_match and not staff_user:
+            # Student attempted to log in using email instead of USN
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Students must log in using their registered USN ({student_match.usn}), not their Gmail address."
+            )
+
+        if not staff_user:
+            staff_user = db.query(User).filter(func.lower(User.email) == clean_email).first()
+            if staff_user and staff_user.role == "student":
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Students must log in using their registered USN ({staff_user.usn_or_employee_id or 'USN'}), not their Gmail address."
+                )
+
+        if not staff_user:
+            # Check Faculty or Teacher table
+            fac = db.query(Faculty).filter(func.lower(Faculty.email) == clean_email).first()
+            if fac and fac.user:
+                staff_user = fac.user
+            else:
+                tch = db.query(Teacher).filter(func.lower(Teacher.email) == clean_email).first()
+                if tch and tch.user_id:
+                    staff_user = db.query(User).filter(User.id == tch.user_id).first()
+
+        if not staff_user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Gmail or password. Please verify and try again."
+            )
+
+        user = staff_user
+
+    else:
+        # User entered a USN (or admin username like 'admin' / employee ID)
+        clean_id = ident.strip()
+
+        # Check Student table by USN
+        student_profile = db.query(Student).filter(
+            func.upper(Student.usn) == clean_id.upper()
+        ).first()
+
+        if student_profile:
+            # Check student registration & password
             user = student_profile.user
-    elif user and user.role == "student":
-        student_profile = user.student_profile or db.query(Student).filter(Student.user_id == user.id).first()
-        if not student_profile and user.usn_or_employee_id:
-            student_profile = db.query(Student).filter(func.upper(Student.usn) == user.usn_or_employee_id.upper()).first()
+            if not user and student_profile.user_id:
+                user = db.query(User).filter(User.id == student_profile.user_id).first()
+            if not user:
+                user = db.query(User).filter(func.upper(User.usn_or_employee_id) == student_profile.usn.upper()).first()
 
-    # Direct fallback: check Faculty table for employee_id
-    if not user:
-        fac = db.query(Faculty).filter(func.upper(Faculty.employee_id) == ident.upper()).first()
-        if fac and fac.user:
-            user = fac.user
+            pwd_hash = student_profile.password_hash or (user.password_hash if user else None)
+            if not pwd_hash:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Student account is not registered yet. Please click 'Register as Student' to activate your account."
+                )
 
-    if not user or not verify_password(payload.password, user.password_hash):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username/email or password. Please verify and try again."
-        )
+            if not verify_password(payload.password, pwd_hash):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid USN or password. Please verify and try again."
+                )
 
-    # Check account status
+            # Ensure linked User record exists for JWT generation
+            if not user:
+                user = User(
+                    full_name=student_profile.name,
+                    name=student_profile.name,
+                    username=student_profile.usn.lower(),
+                    email=student_profile.gmail or student_profile.email or f"{student_profile.usn.lower()}@college.edu",
+                    password_hash=pwd_hash,
+                    usn_or_employee_id=student_profile.usn,
+                    role="student",
+                    department_id=student_profile.department_id,
+                    semester=student_profile.semester,
+                    section=student_profile.section,
+                    account_status="Approved",
+                    is_active=True,
+                )
+                db.add(user)
+                db.flush()
+                student_profile.user_id = user.id
+                db.commit()
+                db.refresh(user)
+            elif not user.password_hash:
+                user.password_hash = pwd_hash
+                db.commit()
+
+        else:
+            # Check User table by username or employee ID (e.g., admin username)
+            user = db.query(User).filter(
+                (func.lower(User.username) == clean_id.lower()) |
+                (func.upper(User.usn_or_employee_id) == clean_id.upper())
+            ).first()
+
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid credentials. Student USN or user account not found."
+                )
+
+            if not verify_password(payload.password, user.password_hash):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid credentials or incorrect password. Please verify and try again."
+                )
+
+    # 2. Check account status & active state
     acc_status = getattr(user, "account_status", "Approved") or "Approved"
     if acc_status == "Pending":
         raise HTTPException(
@@ -786,11 +884,12 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
             detail="Your user account is suspended or inactive. Please contact administration."
         )
 
-    # Normalize role for consistent routing
+    # 3. Normalize role
     role_normalized = user.role.lower()
     if role_normalized == "faculty":
         role_normalized = "teacher"
 
+    # 4. Issue JWT Tokens
     token_data = {
         "sub": user.email,
         "role": role_normalized,
@@ -798,16 +897,28 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
         "name": user.full_name or user.name or user.username,
         "username": user.username,
     }
+    if role_normalized == "student":
+        stud_rec = student_profile or user.student_profile or db.query(Student).filter(
+            (Student.user_id == user.id) | (func.upper(Student.usn) == (user.usn_or_employee_id or "").upper())
+        ).first()
+        if stud_rec:
+            token_data["usn"] = stud_rec.usn
 
     expires_delta = timedelta(days=7) if payload.remember_me else timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(token_data, expires_delta=expires_delta)
     refresh_token = create_refresh_token(token_data)
 
-    stud_usn = student_profile.usn if student_profile else user.usn_or_employee_id
-    stud_gmail = student_profile.gmail if student_profile else None
-    stud_sem = student_profile.semester if student_profile else user.semester
-    stud_sec = student_profile.section if student_profile else user.section
-    stud_dept = student_profile.department.name if (student_profile and student_profile.department) else (user.department.name if user.department else "Computer Science and Engineering")
+    stud_rec = student_profile or user.student_profile or (
+        db.query(Student).filter(
+            (Student.user_id == user.id) | (func.upper(Student.usn) == (user.usn_or_employee_id or "").upper())
+        ).first() if role_normalized == "student" else None
+    )
+
+    stud_usn = stud_rec.usn if stud_rec else (user.usn_or_employee_id if role_normalized == "student" else None)
+    stud_gmail = stud_rec.gmail if stud_rec else (user.email if role_normalized == "student" else None)
+    stud_sem = stud_rec.semester if stud_rec else user.semester
+    stud_sec = stud_rec.section if stud_rec else user.section
+    stud_dept = stud_rec.department.name if (stud_rec and stud_rec.department) else (user.department.name if user.department else "Computer Science and Engineering")
 
     return TokenResponse(
         access_token=access_token,

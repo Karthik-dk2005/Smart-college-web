@@ -41,16 +41,18 @@ class UserRegister(BaseModel):
 
 
 class UserLogin(BaseModel):
-    # Can be username, email, or USN/Employee ID
+    # Can be username, email, USN, or Gmail
     email: Optional[str] = None
     username_or_email: Optional[str] = None
     username: Optional[str] = None
+    identifier: Optional[str] = None
+    usn: Optional[str] = None
+    gmail: Optional[str] = None
     password: str
     remember_me: Optional[bool] = False
 
-    @property
-    def identifier(self) -> str:
-        return (self.username_or_email or self.email or self.username or "").strip()
+    def get_identifier(self) -> str:
+        return (self.identifier or self.username_or_email or self.usn or self.gmail or self.email or self.username or "").strip()
 
 
 class RefreshTokenRequest(BaseModel):

@@ -84,6 +84,7 @@ export default function App() {
             <Route path="/student-login" element={<StudentLogin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/register/student" element={<StudentRegister />} />
+            <Route path="/register-student" element={<StudentRegister />} />
             <Route path="/register/teacher" element={<TeacherRegister />} />
             <Route path="/register/hod" element={<HODRegister />} />
             <Route path="/student-register" element={<StudentRegister />} />
@@ -102,9 +103,13 @@ export default function App() {
               {/* Default Index Route */}
               <Route index element={<Navigate to="/dashboard" replace />} />
 
-              {/* 1. Dashboard (All roles) */}
+              {/* 1. Dashboard (All roles & Role-specific paths) */}
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="student-dashboard" element={<StudentDashboard />} />
+              <Route path="admin/dashboard" element={<Dashboard />} />
+              <Route path="hod/dashboard" element={<Dashboard />} />
+              <Route path="teacher/dashboard" element={<Dashboard />} />
+              <Route path="student/dashboard" element={<StudentDashboard />} />
 
               {/* 1.0 Admin Registration Approval Dashboard */}
               <Route
