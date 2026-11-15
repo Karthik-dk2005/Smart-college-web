@@ -370,7 +370,7 @@ export default function NotificationBell() {
             }}
           >
             <Link
-              to="/announcements"
+              to="/notifications"
               onClick={() => setIsOpen(false)}
               style={{
                 color: "#818cf8",
@@ -379,7 +379,7 @@ export default function NotificationBell() {
                 textDecoration: "none",
               }}
             >
-              View All Announcements →
+              Open Notifications Center →
             </Link>
           </div>
         </div>

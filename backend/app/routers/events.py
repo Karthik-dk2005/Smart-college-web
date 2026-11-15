@@ -326,17 +326,17 @@ def create_event(
 
     # Automatically broadcast notification to users
     try:
-        notif = Notification(
-            user_id=None,  # Campus-wide / all users notification
-            title=f"New Event: {new_event.title}",
-            message=f"{new_event.category} event scheduled on {new_event.event_date} at {new_event.venue}. Organized by {new_event.organizer}.",
-            category="event",
-            link=f"/events/{new_event.id}",
+        from app.services.email_notification_service import EmailNotificationService
+        EmailNotificationService.notify_event_broadcast(
+            db=db,
+            title=new_event.title,
+            description=new_event.description or "New campus event scheduled.",
+            event_date=f"{new_event.event_date} {new_event.start_time or ''}".strip(),
+            venue=new_event.venue or "Campus",
+            target_role="all"
         )
-        db.add(notif)
-        db.commit()
-    except Exception:
-        pass
+    except Exception as notif_err:
+        print(f"[EVENT NOTIFICATION WARNING] {notif_err}")
 
     return format_event_out(new_event, current_user, db)
 

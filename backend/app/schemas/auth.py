@@ -3,6 +3,11 @@ from typing import Optional
 import re
 
 
+class ApiResponse(BaseModel):
+    success: bool = True
+    message: str = ""
+
+
 class UserRegister(BaseModel):
     full_name: Optional[str] = None
     name: Optional[str] = None  # legacy support

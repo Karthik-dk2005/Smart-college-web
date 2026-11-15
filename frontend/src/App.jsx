@@ -27,6 +27,7 @@ import StudentAttendance from "./pages/StudentAttendance";
 import Timetable from "./pages/Timetable";
 import LiveLocation from "./pages/LiveLocation";
 import Notices from "./pages/Notices";
+import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Reports from "./pages/Reports";
@@ -110,6 +111,7 @@ export default function App() {
               <Route path="hod/dashboard" element={<Dashboard />} />
               <Route path="teacher/dashboard" element={<Dashboard />} />
               <Route path="student/dashboard" element={<StudentDashboard />} />
+              <Route path="notifications" element={<Notifications />} />
 
               {/* 1.0 Admin Registration Approval Dashboard */}
               <Route

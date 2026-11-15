@@ -550,6 +550,24 @@ def submit_attendance_session(
             detail=f"Could not record attendance: {str(e)}"
         )
 
+    try:
+        from app.services.email_notification_service import EmailNotificationService
+        subj_name = slot.subject.subject_name if slot.subject else "Class Session"
+        EmailNotificationService.notify_hod_attendance_report(
+            db=db,
+            department_id=slot.department_id or 1,
+            report_summary=f"Attendance session recorded for {subj_name} ({slot.semester}th Sem Section {slot.section}). Present: {total_present_records}, Absent: {total_absent_records} (Turnout: {calc_percentage}%).",
+            details={
+                "Subject": subj_name,
+                "Date": str(session_date),
+                "Class": f"{slot.semester}th Sem - Section {slot.section}",
+                "Present / Total": f"{total_present_records} / {total_present_records + total_absent_records}",
+                "Attendance Turnout": f"{calc_percentage}%"
+            }
+        )
+    except Exception as e:
+        print(f"[NOTIFICATION WARNING] Attendance notification error: {e}")
+
     calc_percentage = round((total_present_mins / total_conducted_mins * 100), 1) if total_conducted_mins > 0 else 100.0
 
     result = {

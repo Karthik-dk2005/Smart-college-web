@@ -523,6 +523,20 @@ def update_mark(
     db.commit()
     db.refresh(mark)
 
+    try:
+        from app.services.email_notification_service import EmailNotificationService
+        EmailNotificationService.notify_student_ia_marks(
+            db=db,
+            student_id_or_usn=mark.usn,
+            subject_name=mark.subject_name or mark.subject_code,
+            test_type=mark.assessment_name or "Internal Assessment",
+            marks_obtained=mark.obtained_marks or 0.0,
+            max_marks=mark.maximum_marks or 30.0,
+            remarks=mark.notes
+        )
+    except Exception as e:
+        print(f"[NOTIFICATION WARNING] Could not send IA mark notification: {e}")
+
     log_audit(
         db=db,
         action="UPDATE_MARKS",
@@ -585,6 +599,20 @@ def create_mark(
     db.add(new_mark)
     db.commit()
     db.refresh(new_mark)
+
+    try:
+        from app.services.email_notification_service import EmailNotificationService
+        EmailNotificationService.notify_student_ia_marks(
+            db=db,
+            student_id_or_usn=new_mark.usn,
+            subject_name=new_mark.subject_name or new_mark.subject_code,
+            test_type=new_mark.assessment_name or "Internal Assessment",
+            marks_obtained=new_mark.obtained_marks or 0.0,
+            max_marks=new_mark.maximum_marks or 30.0,
+            remarks=new_mark.notes
+        )
+    except Exception as e:
+        print(f"[NOTIFICATION WARNING] Could not send IA mark notification: {e}")
 
     return ApiResponse(
         success=True,

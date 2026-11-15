@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { eventsApi, announcementsApi, studentActivitiesApi } from "../api";
 import StudentDashboard from "./StudentDashboard";
+import DashboardNotifications from "../components/DashboardNotifications";
 
 export default function Dashboard() {
   const { user, role } = useAuth();
@@ -257,6 +258,9 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Real-time Notifications & Alerts Feed */}
+      <DashboardNotifications limit={5} />
 
       {/* Student Personal Attendance Progress (Shown if logged in as student) */}
       {studentOverview && (

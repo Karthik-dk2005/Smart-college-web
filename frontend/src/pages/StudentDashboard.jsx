@@ -22,6 +22,7 @@ import {
   MapPin,
   ExternalLink,
 } from "lucide-react";
+import DashboardNotifications from "../components/DashboardNotifications";
 
 export default function StudentDashboard() {
   const { user } = useAuth();
@@ -245,6 +246,9 @@ export default function StudentDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Real-time Notifications Feed */}
+      <DashboardNotifications limit={5} />
 
       {/* 2. STATS SUMMARY TILES */}
       <div

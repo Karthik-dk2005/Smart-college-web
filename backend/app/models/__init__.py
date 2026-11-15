@@ -20,6 +20,7 @@ from app.models.student_bus_assignment import StudentBusAssignment
 from app.models.event import Event, EventRegistration
 from app.models.announcement import Announcement
 from app.models.notification import Notification
+from app.models.notification_preference import NotificationPreference
 from app.models.student_activity import StudentActivity, StudentActivityFile, StudentActivityVerification
 from app.models.mark import Mark
 from app.models.unmatched_student import UnmatchedStudentRecord

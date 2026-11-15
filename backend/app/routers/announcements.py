@@ -148,16 +148,22 @@ def create_announcement(
 
     # Automatically broadcast notification to users
     try:
-        notif = Notification(
-            user_id=None,
-            title=f"New Announcement: {new_ann.title}",
-            message=new_ann.content[:150] + ("..." if len(new_ann.content) > 150 else ""),
-            category="announcement",
-            link="/announcements",
+        from app.services.email_notification_service import EmailNotificationService
+        target_role = "all"
+        if "student" in (new_ann.target_audience or "").lower():
+            target_role = "student"
+        elif "faculty" in (new_ann.target_audience or "").lower() or "teacher" in (new_ann.target_audience or "").lower():
+            target_role = "teacher"
+
+        EmailNotificationService.notify_announcement_broadcast(
+            db=db,
+            title=new_ann.title,
+            content=new_ann.content,
+            target_role=target_role,
+            category="announcement"
         )
-        db.add(notif)
-        db.commit()
-    except Exception:
+    except Exception as notif_err:
+        print(f"[ANNOUNCEMENT NOTIFICATION WARNING] {notif_err}")
         pass
 
     return format_announcement_out(new_ann)

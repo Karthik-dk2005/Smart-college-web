@@ -258,6 +258,16 @@ def register(
             db.add(new_teacher)
         db.commit()
 
+    try:
+        from app.services.email_notification_service import EmailNotificationService
+        EmailNotificationService.notify_admin_and_user_creation(
+            db=db,
+            new_user=new_user,
+            created_by_role=current_caller.role if current_caller else "Public-Registration"
+        )
+    except Exception as notif_err:
+        print(f"[AUTH NOTIFICATION WARNING] {notif_err}")
+
     resp_msg = (
         "Registration request submitted successfully. Your account is pending approval by the Admin or Department HOD."
         if account_status == "Pending"
@@ -498,6 +508,16 @@ def register_student_role(payload: StudentRoleRegister, db: Session = Depends(ge
 
     db.commit()
     db.refresh(user)
+
+    try:
+        from app.services.email_notification_service import EmailNotificationService
+        EmailNotificationService.notify_admin_and_user_creation(
+            db=db,
+            new_user=user,
+            created_by_role="Student-Registration"
+        )
+    except Exception as notif_err:
+        print(f"[STUDENT AUTH NOTIFICATION WARNING] {notif_err}")
 
     # 6. Issue JWT Token
     token_data = {

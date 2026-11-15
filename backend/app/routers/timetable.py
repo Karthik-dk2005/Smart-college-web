@@ -476,6 +476,23 @@ def create_timetable(
         joinedload(Timetable.department),
     ).filter(Timetable.id == new_slot.id).first()
 
+    try:
+        from app.services.email_notification_service import EmailNotificationService
+        subj_name = slot.subject.subject_name if slot and slot.subject else "Class Schedule"
+        room_name = slot.room.room_name if slot and slot.room else "Classroom"
+        EmailNotificationService.notify_timetable_schedule(
+            db=db,
+            semester=new_slot.semester,
+            section=new_slot.section,
+            subject_name=subj_name,
+            day=new_slot.day_of_week,
+            time_slot=f"{new_slot.start_time} - {new_slot.end_time}",
+            room=room_name,
+            teacher_id=new_slot.teacher_id
+        )
+    except Exception as e:
+        print(f"[NOTIFICATION WARNING] Timetable notification error: {e}")
+
     return success_response(data=format_slot(slot), message="Timetable slot created successfully", status_code=201)
 
 
