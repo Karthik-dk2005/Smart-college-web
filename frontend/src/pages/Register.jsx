@@ -116,8 +116,11 @@ export default function Register() {
           </div>
 
           <h1 style={{ fontSize: "1.75rem", fontWeight: 800, color: "#1e293b", margin: "0 0 0.5rem 0" }}>
-            Smart Department Registration Portal
+            SmartDept Registration Portal
           </h1>
+          <p style={{ color: "#64748b", fontSize: "0.88rem", margin: "0 auto 0.35rem", fontWeight: 600 }}>
+            Smart Department Academic & Campus Management System
+          </p>
           <p style={{ color: "#64748b", fontSize: "0.95rem", margin: "0 auto", maxWidth: "600px" }}>
             Please select your institutional role below to initiate your registration and account setup.
           </p>

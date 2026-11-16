@@ -1,7 +1,7 @@
 {
   "name": "smart-department-management-system",
   "version": "1.0.0",
-  "description": "Smart Department Academic Management System - Full-stack React + FastAPI",
+  "description": "SmartDept - Smart Department Academic & Campus Management System - Full-stack React + FastAPI",
   "scripts": {
     "build": "cd frontend && npm install && npm run build",
     "dev": "uv run python run.py",
@@ -9,6 +9,7 @@
     "frontend": "cd frontend && npm run dev"
   },
   "keywords": [
+    "smartdept",
     "smart-department",
     "react",
     "fastapi",
@@ -16,7 +17,7 @@
     "timetable",
     "geofence"
   ],
-  "author": "Smart Department Team",
+  "author": "SmartDept Team",
   "license": "MIT",
   "devDependencies": {
     "vercel": "^65.11.0"

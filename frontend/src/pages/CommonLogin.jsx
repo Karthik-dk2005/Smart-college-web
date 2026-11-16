@@ -369,7 +369,7 @@ export default function CommonLogin() {
                 letterSpacing: "0.01em",
               }}
             >
-              Smart Department Academic Management System
+              Smart Department Academic & Campus Management System
             </p>
           </div>
 

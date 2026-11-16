@@ -37,9 +37,9 @@ export default function LoginPage() {
           <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
             <CollegeLogo size="lg" style={{ height: "70px", width: "auto" }} />
           </div>
-          <h1 className="login-title">SMART DEPARTMENT</h1>
+          <h1 className="login-title">SMARTDEPT</h1>
           <p className="login-subtitle">
-            Academic Management System • MIT Thandavapura
+            Smart Department Academic & Campus Management System • MIT Thandavapura
           </p>
         </div>
 

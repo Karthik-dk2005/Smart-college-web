@@ -16,8 +16,8 @@ export default function CollegeLogo({
   style = {},
   withText = false,
   textLayout = "horizontal", // "horizontal" | "vertical"
-  title = "SMART DEPARTMENT",
-  subtitle = "Academic Management System",
+  title = "SMARTDEPT",
+  subtitle = "Smart Department Academic & Campus Management System",
   subtext = "Maharaja Institute of Technology Thandavapura",
   titleStyle = {},
   subtitleStyle = {},

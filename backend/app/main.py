@@ -58,8 +58,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Smart Department Backend",
-    description="Production-ready FastAPI backend for Smart Department Academic Management System.",
+    title="SmartDept - Smart Department Academic & Campus Management System",
+    description="Production-ready FastAPI backend for SmartDept - Smart Department Academic & Campus Management System.",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -147,7 +147,7 @@ def health_check():
     """Health check endpoint returning system status."""
     return {
         "status": "ok",
-        "service": "Smart Department Backend"
+        "service": "SmartDept - Smart Department Academic & Campus Management System"
     }
 
 

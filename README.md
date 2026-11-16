@@ -1,6 +1,6 @@
-# 🎓 Smart Department Management System
+# 🎓 SmartDept - Smart Department Academic & Campus Management System
 
-A complete, production-ready, full-stack **Smart Department Management System** built with **React (Vite)**, **Python FastAPI (3.11+)**, **SQLAlchemy ORM**, **Pydantic v2**, **Alembic Migrations**, **SQLite/PostgreSQL**, and **JWT Authentication**.
+A complete, production-ready, full-stack **SmartDept - Smart Department Academic & Campus Management System** built with **React (Vite)**, **Python FastAPI (3.11+)**, **SQLAlchemy ORM**, **Pydantic v2**, **Alembic Migrations**, **SQLite/PostgreSQL**, and **JWT Authentication**.
 
 ---
 

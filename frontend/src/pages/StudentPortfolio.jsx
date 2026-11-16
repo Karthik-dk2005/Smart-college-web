@@ -284,7 +284,7 @@ export default function StudentPortfolio() {
         <div className="border-t-2 border-slate-800 print:border-slate-400 pt-6 mt-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-400 print:text-black">
           <div className="text-center sm:text-left space-y-1">
             <p className="font-semibold text-slate-300 print:text-black">
-              Smart Department Academic Management System
+              SmartDept - Smart Department Academic & Campus Management System
             </p>
             <p className="text-[11px] text-slate-500 print:text-slate-600">
               Generated automatically with cryptographically verified database records.

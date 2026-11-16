@@ -127,7 +127,7 @@ export default function Navbar({ onMenuToggle }) {
                 lineHeight: 1.2,
               }}
             >
-              Smart Department
+              SmartDept
             </div>
             <div
               style={{
@@ -137,7 +137,7 @@ export default function Navbar({ onMenuToggle }) {
                 letterSpacing: "0.01em",
               }}
             >
-              MIT Thandavapura • CSE Dept
+              Academic & Campus Management System • MITT
             </div>
           </div>
         </Link>

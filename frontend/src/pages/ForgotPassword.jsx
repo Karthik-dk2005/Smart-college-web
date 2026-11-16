@@ -215,7 +215,7 @@ export default function ForgotPassword() {
               fontWeight: 500,
             }}
           >
-            Smart Department Academic Management System
+            Smart Department Academic & Campus Management System
           </p>
         </div>
 

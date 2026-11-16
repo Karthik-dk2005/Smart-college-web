@@ -197,7 +197,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 lineHeight: 1.2,
               }}
             >
-              Smart Department
+              SmartDept
             </div>
             <div
               style={{
@@ -208,7 +208,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 fontWeight: 500,
               }}
             >
-              Academic Management System
+              Academic & Campus Management System
             </div>
             <div
               style={{

@@ -139,7 +139,7 @@ export default function ResetPassword() {
               marginTop: "0.25rem",
             }}
           >
-            Smart Department Academic Management System
+            Smart Department Academic & Campus Management System
           </div>
 
           <div

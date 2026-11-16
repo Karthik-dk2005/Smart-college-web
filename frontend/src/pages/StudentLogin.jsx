@@ -152,7 +152,7 @@ export default function StudentLogin() {
               fontWeight: 500,
             }}
           >
-            Smart Department Academic Management System
+            Smart Department Academic & Campus Management System
           </p>
         </div>
 
