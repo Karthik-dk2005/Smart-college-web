@@ -37,6 +37,7 @@ export default function StudentRegister() {
 
   // OTP State
   const [otp, setOtp] = useState("");
+  const [demoOtp, setDemoOtp] = useState("");
   const [resendCooldown, setResendCooldown] = useState(0);
 
   // UI state
@@ -150,6 +151,7 @@ export default function StudentRegister() {
         confirm_password: confirmPassword,
       });
 
+      setDemoOtp(res.simulation_mode && res.demo_otp ? String(res.demo_otp) : "");
       setSuccessMsg(
         res.message ||
         `Verification code sent to registered Gmail: ${res.gmail || currentInfo.gmail}`
@@ -213,6 +215,7 @@ export default function StudentRegister() {
 
     try {
       const res = await studentAuthApi.resendOtp(usn.trim().toUpperCase());
+      setDemoOtp(res.simulation_mode && res.demo_otp ? String(res.demo_otp) : "");
       setSuccessMsg(res.message || "A new OTP code has been dispatched to your Gmail.");
       setResendCooldown(60);
     } catch (err) {
@@ -731,6 +734,54 @@ export default function StudentRegister() {
               </div>
             </div>
 
+            {/* Demo / Simulation Mode OTP Notice (shown only when Gmail SMTP credentials are not configured) */}
+            {demoOtp && (
+              <div
+                style={{
+                  marginBottom: "1rem",
+                  padding: "0.75rem 0.9rem",
+                  background: "#fffbeb",
+                  border: "1px solid #fcd34d",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "0.75rem",
+                  fontSize: "0.82rem",
+                  color: "#92400e",
+                }}
+              >
+                <div>
+                  <strong style={{ display: "block", marginBottom: "2px" }}>
+                    SMTP Simulation Mode
+                  </strong>
+                  <span>
+                    Verification OTP:{" "}
+                    <strong style={{ fontFamily: "monospace", fontSize: "0.95rem", letterSpacing: "0.1em" }}>
+                      {demoOtp}
+                    </strong>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setOtp(demoOtp)}
+                  style={{
+                    padding: "0.35rem 0.7rem",
+                    borderRadius: "6px",
+                    border: "1px solid #f59e0b",
+                    background: "#fef3c7",
+                    color: "#92400e",
+                    fontWeight: 700,
+                    fontSize: "0.76rem",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Auto-fill OTP
+                </button>
+              </div>
+            )}
+
             {/* OTP Input */}
             <div style={{ marginBottom: "1.5rem" }}>
               <input
@@ -873,7 +924,7 @@ export default function StudentRegister() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               <button
                 type="button"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/student/dashboard")}
                 style={{
                   width: "100%",
                   padding: "0.85rem",

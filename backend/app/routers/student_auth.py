@@ -41,8 +41,61 @@ from app.utils.security import (
     create_access_token,
 )
 from app.dependencies import get_current_user
+from app.services.email_notification_service import EmailNotificationService
 
 router = APIRouter(prefix="/api/auth/student", tags=["Student Authentication"])
+
+
+def _dispatch_student_otp_email(student: Student, otp: str, purpose: str = "Student Account Registration") -> Dict[str, Any]:
+    """
+    Sends a branded 6-digit OTP email to the student's registered Gmail using EmailNotificationService.
+    Returns delivery metadata; when real Gmail SMTP is not yet configured in .env, flags simulation_mode
+    so development/demo environments remain 100% testable without blocking registration.
+    """
+    is_real_smtp = EmailNotificationService.is_real_smtp_configured()
+    html_body = EmailNotificationService.build_branded_html(
+        title=f"{purpose} — Verification Code",
+        message=(
+            f"Hello <strong>{student.name}</strong>,<br/><br/>"
+            f"Use the 6-digit One-Time Password (OTP) below to complete your <strong>{purpose}</strong> on SmartDept:"
+            f"<div style='margin: 22px 0; text-align: center;'>"
+            f"<span style='display: inline-block; padding: 14px 28px; background: #eff6ff; border: 2px solid #1d4ed8; "
+            f"border-radius: 10px; font-family: monospace; font-size: 30px; font-weight: 800; letter-spacing: 8px; color: #0c2c68;'>"
+            f"{otp}</span></div>"
+            f"This verification code is valid for <strong>10 minutes</strong>. Do not share it with anyone."
+        ),
+        badge_text="OTP VERIFICATION",
+        details={
+            "Student Name": student.name,
+            "USN": student.usn,
+            "Semester / Section": f"{student.semester}th Semester — Section {student.section}",
+            "Registered Gmail": student.gmail or student.email,
+            "Valid For": "10 minutes",
+        },
+    )
+    text_body = (
+        f"SmartDept - Smart Department Academic & Campus Management System\n\n"
+        f"Hello {student.name} ({student.usn}),\n"
+        f"Your 6-digit verification code for {purpose} is: {otp}\n"
+        f"This code expires in 10 minutes.\n"
+    )
+
+    success, error_msg = EmailNotificationService.send_smtp_email(
+        to_email=student.gmail,
+        subject=f"[SmartDept] {otp} is your {purpose} OTP",
+        html_content=html_body,
+        text_content=text_body,
+    )
+
+    result: Dict[str, Any] = {
+        "email_sent": success,
+        "simulation_mode": not is_real_smtp,
+    }
+    if not is_real_smtp:
+        result["demo_otp"] = otp
+    elif not success:
+        print(f"[!] Warning: Live SMTP OTP send failed for {student.usn} ({student.gmail}): {error_msg}")
+    return result
 
 def mask_email(email: str) -> str:
     if not email or "@" not in email:
@@ -197,13 +250,19 @@ def register_student(req: StudentRegisterRequest, db: Session = Depends(get_db))
     student.email_verification_status = "Pending"
     db.commit()
 
-    return {
+    delivery = _dispatch_student_otp_email(student, otp, purpose="Student Account Registration")
+
+    response_payload = {
         "success": True,
         "message": f"A 6-digit verification code has been sent to your registered Gmail address ({mask_email(student.gmail)}).",
         "usn": student.usn,
         "gmail": student.gmail,
-        "expires_in_minutes": 10
+        "expires_in_minutes": 10,
+        "simulation_mode": delivery["simulation_mode"],
     }
+    if delivery.get("demo_otp"):
+        response_payload["demo_otp"] = delivery["demo_otp"]
+    return response_payload
 
 # 3. POST /api/auth/student/verify-otp
 @router.post("/verify-otp")
@@ -281,6 +340,16 @@ def verify_otp(req: VerifyOTPRequest, db: Session = Depends(get_db)):
         student.user_id = user.id
 
     db.commit()
+
+    # Dispatch welcome & admin notification (non-blocking)
+    try:
+        EmailNotificationService.notify_admin_and_user_creation(
+            db=db,
+            new_user=user,
+            created_by_role="Self-Registered Student",
+        )
+    except Exception as notif_err:
+        print(f"[!] Student registration notification note: {notif_err}")
 
     dept_name = student.department.name if student.department else "Computer Science and Engineering"
     token_data = {
@@ -370,11 +439,17 @@ def resend_otp(req: StudentResendOTPRequest, db: Session = Depends(get_db)):
     student.otp_last_sent_at = now
     db.commit()
 
-    return {
+    delivery = _dispatch_student_otp_email(student, otp, purpose="Student Account Registration")
+
+    response_payload = {
         "success": True,
         "message": "A new verification code has been sent to your registered Gmail address.",
-        "usn": student.usn
+        "usn": student.usn,
+        "simulation_mode": delivery["simulation_mode"],
     }
+    if delivery.get("demo_otp"):
+        response_payload["demo_otp"] = delivery["demo_otp"]
+    return response_payload
 
 # 4. POST /api/auth/student/login
 @router.post("/login", response_model=StudentAuthResponse)
@@ -473,15 +548,19 @@ def student_forgot_password(req: StudentForgotPasswordRequest, db: Session = Dep
     student.otp_last_sent_at = now
     db.commit()
 
-    print(f"[*] Password recovery OTP generated for {student.usn} ({student.gmail}): {otp}")
+    delivery = _dispatch_student_otp_email(student, otp, purpose="Password Recovery")
 
-    return {
+    response_payload = {
         "success": True,
         "message": f"Password recovery OTP has been sent to your registered Gmail address ({mask_email(student.gmail)}).",
         "usn": student.usn,
         "masked_gmail": mask_email(student.gmail),
-        "gmail": student.gmail
+        "gmail": student.gmail,
+        "simulation_mode": delivery["simulation_mode"],
     }
+    if delivery.get("demo_otp"):
+        response_payload["demo_otp"] = delivery["demo_otp"]
+    return response_payload
 
 # 4.2 POST /api/auth/student/verify-recovery-otp
 @router.post("/verify-recovery-otp")

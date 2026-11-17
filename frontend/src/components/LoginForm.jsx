@@ -13,6 +13,7 @@ import {
   Settings,
   Users,
   Tv,
+  UserPlus,
 } from "lucide-react";
 
 export default function LoginForm({ onSuccess }) {
@@ -425,6 +426,47 @@ export default function LoginForm({ onSuccess }) {
           )}
         </button>
       </form>
+
+      {/* New Student Registration CTA */}
+      <div
+        style={{
+          marginTop: "1rem",
+          padding: "0.7rem 0.9rem",
+          borderRadius: "12px",
+          background: "#f8fafc",
+          border: "1px solid #e2e8f0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "0.75rem",
+          flexWrap: "wrap",
+        }}
+      >
+        <span style={{ fontSize: "0.84rem", color: "#475569", fontWeight: 500 }}>
+          New Student? Activate your USN account
+        </span>
+        <Link
+          to="/register/student"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            padding: "0.42rem 0.85rem",
+            borderRadius: "20px",
+            background: "#eff6ff",
+            border: "1px solid #bfdbfe",
+            color: "#0c3888",
+            fontSize: "0.82rem",
+            fontWeight: 700,
+            textDecoration: "none",
+            transition: "all 0.15s ease",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <UserPlus size={15} />
+          <span>Register as Student</span>
+        </Link>
+      </div>
 
       {/* Authorized Users Section Divider */}
       <div
