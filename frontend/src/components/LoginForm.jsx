@@ -186,7 +186,23 @@ export default function LoginForm({ onSuccess }) {
           }}
         >
           <AlertCircle size={17} style={{ flexShrink: 0 }} />
-          <div>{errorMessage}</div>
+          <div>
+            <span>{errorMessage}</span>
+            {errorMessage.toLowerCase().includes("not registered") && (
+              <div style={{ marginTop: "0.4rem" }}>
+                <Link
+                  to="/register/student"
+                  style={{
+                    color: "#0c3888",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                  }}
+                >
+                  Click here to Register as Student →
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       )}
 

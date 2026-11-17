@@ -36,6 +36,11 @@ export default function Dashboard() {
   if (isStudent) {
     return <StudentDashboard />;
   }
+  return <StaffDashboard />;
+}
+
+function StaffDashboard() {
+  const { user, role } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

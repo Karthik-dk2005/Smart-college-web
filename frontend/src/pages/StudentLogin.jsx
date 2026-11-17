@@ -61,7 +61,7 @@ export default function StudentLogin() {
       }
 
       success(`Welcome back, ${res.user.name || "Student"}!`);
-      navigate("/dashboard", { replace: true });
+      navigate("/student/dashboard", { replace: true });
     } catch (err) {
       try {
         await ctxLogin({
@@ -70,7 +70,7 @@ export default function StudentLogin() {
           remember_me: rememberMe,
         });
         success("Logged in successfully!");
-        navigate("/dashboard", { replace: true });
+        navigate("/student/dashboard", { replace: true });
         return;
       } catch (fallbackErr) {
         const msg =

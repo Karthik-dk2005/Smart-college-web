@@ -38,14 +38,48 @@ def get_current_user(
     if not sub_val:
         raise credentials_exception
 
-    from sqlalchemy import or_
+    from sqlalchemy import or_, func
     user = db.query(User).filter(
         or_(
-            User.email == sub_val,
-            User.username == sub_val,
-            User.usn_or_employee_id == sub_val
+            func.lower(User.email) == sub_val.lower(),
+            func.lower(User.username) == sub_val.lower(),
+            func.upper(User.usn_or_employee_id) == sub_val.upper(),
         )
     ).first()
+    if not user and (payload.get("role") or "").lower() == "student":
+        # Serverless-safe hydration: if a student registered on another container and holds a
+        # cryptographically valid JWT with their USN, hydrate their User link from Student master.
+        from app.models.student import Student
+        usn_claim = (payload.get("usn") or sub_val).strip().upper()
+        student_rec = db.query(Student).filter(
+            or_(
+                func.upper(Student.usn) == usn_claim,
+                func.lower(Student.gmail) == sub_val.lower(),
+                func.lower(Student.email) == sub_val.lower(),
+            )
+        ).first()
+        if student_rec:
+            user = User(
+                full_name=student_rec.name,
+                name=student_rec.name,
+                username=student_rec.usn.lower(),
+                email=student_rec.gmail or student_rec.email or f"{student_rec.usn.lower()}@college.edu",
+                password_hash=student_rec.password_hash or "jwt-hydrated",
+                usn_or_employee_id=student_rec.usn,
+                role="student",
+                department_id=student_rec.department_id,
+                semester=student_rec.semester,
+                section=student_rec.section,
+                account_status="Approved",
+                is_active=True,
+            )
+            db.add(user)
+            db.flush()
+            student_rec.user_id = user.id
+            student_rec.registration_status = "Registered"
+            student_rec.email_verification_status = "Verified"
+            db.commit()
+            db.refresh(user)
     if not user:
         raise credentials_exception
     account_status = getattr(user, "account_status", "Approved")
