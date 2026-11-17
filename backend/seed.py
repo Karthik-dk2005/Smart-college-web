@@ -52,14 +52,24 @@ def seed_database():
             # Admin
             {
                 "email": "admin@campus.edu",
+                "username": "admin",
                 "name": "System Administrator",
                 "role": "admin",
                 "phone": "+91 98765 00001",
                 "is_active": True,
             },
+            {
+                "email": "admin@gmail.com",
+                "username": "admin_gmail",
+                "name": "MITT Admin",
+                "role": "admin",
+                "phone": "+91 98765 00011",
+                "is_active": True,
+            },
             # HOD
             {
                 "email": "hod.cse@campus.edu",
+                "username": "hod.cse",
                 "name": "Dr. Vikramaditya Sen",
                 "role": "hod",
                 "phone": "+91 98765 00002",
@@ -69,11 +79,28 @@ def seed_database():
                     "designation": "Professor & Head of Department",
                 }
             },
-            # Faculty
+            {
+                "email": "hod.cse@gmail.com",
+                "username": "hod_gmail",
+                "name": "Dr. Vikramaditya Sen",
+                "role": "hod",
+                "phone": "+91 98765 00012",
+                "is_active": True,
+            },
+            # Faculty / Teachers
+            {
+                "email": "teacher@gmail.com",
+                "username": "teacher_cse_gmail",
+                "name": "Prof. Teacher CSE",
+                "role": "teacher",
+                "phone": "+91 98765 10000",
+                "is_active": True,
+            },
             {
                 "email": "ananya.iyer@faculty.campus.edu",
+                "username": "ananya.iyer",
                 "name": "Prof. Ananya Iyer",
-                "role": "faculty",
+                "role": "teacher",
                 "phone": "+91 98765 10001",
                 "is_active": True,
                 "faculty_info": {
@@ -133,10 +160,14 @@ def seed_database():
             if not user:
                 user = User(
                     name=udata["name"],
+                    full_name=udata["name"],
+                    username=udata.get("username") or udata["email"].split("@")[0],
                     email=udata["email"],
                     password_hash=get_password_hash("password123"),
                     role=udata["role"],
+                    department_id=dept.id,
                     phone=udata.get("phone"),
+                    account_status="Approved",
                     is_active=udata["is_active"],
                 )
                 db.add(user)
@@ -145,7 +176,10 @@ def seed_database():
                 print(f"[+] User created: {user.name} ({user.email}) -> Role: {user.role}")
             else:
                 user.name = udata["name"]
+                user.full_name = udata["name"]
                 user.role = udata["role"]
+                user.account_status = "Approved"
+                user.is_active = True
                 user.password_hash = get_password_hash("password123")
                 db.commit()
             created_users[udata["email"]] = user
