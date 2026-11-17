@@ -125,56 +125,6 @@ def seed_database():
                     "designation": "Assistant Professor",
                 }
             },
-            # Students - Section A
-            {
-                "email": "amulya.h.s@mitt.ac.in",
-                "name": "Amulya H S",
-                "role": "student",
-                "phone": "+91 98765 20001",
-                "is_active": True,
-                "student_info": {
-                    "usn": "4MT22CS015",
-                    "semester": 5,
-                    "section": "A",
-                }
-            },
-            {
-                "email": "aarav.sharma@college.edu",
-                "name": "Aarav Sharma",
-                "role": "student",
-                "phone": "+91 98765 20002",
-                "is_active": True,
-                "student_info": {
-                    "usn": "4MT22CS001",
-                    "semester": 5,
-                    "section": "A",
-                }
-            },
-            # Students - Section B
-            {
-                "email": "priya.patel@college.edu",
-                "name": "Priya Patel",
-                "role": "student",
-                "phone": "+91 98765 20003",
-                "is_active": True,
-                "student_info": {
-                    "usn": "4MT22CS002",
-                    "semester": 5,
-                    "section": "B",
-                }
-            },
-            {
-                "email": "rohan.gupta@college.edu",
-                "name": "Rohan Gupta",
-                "role": "student",
-                "phone": "+91 98765 20004",
-                "is_active": True,
-                "student_info": {
-                    "usn": "4MT22CS003",
-                    "semester": 5,
-                    "section": "B",
-                }
-            },
         ]
 
         created_users = {}
