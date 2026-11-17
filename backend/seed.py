@@ -191,6 +191,44 @@ def seed_database():
                     db.refresh(std)
                     print(f"  [+] Student profile linked: {std.name} [{std.usn}] Section {std.section}")
 
+        # 2b. Seed Official 5th Semester CSE Students from official_students.csv
+        official_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "official_students.csv")
+        if os.path.exists(official_csv) and db.query(Student).count() == 0:
+            import csv
+            with open(official_csv, encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                count_imported = 0
+                for row in reader:
+                    usn = (row.get("USN") or "").strip().upper()
+                    name = (row.get("Student Name") or "").strip().upper()
+                    gmail = (row.get("Gmail") or "").strip().lower()
+                    section = (row.get("Section") or "A").strip().upper()
+                    semester = int(row.get("Semester") or 5)
+                    if not usn or not name:
+                        continue
+                    std = Student(
+                        usn=usn,
+                        student_id=usn,
+                        name=name,
+                        email=gmail or f"{usn.lower()}@college.edu",
+                        gmail=gmail or None,
+                        phone=(row.get("Phone") or "").strip() or None,
+                        father_phone=(row.get("Father Phone") or "").strip() or None,
+                        mother_phone=(row.get("Mother Phone") or "").strip() or None,
+                        semester=semester,
+                        section=section,
+                        department_id=dept.id,
+                        admission_year=2025 if usn.startswith("4MN25") else 2024,
+                        username=usn.lower(),
+                        status="active",
+                        registration_status="Unregistered",
+                        email_verification_status="Unverified",
+                    )
+                    db.add(std)
+                    count_imported += 1
+                db.commit()
+                print(f"[+] Imported {count_imported} official 5th Semester CSE students from official_students.csv")
+
         # Fetch all faculty records
         all_faculty = {f.email: f for f in db.query(Faculty).all()}
         hod_fac = all_faculty.get("hod.cse@campus.edu")
@@ -428,33 +466,7 @@ def seed_database():
         db.commit()
         print(f"[+] Timetable imported: {len(timetable_slots_a)} slots for Section A (CS-303) and {len(timetable_slots_b)} slots for Section B (CS-304)")
 
-        # 5. Seed Attendance Data
-        students = db.query(Student).all()
-        subjects = db.query(Subject).all()
-        today = date.today()
-
-        existing_attendance_count = db.query(Attendance).count()
-        if existing_attendance_count < 10 and students and subjects:
-            for s in students:
-                for subj in subjects:
-                    # Create 5 historical attendance records for each subject
-                    for days_ago in range(1, 6):
-                        d_str = (today - timedelta(days=days_ago)).isoformat()
-                        status_val = "present" if days_ago % 5 != 0 else "absent"
-                        att = Attendance(
-                            student_id=s.id,
-                            subject_id=subj.id,
-                            faculty_id=subj.faculty_id or ananya_fac.id,
-                            date=d_str,
-                            status=status_val,
-                            check_in_time=datetime.utcnow() - timedelta(days=days_ago),
-                            latitude=settings.DEPARTMENT_LATITUDE + 0.0001,
-                            longitude=settings.DEPARTMENT_LONGITUDE + 0.0001,
-                            remarks="Verified on campus geofence"
-                        )
-                        db.add(att)
-            db.commit()
-            print(f"[+] Pre-seeded realistic student attendance records for percentage & statistics calculation")
+        # 5. Attendance records start clean (no fabricated attendance rows)
 
         # 6. Seed Notices
         notices_to_seed = [
