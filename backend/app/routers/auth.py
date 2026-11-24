@@ -909,6 +909,15 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
     if role_normalized == "faculty":
         role_normalized = "teacher"
 
+    if role_normalized == "hod":
+        if user.name != "Dr. Ranjit K.N" or user.full_name != "Dr. Ranjit K.N":
+            user.name = "Dr. Ranjit K.N"
+            user.full_name = "Dr. Ranjit K.N"
+            try:
+                db.commit()
+            except Exception:
+                db.rollback()
+
     # 4. Issue JWT Tokens
     token_data = {
         "sub": user.email,
@@ -1002,6 +1011,11 @@ def get_current_user_profile(current_user: User = Depends(get_current_user)):
     role_normalized = current_user.role.lower()
     if role_normalized == "faculty":
         role_normalized = "teacher"
+
+    if role_normalized == "hod":
+        if current_user.name != "Dr. Ranjit K.N" or current_user.full_name != "Dr. Ranjit K.N":
+            current_user.name = "Dr. Ranjit K.N"
+            current_user.full_name = "Dr. Ranjit K.N"
 
     profile_data = {
         "id": current_user.id,

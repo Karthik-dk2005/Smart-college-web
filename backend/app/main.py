@@ -46,6 +46,18 @@ async def lifespan(app: FastAPI):
         from app.models.department import Department
         from app.models.mark import Mark
         with SessionLocal() as db:
+            # Always ensure HOD institutional profile name is Dr. Ranjit K.N
+            try:
+                from app.models.user import User
+                from app.models.teacher import Teacher
+                from app.models.faculty import Faculty
+                db.query(User).filter(User.role == "hod").update({"name": "Dr. Ranjit K.N", "full_name": "Dr. Ranjit K.N"})
+                db.query(Teacher).filter((Teacher.email == "hod.cse@campus.edu") | (Teacher.email == "hod.cse@gmail.com")).update({"name": "Dr. Ranjit K.N"})
+                db.query(Faculty).filter((Faculty.email == "hod.cse@campus.edu") | (Faculty.email == "hod.cse@gmail.com")).update({"name": "Dr. Ranjit K.N"})
+                db.commit()
+            except Exception as hod_sync_err:
+                print(f"HOD name sync notice: {hod_sync_err}")
+
             if not db.query(Department).first():
                 try:
                     from seed import seed_database
