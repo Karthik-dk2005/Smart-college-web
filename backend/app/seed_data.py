@@ -91,7 +91,7 @@ def seed_database():
         # 4. Seed Real Teachers
         teachers_data = [
             {
-                "name": "Dr. Vikramaditya Sen",
+                "name": "Dr. Ranjit K.N",
                 "email": "hod.cse@campus.edu",
                 "employee_id": "FAC-CSE-000",
                 "designation": "Professor & Head of Department",
@@ -184,7 +184,7 @@ def seed_database():
                 "name": "Theory of Computation",
                 "credits": 4,
                 "semester": 5,
-                "teacher": teacher_map["Dr. Vikramaditya Sen"]
+                "teacher": teacher_map["Dr. Ranjit K.N"]
             },
             {
                 "code": "21CSL58",
@@ -212,7 +212,7 @@ def seed_database():
                 "name": "Research Methodology and IPR",
                 "credits": 3,
                 "semester": 5,
-                "teacher": teacher_map["Dr. Vikramaditya Sen"]
+                "teacher": teacher_map["Dr. Ranjit K.N"]
             },
             {
                 "code": "21CIV59",
@@ -277,10 +277,10 @@ def seed_database():
             # HOD
             {
                 "email": "hod.cse@campus.edu",
-                "name": "Dr. Vikramaditya Sen",
+                "name": "Dr. Ranjit K.N",
                 "role": "hod",
                 "department_id": dept.id,
-                "teacher_id": teacher_map["Dr. Vikramaditya Sen"].id,
+                "teacher_id": teacher_map["Dr. Ranjit K.N"].id,
                 "semester": None,
                 "section": None,
                 "phone": "+91 98765 00002",
@@ -428,20 +428,20 @@ def seed_database():
             # Monday - Section A (Room CS-303)
             {"day": "Monday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-303", "type": "regular"},
             {"day": "Monday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-303", "type": "regular"},
-            {"day": "Monday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Monday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Monday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-303", "type": "regular"},
             {"day": "Monday", "period": 5, "start": "14:00", "end": "16:00", "sub": "21CSL58", "teacher": "Prof. Divya Menon", "room": "WT-LAB", "type": "lab"},
 
             # Tuesday - Section A (Room CS-303)
-            {"day": "Tuesday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Tuesday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Tuesday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-303", "type": "regular"},
-            {"day": "Tuesday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21RMI56", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Tuesday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21RMI56", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Tuesday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-303", "type": "regular"},
             {"day": "Tuesday", "period": 5, "start": "14:00", "end": "16:00", "sub": "21CSP57", "teacher": "Prof. Sneha Reddy", "room": "MP-LAB", "type": "practical"},
 
             # Wednesday - Section A (Room CS-303)
             {"day": "Wednesday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-303", "type": "regular"},
-            {"day": "Wednesday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Wednesday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Wednesday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-303", "type": "regular"},
             {"day": "Wednesday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CIV59", "teacher": "Prof. Sneha Reddy", "room": "CS-303", "type": "regular"},
             {"day": "Wednesday", "period": 5, "start": "14:00", "end": "15:00", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-303", "type": "regular"},
@@ -449,15 +449,15 @@ def seed_database():
             # Thursday - Section A (Room CS-303)
             {"day": "Thursday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-303", "type": "regular"},
             {"day": "Thursday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-303", "type": "regular"},
-            {"day": "Thursday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21RMI56", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Thursday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21RMI56", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Thursday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CIV59", "teacher": "Prof. Sneha Reddy", "room": "CS-303", "type": "regular"},
             {"day": "Thursday", "period": 5, "start": "14:00", "end": "16:00", "sub": "21CSL58", "teacher": "Prof. Divya Menon", "room": "WT-LAB", "type": "lab"},
 
             # Friday - Section A (Room CS-303)
             {"day": "Friday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-303", "type": "regular"},
-            {"day": "Friday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Friday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Friday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-303", "type": "regular"},
-            {"day": "Friday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21RMI56", "teacher": "Dr. Vikramaditya Sen", "room": "CS-303", "type": "regular"},
+            {"day": "Friday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21RMI56", "teacher": "Dr. Ranjit K.N", "room": "CS-303", "type": "regular"},
             {"day": "Friday", "period": 5, "start": "14:00", "end": "15:00", "sub": "21NSS59", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-303", "type": "regular"},
 
             # Saturday - Section A (Room CS-303)
@@ -471,18 +471,18 @@ def seed_database():
             {"day": "Monday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-304", "type": "regular"},
             {"day": "Monday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-304", "type": "regular"},
             {"day": "Monday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-304", "type": "regular"},
-            {"day": "Monday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
+            {"day": "Monday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
             {"day": "Monday", "period": 5, "start": "14:00", "end": "16:00", "sub": "21CSP57", "teacher": "Prof. Sneha Reddy", "room": "MP-LAB", "type": "practical"},
 
             # Tuesday - Section B (Room CS-304)
             {"day": "Tuesday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-304", "type": "regular"},
             {"day": "Tuesday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-304", "type": "regular"},
-            {"day": "Tuesday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
-            {"day": "Tuesday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21RMI56", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
+            {"day": "Tuesday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
+            {"day": "Tuesday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21RMI56", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
             {"day": "Tuesday", "period": 5, "start": "14:00", "end": "16:00", "sub": "21CSL58", "teacher": "Prof. Divya Menon", "room": "WT-LAB", "type": "lab"},
 
             # Wednesday - Section B (Room CS-304)
-            {"day": "Wednesday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
+            {"day": "Wednesday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
             {"day": "Wednesday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-304", "type": "regular"},
             {"day": "Wednesday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-304", "type": "regular"},
             {"day": "Wednesday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-304", "type": "regular"},
@@ -492,18 +492,18 @@ def seed_database():
             {"day": "Thursday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-304", "type": "regular"},
             {"day": "Thursday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-304", "type": "regular"},
             {"day": "Thursday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-304", "type": "regular"},
-            {"day": "Thursday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21RMI56", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
+            {"day": "Thursday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21RMI56", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
             {"day": "Thursday", "period": 5, "start": "14:00", "end": "15:00", "sub": "21NSS59", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-304", "type": "regular"},
 
             # Friday - Section B (Room CS-304)
             {"day": "Friday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS52", "teacher": "Dr. Rajesh Kumar", "room": "CS-304", "type": "regular"},
-            {"day": "Friday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
+            {"day": "Friday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
             {"day": "Friday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CS51", "teacher": "Prof. Ananya Iyer", "room": "CS-304", "type": "regular"},
             {"day": "Friday", "period": 4, "start": "12:15", "end": "13:15", "sub": "21CIV59", "teacher": "Prof. Sneha Reddy", "room": "CS-304", "type": "regular"},
             {"day": "Friday", "period": 5, "start": "14:00", "end": "16:00", "sub": "21CSL58", "teacher": "Prof. Divya Menon", "room": "WT-LAB", "type": "lab"},
 
             # Saturday - Section B (Room CS-304)
-            {"day": "Saturday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS53", "teacher": "Dr. Vikramaditya Sen", "room": "CS-304", "type": "regular"},
+            {"day": "Saturday", "period": 1, "start": "09:00", "end": "10:00", "sub": "21CS53", "teacher": "Dr. Ranjit K.N", "room": "CS-304", "type": "regular"},
             {"day": "Saturday", "period": 2, "start": "10:00", "end": "11:00", "sub": "21CS55", "teacher": "Prof. Ramesh Kulkarni", "room": "CS-304", "type": "regular"},
             {"day": "Saturday", "period": 3, "start": "11:15", "end": "12:15", "sub": "21CSP57", "teacher": "Prof. Sneha Reddy", "room": "MP-LAB", "type": "practical"},
         ]

@@ -141,7 +141,7 @@ Password for all pre-seeded accounts: **`password123`**
 | Role | Name | Email / Username | Persona & Privileges |
 |------|------|------------------|----------------------|
 | **Admin** | System Administrator | `admin@campus.edu` | Master access across all departments: add/edit/remove students & teachers, rooms, subjects, timetable. |
-| **HOD** | Dr. Vikramaditya Sen | `hod.cse@campus.edu` | Professor & HOD (CSE): Manage students and teachers in own department only. Timetable, attendance, reports. |
+| **HOD** | Dr. Ranjit K.N | `hod.cse@campus.edu` | Professor & HOD (CSE): Manage students and teachers in own department only. Timetable, attendance, reports. |
 | **Teacher** | Prof. Ananya Iyer | `ananya.iyer@faculty.campus.edu` | Associate Professor: View assigned timetable, take timetable-based attendance. NO student/teacher CRUD. |
 | **Student (5A)** | Karthik D K | `karthik.dk@college.edu` | 5th Sem Sec A (USN: `4MT22CS008`): View own profile, timetable, and attendance history. NO student/teacher CRUD. |
 | **Student (5A)** | Aarav Sharma | `aarav.sharma@college.edu` | 5th Sem Sec A (USN: `4MT22CS001`): View own profile, timetable, and attendance history. NO student/teacher CRUD. |

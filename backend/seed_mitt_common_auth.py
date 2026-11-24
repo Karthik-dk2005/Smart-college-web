@@ -37,8 +37,8 @@ def seed_common_auth(db_path):
 
     # 2. Ensure HOD accounts
     hod_accounts = [
-        ("Dr. Vikramaditya Sen", "hod.cse", "hod.cse@campus.edu", pwd_hash, "hod", "Approved", 1),
-        ("Dr. Vikramaditya Sen", "hod_gmail", "hod.cse@gmail.com", pwd_hash, "hod", "Approved", 1),
+        ("Dr. Ranjit K.N", "hod.cse", "hod.cse@campus.edu", pwd_hash, "hod", "Approved", 1),
+        ("Dr. Ranjit K.N", "hod_gmail", "hod.cse@gmail.com", pwd_hash, "hod", "Approved", 1),
     ]
     for full_name, username, email, p_hash, role, status, is_act in hod_accounts:
         cur.execute("SELECT id FROM users WHERE lower(email) = lower(?)", (email,))

@@ -387,7 +387,7 @@ export default function HODRegister() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Dr. Vikramaditya Sen"
+                    placeholder="Dr. Ranjit K.N"
                     required
                     style={{
                       width: "100%",

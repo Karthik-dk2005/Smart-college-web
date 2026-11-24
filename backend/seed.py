@@ -91,7 +91,7 @@ def seed_database():
             {
                 "email": "hod.cse@campus.edu",
                 "username": "hod.cse",
-                "name": "Dr. Vikramaditya Sen",
+                "name": "Dr. Ranjit K.N",
                 "role": "hod",
                 "phone": "+91 98765 00002",
                 "employee_id": "FAC-CSE-000",
@@ -100,7 +100,7 @@ def seed_database():
             {
                 "email": "hod.cse@gmail.com",
                 "username": "hod_gmail",
-                "name": "Dr. Vikramaditya Sen",
+                "name": "Dr. Ranjit K.N",
                 "role": "hod",
                 "phone": "+91 98765 00012",
                 "designation": "Professor & Head of Department",

@@ -79,7 +79,7 @@ export default function LoginPage() {
               type="button"
               className="role-chip"
               onClick={() => setDemoAccount("hod.cse@campus.edu")}
-              title="HOD: Dr. Vikramaditya Sen"
+              title="HOD: Dr. Ranjit K.N"
             >
               HOD
             </button>

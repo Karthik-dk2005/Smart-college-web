@@ -284,7 +284,7 @@ export default function Departments() {
                 >
                   <UserCheck size={16} color="#818cf8" />
                   <span style={{ fontSize: "0.82rem", color: "#cbd5e1" }}>
-                    Head of Department: <strong style={{ color: "#f8fafc" }}>{hod ? hod.name : "Dr. Vikramaditya Sen"}</strong>
+                    Head of Department: <strong style={{ color: "#f8fafc" }}>{hod ? hod.name : "Dr. Ranjit K.N"}</strong>
                   </span>
                 </div>
               </div>
