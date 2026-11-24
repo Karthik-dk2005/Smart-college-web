@@ -12,7 +12,8 @@ export const busApi = {
   updateBusStop: (stopId, data) => api.put(`/buses/stops/${stopId}`, data),
   deleteBusStop: (stopId) => api.delete(`/buses/stops/${stopId}`),
 
-  getStudentBus: (studentId) => api.get(`/buses/student/${studentId}`),
+  getMyBus: () => api.get("/buses/my-bus"),
+  getStudentBus: (studentId) => (studentId ? api.get(`/buses/student/${studentId}`) : api.get("/buses/my-bus")),
   assignStudentBus: (studentId, data) => api.post(`/buses/student/${studentId}/assign`, data),
   removeStudentBus: (studentId) => api.delete(`/buses/student/${studentId}/assign`),
 };
@@ -27,6 +28,7 @@ export const {
   createBusStop,
   updateBusStop,
   deleteBusStop,
+  getMyBus,
   getStudentBus,
   assignStudentBus,
   removeStudentBus,

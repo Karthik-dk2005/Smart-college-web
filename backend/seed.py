@@ -23,6 +23,7 @@ from app.models.subject import Subject
 from app.models.timetable import Timetable
 from app.models.notice import Notice
 from app.utils.security import get_password_hash
+from app.utils.bus_seed_data import seed_bus_routes_and_assignments
 
 # Pre-activated demo student USNs (password: password123) so Student Login works out-of-the-box;
 # all other 131 verified students remain Unregistered so they can test/use /register/student.
@@ -404,6 +405,9 @@ def seed_database():
             if not db.query(Notice).filter(Notice.title == title).first():
                 db.add(Notice(title=title, description=desc, target_role=target, created_by=creator_id))
         db.commit()
+
+        # 8. Seed Campus Transit Network (Routes 1–28, Stops, and Student Bus Allocations)
+        seed_bus_routes_and_assignments(db)
 
         print("=" * 65)
         print("SMARTDEPT DATABASE SEED COMPLETED SUCCESSFULLY!")

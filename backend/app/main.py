@@ -52,6 +52,16 @@ async def lifespan(app: FastAPI):
                     seed_database()
                 except Exception as seed_err:
                     print(f"Auto-seed notice: {seed_err}")
+            else:
+                # Ensure bus routes and student bus assignments exist
+                try:
+                    from app.models.student_bus_assignment import StudentBusAssignment
+                    from app.models.bus_route import BusRoute
+                    if not db.query(BusRoute).first() or not db.query(StudentBusAssignment).first():
+                        from app.utils.bus_seed_data import seed_bus_routes_and_assignments
+                        seed_bus_routes_and_assignments(db)
+                except Exception as bus_seed_err:
+                    print(f"Bus transit auto-seed notice: {bus_seed_err}")
     except Exception as e:
         print(f"Database startup check: {e}")
     yield

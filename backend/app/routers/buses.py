@@ -46,6 +46,32 @@ def get_all_buses(
     return BusService.get_all_routes(db, search=search, status_filter=status)
 
 
+@router.get("/my-bus", response_model=Optional[StudentBusAssignmentOut])
+def get_my_bus_assignment(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Retrieve the current logged-in student's active bus transit assignment.
+    """
+    if current_user.role.lower() != "student":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="This endpoint is reserved for students.",
+        )
+    my_student = db.query(Student).filter(
+        (Student.user_id == current_user.id)
+        | (Student.usn == current_user.usn_or_employee_id)
+        | (Student.gmail == current_user.email)
+    ).first()
+    if not my_student:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Student academic profile not found.",
+        )
+    return BusService.get_student_bus(db, student_id=my_student.id)
+
+
 @router.get("/{route_id}", response_model=BusRouteDetailOut)
 def get_bus_route(
     route_id: int,
@@ -161,8 +187,17 @@ def get_student_bus_assignment(
 
     if user_role == "student":
         # A student can only view their own bus assignment
-        my_student = db.query(Student).filter(Student.user_id == current_user.id).first()
-        if not my_student or (student_id != current_user.id and student_id != my_student.id):
+        my_student = db.query(Student).filter(
+            (Student.user_id == current_user.id)
+            | (Student.usn == current_user.usn_or_employee_id)
+            | (Student.gmail == current_user.email)
+        ).first()
+        if not my_student:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Student record not found.",
+            )
+        if student_id != 0 and student_id != current_user.id and student_id != my_student.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="You do not have permission to perform this action.",

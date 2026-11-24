@@ -764,9 +764,13 @@ def get_student_dashboard_profile(
         bus_data = {
             "route_name": bus_assign.route.route_name,
             "route_number": bus_assign.route.route_number,
+            "bus_number": bus_assign.route.bus_number,
             "stop_name": bus_assign.stop.stop_name if bus_assign.stop else "Campus Stop",
+            "pickup_time": bus_assign.stop.pickup_time if bus_assign.stop else bus_assign.route.departure_time,
+            "drop_time": bus_assign.stop.drop_time if bus_assign.stop else "05:00 PM",
             "driver_name": bus_assign.route.driver_name,
-            "driver_phone": bus_assign.route.driver_phone
+            "driver_phone": bus_assign.route.driver_phone,
+            "transport_status": bus_assign.transport_status or "Using Bus"
         }
 
     return StudentDashboardProfile(

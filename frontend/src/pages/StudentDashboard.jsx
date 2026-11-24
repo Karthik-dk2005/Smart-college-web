@@ -364,6 +364,22 @@ export default function StudentDashboard() {
               Driver: {profile.bus_route.driver_name} ({profile.bus_route.driver_phone})
             </div>
           )}
+          <Link
+            to="/student/bus"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.3rem",
+              marginTop: "0.65rem",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              color: "#93c5fd",
+              textDecoration: "none",
+            }}
+          >
+            <span>Transit Pass & All 28 Routes</span>
+            <ExternalLink size={12} />
+          </Link>
         </div>
       </div>
 
